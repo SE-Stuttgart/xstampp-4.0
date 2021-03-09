@@ -1,0 +1,123 @@
+<!-- Top Toolbar (click)="drawer.toggle() -->
+<div>
+  <mat-toolbar>
+            <div>
+              <button type="button" class="button-align" title="Home" aria-label="Return to project overview." mat-icon-button
+                      routerLink="/project-overview">
+                <mat-icon class="icon-align">home</mat-icon>
+              </button>
+            </div>
+            <span>USER SETTINGS: {{userName}}</span>
+            <div #logoBox class="logo-box">
+            </div>
+            <div class= "center"></div>
+            <div style="display: flex; justify-content: flex-end; ">
+              <div *ngIf="sysAdmin === true">
+                <mat-icon style="cursor:pointer;" title="System administration" routerLink="/system-administration/users">settings</mat-icon>
+              </div>
+          </div>
+          <div>
+            <mat-icon style="cursor:pointer;" title="Group settings" routerLink="/groups-handling/groups">group</mat-icon>
+          </div>
+          <!-- <div>
+        <mat-icon>notifications</mat-icon>
+      </div>-->
+          <div>
+
+            <img class="iconTop" style="cursor:pointer;" [src]="selectedAvatar" title="User Settings"  [matMenuTriggerFor]="menu">
+
+            <mat-menu #menu>
+                <div *ngIf="sysAdmin === true">
+              <button mat-menu-item style="cursor:pointer;" routerLink = "/corporate-theme">Corporate Theme</button>
+                 </div>
+
+             <button mat-menu-item style="cursor:pointer;" routerLink= "/user-settings"> User Settings</button>
+             <button mat-menu-item style="cursor:pointer;" (click)="logout()">Logout</button>
+            </mat-menu>
+
+        </div>
+
+      </mat-toolbar>
+   </div>
+
+
+<div >
+  <mat-card class="center2">
+
+          <div>
+              <button  mat-raised-button class = "blueButton" style="position: relative; float: right; margin-right: 3%;"
+              (click)="edit()" [disabled]="!! editBoolean" > Edit
+            </button>
+
+      </div>
+
+      <div>
+      <img [src] = "selectedAvatar" *ngIf="avatars.length === 0" style="width: 64px; margin-left: 20%;" title="user avatar">
+
+
+      <img  [src]="selectedAvatar" title="user avatar" *ngIf="avatars.length >0"  [matMenuTriggerFor]="avatarMenu"  style="cursor: pointer; width: 64px; margin-left: 20%;" >
+          <mat-menu #avatarMenu yPosition="below">
+                <mat-grid-list cols="6" rowHeight="1:1" >
+                    <mat-grid-tile *ngFor="let avatar of avatars"[colspan]="2" [rowspan]="2" >
+                    <img [src]="avatar" (click)= "changeIcon(avatar)">
+                    </mat-grid-tile>
+                  </mat-grid-list>
+        </mat-menu>
+
+
+
+
+
+
+  </div>
+  <mat-form-field>
+    <mat-label>Select a theme</mat-label>
+    <mat-select #selectedTheme (selectionChange)="changeTheme(selectedTheme)">
+      <mat-option [disabled]="!editBoolean" *ngFor="let fileForDropdown of fileForDropdown" [value]="[fileForDropdown.id, fileForDropdown.name]" >
+        {{fileForDropdown.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+      <div>
+        <mat-form-field >
+        <input matInput   id="email" type="email" name="email"[disabled]="!editBoolean" placeholder="e-mail address"  [(ngModel)]="email" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+      </div>
+     <mat-divider ></mat-divider>
+
+       <div>
+              <mat-form-field class="input">
+              <input  matInput #password1 type="password" [disabled]="!editBoolean" placeholder="new password">
+              </mat-form-field>
+
+
+       </div>
+       <div>
+
+          <mat-form-field class="input">
+              <input  matInput #password2 type="password" [disabled]="!editBoolean" placeholder="repeat new password" (keypress.enter) = "save()">
+              </mat-form-field>
+       </div>
+
+     <mat-divider class="input"></mat-divider>
+     <div>
+       <button mat-raised-button class="warn-button" [disabled]="!!editBoolean" (click)="deleteUser()" >DELETE ACCOUNT</button>
+     </div>
+     <mat-divider ></mat-divider>
+     <div >
+
+        <button  mat-raised-button
+          (click)="save()" class="blueButton" [disabled]="!editBoolean">Save
+        </button>
+        <button  mat-raised-button
+        (click)="cancle()" class="blueButton" [disabled]="!editBoolean" >Cancel </button>
+
+        <!-- FIXME: Router Link Generic - @master student -->
+      </div>
+
+    </mat-card>
+</div>
+
+
+

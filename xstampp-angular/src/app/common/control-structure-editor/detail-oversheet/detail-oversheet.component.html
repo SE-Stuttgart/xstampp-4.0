@@ -1,0 +1,43 @@
+<div *ngIf="finished == false">
+
+  <div class="container" *ngIf="!isPm">
+    <mat-drawer-container class="full">
+      <mat-drawer [disableClose]="true" class="full" [opened]="sheetModePv !== SheetMode.Closed" mode="side" position="end">
+        <app-detailed-sheet
+          [entity]="pv"
+          [fields]="fieldsPv"
+          [title]="titlePv"
+          [needsLock]="true"
+          [sheetMode]="sheetModePv"
+          (closeSheet)="closeSheetPv()"
+          (dropDownEvent)="dropDownPv($event)"
+          (saveSheet)="savePv($event)"
+          (editSheet)="editSheetPv()">
+          <!-- [disableSaveButton]="disableSaveButton"
+                              (saveSheet)="savePM($event)"
+                              (editSheet)="editSheet()"> -->
+        </app-detailed-sheet>
+      </mat-drawer>
+    </mat-drawer-container>
+  </div>
+  <div class="container" *ngIf="isPm">
+    <mat-drawer-container class="full">
+      <mat-drawer [disableClose]="true" class="full" [opened]="sheetModePm !== SheetMode.Closed" mode="side" position="end" >
+        <app-detailed-sheet
+          [entity]="pm"
+          [fields]="fieldsPm"
+          [title]="titlePm"
+          [needsLock]="true"
+          [sheetMode]="sheetModePm"
+          (closeSheet)="closeSheetPm()"
+          (editSheet)="editSheetPm()"
+          (saveSheet)="savePm($event)">
+          <!-- [disableSaveButton]="disableSaveButton"
+                              (saveSheet)="savePv($event)"
+                              (editSheet)="editSheet()"> -->
+        </app-detailed-sheet>
+      </mat-drawer>
+
+    </mat-drawer-container>
+  </div>
+</div>

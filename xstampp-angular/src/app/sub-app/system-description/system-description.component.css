@@ -1,0 +1,28 @@
+[hidden] {
+  display: none !important;
+}
+
+.sysdescr-tb {
+  top: 4px;
+  position: relative;
+}
+
+.horizontal-center {
+  text-align: center;
+  white-space: pre-wrap;
+}
+
+.mat-dialog-actions {
+  text-align: center;
+  display: block;
+}
+
+mat-dialog-content {
+  text-align: center;
+}
+
+.container {
+  width: 100%;
+  height: calc(100% - 117px);
+  margin-bottom: 60px;
+}

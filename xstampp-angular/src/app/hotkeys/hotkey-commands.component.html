@@ -1,0 +1,12 @@
+<h1>Shortcuts</h1>
+<table>
+	<tbody>
+		<tr *ngFor="let keys of hotkeys">
+			<td>{{ keys[1] }}</td>
+
+			<td>
+				<kbd>{{ keys[0] }}</kbd>
+      </td>
+    </tr>
+  </tbody>
+</table>

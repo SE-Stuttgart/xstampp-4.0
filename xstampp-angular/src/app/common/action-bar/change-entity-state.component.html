@@ -1,0 +1,8 @@
+<div mat-dialog-content>
+    <p class="horizontal-center">{{data.description}}</p>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button color="warn" [mat-dialog-close] (click)="onChangeEntityStateClick($event)" cdkFocusInitial>Change</button>
+  </div>
+  

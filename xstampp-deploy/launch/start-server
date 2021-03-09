@@ -1,0 +1,210 @@
+#!/usr/bin/env perl
+# Documentation for this script is written using POD, the "Plain Old
+# Documentation" format supported by Perl. Documentation is accessed
+# using the "perlpod" command.
+#
+# To learn more about POD, run the command:
+# $ perldoc perlpod
+#
+# You can either view the documentation by directly viewing this file or
+# use the perldoc command to format all POD text nicely. Use the perldoc
+# command directly on this script, for example:
+# $ perldoc xstampp-deploy/launch/start-server
+=head1 start-server
+
+This script launches a XSTAMPP 4.0 server using Docker Compose.
+
+=cut
+
+use warnings;
+use strict;
+use autodie;
+use feature qw(say);
+
+use Carp qw(confess); # "confess" is "die" but with nicer errors
+use Cwd qw(getcwd);
+use File::Basename qw(dirname);
+use MIME::Base64 qw(encode_base64);
+use POSIX qw(strftime);
+use Time::HiRes qw(time);
+
+=head2 Constants
+
+  $CONF_FOLDER: Folder to store config file
+  $CONF_TEMPLATE: Read a template (with placeholders) from this location
+  $MARKER_FILENAME: Name for a temporarily file that marks an in-progress launch
+  @SERVICES: List holding the list of services to start
+  $PASSWORD_BYTES: Number of bytes of entropy for automatically generated passwords.
+=cut
+my $CONF_FOLDER = "xstampp-config";
+my $CONF_TEMPLATE = "xstampp-deploy/launch/config-template.json";
+my $MARKER_FILENAME = ".auto_setup_in_progress_marker";
+my @SERVICES = qw(auth notify project push);
+my $PASSWORD_BYTES = 32;
+
+=head2 Functions
+
+=over
+
+=item msg($message)
+
+  Logs a message to standard error with a timestamp.
+  (Function has a prototype and can be called like a builtin.)
+
+  Arguments:
+    $message: Message to log.
+=cut
+sub msg($) {
+    my $message = shift;
+    my $now = time;
+    printf STDERR '%s.%03d %s'.$/, strftime('%Y-%m-%d %H:%M:%S', gmtime $now), ($now - int($now)) * 1000, $message;
+}
+
+=item genpw($bytes)
+
+  Generates a password.
+
+  Arguments:
+    $bytes: Bytes of entropy for the password
+=cut
+sub genpw {
+    my $length = shift;
+    my $data;
+    open(my $rnd, "<", "/dev/urandom");
+    $rnd->read($data, $length);
+    $rnd->close;
+    return encode_base64($data, "") =~ s/=*$//r;
+}
+=back
+
+=head2 Launch process
+
+The script always attempts to find the base folder of the repository it
+was run from (2 levels up)
+=cut
+chdir dirname __FILE__;
+chdir "../..";
+
+msg "Launching XSTAMPP 4.0 from: @{[getcwd]}";
+
+my $markerpath = "$CONF_FOLDER/$MARKER_FILENAME";
+if (-e $CONF_FOLDER) {
+=pod
+
+If the config folder already exists, it checks if a previous auto-config
+was aborted or unsuccessful, and then runs Docker-Compose.
+=cut
+    msg "Config folder already exists.";
+
+    if (-e "$markerpath") {
+        confess "ERROR:\n" . <<"        END_OF_ERROR_MESSAGE";
+        Auto setup run previously but failed.
+
+        It appears you have previously run the auto setup script which
+        has failed or was aborted. You can either:
+
+        * delete '$CONF_FOLDER' and run it again
+
+        * delete '$markerpath' which
+          will silence this error, and set up the configuration files in
+          '$CONF_FOLDER' by hand.
+        END_OF_ERROR_MESSAGE
+    }
+} else {
+=pod
+
+If no config folder exists, the script will
+
+  * create the config folder
+  * place a marker file in the folder indicating that a setup is running
+  * generate 3 passwords (JWT secret, DB system password, DB xstampp user password)
+  * write the service configs by replacing placeholders in a config templateq
+  * write the postgresql environment variables file
+  * remove the marker file
+  * continue to start the system via Docker Compose
+=cut
+    msg "Config folder doesn't exist yet, running automatic setup.";
+    msg "Creating config folder";
+    mkdir $CONF_FOLDER;
+
+    msg "Creating in-progress marker file $markerpath.";
+    open(my $markerfile, ">", "$markerpath");
+    $markerfile->sync;
+    $markerfile->close;
+
+    my $tokensystemsecret = genpw($PASSWORD_BYTES);
+    my $dbxstampppassword = genpw($PASSWORD_BYTES);
+    my $dbsystempassword = genpw($PASSWORD_BYTES);
+
+
+    msg "Writing service configs...";
+    for my $service (@SERVICES) {
+        my $destfolder = "$CONF_FOLDER/service-$service";
+        msg "    $destfolder";
+
+        mkdir $destfolder;
+        open(my $template, "<", $CONF_TEMPLATE);
+        open(my $target, ">", "$destfolder/config.json");
+
+        # For each line in the template
+        while (<$template>) {
+            # Try to replace the placeholders with our generated values
+            s{#SYSTEMSECRET#}{$tokensystemsecret};
+            s{#DBPASSWORD#}{$dbxstampppassword};
+            # And write the line we just read (and modified) to the target file
+            $target->print($_);
+        }
+
+        $target->close;
+        $template->close;
+    }
+
+    my $pgpwpath = "$CONF_FOLDER/postgresql/pw.env";
+    msg "Writing database environment vars to $pgpwpath.";
+    mkdir "$CONF_FOLDER/postgresql";
+    open (my $pgpwfile, ">", $pgpwpath);
+    $pgpwfile->print("POSTGRES_PASSWORD=$dbsystempassword\n");
+    $pgpwfile->print("PG_XSTAMPP_PASSWORD=$dbxstampppassword\n");
+    $pgpwfile->close;
+
+    msg "Successful config setup, deleting $markerpath",
+    unlink "$markerpath";
+}
+
+
+=head2 Docker command line
+
+  This script runs Docker Compose as follows:
+    docker-compose
+  pointed at the Docker Compose file in xstampp-deploy:
+    -f xstampp-deploy/docker/docker-compose.yaml
+  with the docker-compose base name "xstampp4":
+    -p xstampp4
+  starting all containers:
+    up
+  remove any that were removed from the config but still exist in docker:
+    --remove-orphans
+  always re-create containers for a system (re)start:
+    --force-recreate
+=cut
+msg "Running Docker Compose to start (or restart) XSTAMPP 4.0";
+exec "docker-compose",
+    "-f", "xstampp-deploy/docker/docker-compose.yaml",
+    "-p", "xstampp4",
+    "up",
+    "--remove-orphans",
+    "--force-recreate"
+    or confess "ERROR:\n" . <<'END_OF_ERROR_MESSAGE';
+        Failed to start Docker Compose!
+
+        This probably means that you do not have Docker Compose
+        installed on this host. Depdending on your linux distribution,
+        you may be able to install Docker and Docker Compose using the
+        following command:
+
+        $ sudo apt install docker.io docker-compose
+
+        The packages may be named differently for your specific
+        distribution. For more information, consult the documentation of
+        your linux distribution and of Docker (Compose).
+END_OF_ERROR_MESSAGE

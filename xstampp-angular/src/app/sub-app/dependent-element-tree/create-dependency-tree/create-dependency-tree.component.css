@@ -1,0 +1,71 @@
+.toolbar {
+  height: 40px;
+}
+
+.detailed-toolbar-Icon {
+  color: #212529;
+  outline: none;
+  box-shadow: none;
+  background-color: transparent!important;
+}
+
+.info-button {
+  font-size: 20px;
+  color: var(--accent-color);
+}
+
+.dependentElement {
+  color: #bf0e2d;
+  font-size: 17px;
+}
+
+.linkElement {
+  font-size: 17px;
+  color: #d96537
+}
+
+.titleElement {
+  font-size: 17px;
+}
+
+.elementIcon {
+  font-size: 16px;
+  color: #212529;
+}
+
+.visibleButtonPosition {
+  position: relative; left: -20px
+}
+
+.rootElementIcon {
+  position: relative; left: 0px
+}
+
+.selectionButton {
+  float: right;
+  float: bottom;
+}
+
+mat-header-row {
+  border-right: 4px solid lightgray;
+  border-top: 1px solid lightgray;
+  border-left: 1px solid lightgray;
+  border-bottom: 2px solid lightgray;
+  text-align: left;
+  height: auto;
+  width: 350px;
+}
+
+.mat-button-focus-overlay {
+  background-color: transparent!important;
+}
+
+.toolbar-header {
+  font-size: 20px;
+}
+
+
+
+
+
+

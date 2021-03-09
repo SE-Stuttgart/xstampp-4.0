@@ -1,0 +1,105 @@
+<!-- Top Toolbar  -->
+<!-- Top Toolbar (click)="drawer.toggle() -->
+<div>
+  <mat-toolbar>
+    <span>PROJECT SELECTION: {{userName}}</span>
+
+    <div #logoBox class="logo-box">
+    </div>
+    <div class="center"></div>
+    <div style="display: flex; justify-content: flex-end; width: 100%;">
+      <div *ngIf="sysAdmin === true">
+        <mat-icon style="cursor:pointer;" title="System administration" routerLink="/system-administration/users">settings
+        </mat-icon>
+      </div>
+      <div>
+        <mat-icon style="cursor:pointer;" title="Group settings" routerLink="/groups-handling/groups">group</mat-icon>
+      </div>
+      <div>
+        <mat-icon style="cursor:pointer;" (click)="shortcutHelp()" title="Shortcut Help" aria-label="Shortcut Help">keyboard</mat-icon>
+      </div>
+      <div>
+        <img class="iconTop" style="cursor:pointer;" [src]="selectedAvatar" title="User Settings" [matMenuTriggerFor]="menu">
+
+        <mat-menu #menu>
+          <div *ngIf="sysAdmin === true">
+            <button mat-menu-item style="cursor:pointer;" routerLink="/corporate-theme">Corporate Theme</button>
+          </div>
+
+          <button mat-menu-item style="cursor:pointer;" routerLink="/user-settings"> User Settings</button>
+          <button mat-menu-item style="cursor:pointer;" (click)="logout()">Logout</button>
+        </mat-menu>
+
+      </div>
+    </div>
+  </mat-toolbar>
+</div>
+
+<div [ngClass]="{ 'table-container': !dashboard, 'table-container-dashboard': dashboard}">
+  <input accept=".hazx4" type="file" style="display: none" #file (click)="file.value = null"
+    (change)="fileChange($event.target.files)" />
+      <input accept=".hazx,.hz" type="file" style="display: none" #file2 (click)="file.value = null"
+        (change)="fileChange($event.target.files)" />
+  <app-action-bar (delete)="deleteProjects($event)"
+    (projectNew)="createProject()"
+    (projectImport)="file.click()"
+    (projectCopy)="copyProject()"
+    (projectImportFromEclipsePlugin)="file2.click()"
+    (projectExample)="exampleProject()"
+    [showAdd]="false"
+    [showMenu]="true"
+    [disableAdd]="sheetMode !== SheetMode.Closed"
+    [disableDelete]="sheetMode !== SheetMode.Closed"
+    [disableChangeState]=true>
+  </app-action-bar>
+
+
+  <mat-drawer-container style="height: calc(100% - 72px);">
+
+    <mat-drawer [disableClose]="true" *ngIf="sheetMode !== SheetMode.Closed" mode="side" position="end" opened
+      style="height: 100%">
+      <app-detailed-sheet [entity]="project"
+        [fields]="fields"
+        [title]="title"
+        [sheetMode]="sheetMode"
+        [disableSaveButton]="disableSaveButton"
+        (closeSheet)="closeSheet()"
+        (saveSheet)="saveProject($event)"
+        (editSheet)="editSheet()">
+      </app-detailed-sheet>
+    </mat-drawer>
+    <mat-drawer *ngIf="sheetMode2 !== SheetMode.Closed" mode="side" position="end" opened style="height: 100%">
+      <app-detailed-sheet [entity]="importproject"
+        [fields]="fields"
+        [title]="title2"
+        [sheetMode]="sheetMode2"
+        [disableSaveButton]="disableSaveButton"
+        (closeSheet)="closeSheetImport()"
+        (saveSheet)="saveProjectImport($event)">
+      </app-detailed-sheet>
+    </mat-drawer>
+
+    <div class="container" style="height: calc(100% - 56px);">
+
+      <app-navigation-table style="width: 20%;" [hidden]="sheetMode !== SheetMode.Closed"
+        [navigationTableDefinitions]="navigationTableDefinitions"
+        (clickedNavigationEmitter)="onClickedNavigation($event)">
+      </app-navigation-table>
+
+      <div class="tablecontent-subcontainer">
+        <app-main-table
+          [data]="projects"
+          [columns]="columns"
+          [sheetMode]="sheetMode"
+          (toggleEvent)="toggleSheet($event)">
+        </app-main-table>
+      </div>
+    </div>
+
+  </mat-drawer-container>
+
+</div>
+
+<div class="dashboard-container" *ngIf="dashboard">
+  <app-dashboard></app-dashboard>
+</div>

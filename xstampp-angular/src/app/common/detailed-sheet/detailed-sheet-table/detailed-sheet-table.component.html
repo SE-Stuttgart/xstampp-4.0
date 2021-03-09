@@ -1,0 +1,17 @@
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort>
+    <div *ngFor="let row_elem of this.columns">
+
+      <!-- Standard Text Column -->
+      <ng-container *ngIf="row_elem.type === ColumnType.Text" matColumnDef={{row_elem.key}}>
+        <th mat-header-cell [ngStyle]="row_elem.style" *matHeaderCellDef> {{row_elem.title}}</th>
+        <td mat-cell [ngStyle]="row_elem.style" *matCellDef="let row">{{row[row_elem.key]}}</td>
+      </ng-container>
+    </div>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row title='{{row["name"]}}' class='example-element-row' style="width: 100%"
+        *matRowDef="let row; columns: displayedColumns;">
+    </tr>
+  </table>
+</div>

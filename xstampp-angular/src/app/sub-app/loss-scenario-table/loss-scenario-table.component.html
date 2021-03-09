@@ -1,0 +1,36 @@
+<app-action-bar (delete)="deleteLossScenario($event)"
+                (create)="createLossScenario()"
+                [disableAdd]="selectedControlAction === undefined || (selectedUca === undefined)"
+                [showChipsFilter] = true
+                [suggestedFilterElements] = allControllers
+                [additionalDeleteMessage]="additionalDeleteMessage"
+                [disableAdd] = "sheetMode !== SheetMode.Closed"
+                [disableDelete] = "sheetMode !== SheetMode.Closed"
+                [disableChangeState]= "sheetMode !== SheetMode.Closed"
+                (changeEntityState)="changeEntity($event)"
+                [selectedEntity]="this.selectLossScenarioEntity">
+</app-action-bar>
+<mat-drawer-container style="height: calc(100% - 72px);">
+  
+  <mat-drawer-content>
+    
+    <div class="container" style="height: calc(100% - 56px);">
+       
+      <app-navigation-table style="width: 40%; min-width: 350px;"
+          [navigationTableDefinitions]="navigationTableDefinitions"
+          (clickedNavigationEmitter)="onClickedNavigation($event)"
+          [updateSelectedElementEvent]="updateSelectedItemSubject">
+      </app-navigation-table>
+    
+      <div class="tablecontent-subcontainer">
+        <app-main-table 
+          [data]="lossScenarios"
+          [columns]="columns"
+          [sheetMode]="sheetMode"
+          (toggleEvent)="toggleSheet($event)"
+          (entitySelectedEvent)="getSelectedEntities($event)">
+        </app-main-table>
+      </div>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

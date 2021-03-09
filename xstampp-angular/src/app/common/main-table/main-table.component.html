@@ -1,0 +1,141 @@
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort>
+    <div *ngFor="let row_elem of this.columns">
+      <!-- Checkbox Column -->
+      <ng-container *ngIf="row_elem.type == ColumnType.Checkbox" matColumnDef={{row_elem.key}}>
+        <th [ngStyle]="row_elem.style" mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="$event ? masterToggle() : null"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()">
+          </mat-checkbox>
+        </th>
+        <td mat-cell [ngStyle]="row_elem.style" *matCellDef="let row">
+          <mat-checkbox *ngIf="row[row_elem.key] !== false"
+            (click)="$event.stopPropagation()"
+            (change)="$event ? selection.toggle(row) : null; rowToggle(); sendSelectedEntity()"
+            [checked]="selection.isSelected(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+      <!-- Standard Text Column -->
+      <ng-container *ngIf="row_elem.type == ColumnType.Text" matColumnDef={{row_elem.key}}>
+        <th mat-header-cell [ngStyle]="row_elem.style" *matHeaderCellDef mat-sort-header> {{row_elem.title}}</th>
+        <td mat-cell [ngStyle]="row_elem.style" *matCellDef="let row" title="{{row[row_elem.key]}}">
+          <div class="truncate truncate-width">
+            {{row[row_elem.key] | cutOnNewline}}
+
+          </div>
+        </td>
+
+      </ng-container>
+
+      <!-- Only relevant for group management: Column displaying warning triangle for groups blocking deletion -->
+      <ng-container *ngIf="row_elem.type == ColumnType.Group_Deletion " matColumnDef={{row_elem.key}}>
+        <th mat-header-cell [ngStyle]="row_elem.style" *matHeaderCellDef mat-sort-header> {{row_elem.title}}</th>
+        <td mat-cell class="icon-align" [ngStyle]="row_elem.style" *matCellDef="let row" title="{{row[row_elem.key]}}">
+          <mat-icon *ngIf="!!row[row_elem.key]; else elseBlock" class="blockingDeletionIcon">error</mat-icon>
+          <ng-template #elseBlock>
+            <mat-icon class="allowsDeletionIcon">done_outline</mat-icon>
+          </ng-template>
+        </td>
+      </ng-container>
+
+      <!-- Date Column -->
+      <ng-container *ngIf="row_elem.type == ColumnType.Date_Time" matColumnDef={{row_elem.key}}>
+        <th mat-header-cell [ngStyle]="row_elem.style" *matHeaderCellDef mat-sort-header> {{row_elem.title}}</th>
+        <td mat-cell [ngStyle]="row_elem.style" *matCellDef="let row" title="{{row[row_elem.key] | date: 'medium'}}">
+          <div class="truncate truncate-width">
+            {{row[row_elem.key] | date: 'medium'}}
+          </div>
+        </td>
+      </ng-container>
+
+        <!-- Icon Column for States-->
+        <ng-container *ngIf="row_elem.type == ColumnType.StateIcon" matColumnDef={{row_elem.key}}>
+          <th mat-header-cell [ngStyle]="row_elem.style" *matHeaderCellDef mat-sort-header>{{row_elem.title}}</th>
+          <td mat-cell [ngStyle]="row_elem.style" *matCellDef="let row">
+            <div class="icon">
+              <mat-icon *ngIf="row[row_elem.key]==='TODO'" class="todoicon"> assignment_late</mat-icon>
+              <mat-icon *ngIf="row[row_elem.key]==='DOING'" class="doingicon"> assignment</mat-icon>
+              <mat-icon *ngIf="row[row_elem.key]==='DONE'" class="doneicon"> assignment_turned_in </mat-icon>
+            </div>
+          </td>
+        </ng-container>
+        
+
+
+      <!-- Project Selection Button Column -->
+      <ng-container *ngIf="row_elem.type == ColumnType.Project_Selection" matColumnDef="project-selection">
+        <th mat-header-cell [ngStyle]="row_elem.style" *matHeaderCellDef></th>
+        <td mat-cell [ngStyle]="row_elem.style" *matCellDef="let element">
+          <div>
+            <button title="Open Project"
+              (click)="projectSelection(element); $event.stopPropagation()" mat-icon-button>
+              <mat-icon>play_circle_outline</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <!--Icon Column-->
+      <ng-container *ngIf="row_elem.type == ColumnType.Icon" matColumnDef="{{row_elem.key}}">
+        <th mat-header-cell [ngStyle]="row_elem.style" *matHeaderCellDef>{{row_elem.title}}</th>
+        <td mat-cell [ngStyle]="row_elem.style" *matCellDef="let row">
+          <div>
+            <div class="container">
+              <img src="{{row[row_elem.key]}}" alt="Avatar" class="image" style="width:100%">
+              <div class="middle">
+                <div class="text">{{row[row_elem.userName]}}</div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+
+      <!-- Button Column -->
+      <ng-container *ngIf="row_elem.type === ColumnType.Button" matColumnDef={{row_elem.key}} stickyEnd>
+        <th mat-header-cell [ngStyle]="row_elem.style" *matHeaderCellDef></th>
+        <td mat-cell [ngStyle]="row_elem.style" *matCellDef="let element">
+          <div>
+            <button *ngIf="row_elem.key === 'edit'" title="Edit"
+              [disabled]="selectedEntity === element && sheetMode === SheetMode.Edit"
+              (click)="onClickEdit(element, SheetMode.Edit); $event.stopPropagation()" mat-icon-button>
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button *ngIf="row_elem.key === 'show'" title="View"
+              [disabled]="selectedEntity === element && sheetMode === SheetMode.View"
+              (click)="onClickEdit(element, SheetMode.View); $event.stopPropagation()" mat-icon-button>
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button *ngIf="row_elem.key === 'graph'" title="Graph" [disabled]="false"
+              (click)="showGraph(element); $event.stopPropagation()" mat-icon-button>
+              <mat-icon>show_chart</mat-icon>
+            </button>
+            <button *ngIf="row_elem.key === 'members'" title="Member administration"
+              [disabled]="(sheetMode === SheetMode.Edit || element.accessLevel !== 'GROUP_ADMIN') && (sysAdmin !== true || sheetMode === SheetMode.Edit)"
+              (click)="routeToMembers(element)" mat-icon-button>
+              <mat-icon>group_work</mat-icon>
+            </button>
+
+
+            <button *ngIf="row_elem.key === 'reset_pw'" title="Reset password" [disabled]="sheetMode === SheetMode.Edit"
+              (click)="changeUserPW(element)" mat-icon-button>
+              <mat-icon>replay</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+    </div>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row on-mouseover='over(row)' class='example-element-row' style="width: 100%"
+      [ngClass]="{ 'highlight': selectedEntity === row && sheetMode !== SheetMode.Closed}" (click)="onClickRow(row)"
+      *matRowDef="let row; columns: displayedColumns;">
+    </tr>
+  </table>
+  <div class="footer">
+    <mat-paginator [pageSize]="25" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  </div>
+</div>

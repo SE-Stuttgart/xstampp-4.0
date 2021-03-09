@@ -1,0 +1,44 @@
+{
+	"services": {
+		"push": "push:8080",
+		"project-manager": "project:8080",
+		"notify": "notify:8080"
+	},
+	"constants": {
+		"system": {
+			"name": "XSTAMPP 4.0",
+			"secret": "wA+NY0E5H3j65k92DhDuggeaX883J16ZhH/YDCJ1D0g"
+		}
+	},
+	"database-auth": {
+		"url": "jdbc:postgresql://ext-postgresql:5432/xstampp-master",
+		"user": "xstampp",
+		"password": "V0WcliciCLrLJHZ9LM68etcTGbg+ZkU24x6T/TtwO4M",
+		"dialect": "org.hibernate.dialect.PostgreSQL95Dialect",
+		"driver":"org.postgresql.Driver",
+		"showSQL": "true",
+		"defaultsJdbcMetadata": "false",
+		"pool": {
+			"min-size": "5",
+			"max-size": "20"
+		}
+	},
+	"database-project": {
+		"url": "jdbc:postgresql://ext-postgresql:5432/xstampp-project",
+		"user": "xstampp",
+		"password": "V0WcliciCLrLJHZ9LM68etcTGbg+ZkU24x6T/TtwO4M",
+		"dialect": "org.hibernate.dialect.PostgreSQL95Dialect",
+		"driver":"org.postgresql.Driver",
+		"showSQL": "true",
+		"defaultsJdbcMetadata": "false",
+		"pool": {
+			"min-size": "5",
+			"max-size": "20"
+		}
+	},
+	"self": {
+		"name": "template",
+		"commit": "a6e1c51bd186b65a41f",
+		"release": "2018-11-28T18:14Z"
+	}
+}

@@ -1,0 +1,45 @@
+<app-action-bar
+  (delete)="deleteImplementationConstraint($event)"
+  (create)="createImplementationConstraint()"
+  [disableAdd]="sheetMode !== SheetMode.Closed || selectedUca === undefined || selectedLossScenario === undefined"
+  [disableDelete]="sheetMode !== SheetMode.Closed"
+  [disableChangeState]= "sheetMode !== SheetMode.Closed"
+  (changeEntityState)="changeEntity($event)"
+  [selectedEntity]="this.selectImplementationConstraintEntity">
+</app-action-bar>
+
+<mat-drawer-container style="height: calc(100% - 72px);">
+  <mat-drawer [opened]="sheetMode !== SheetMode.Closed" mode="side" position="end">
+    <!-- FIXME: Regarding allowChipsInNewMode. See its comment in detailed-sheet.component.ts @Rico-->
+    <app-detailed-sheet [entity]="implementationConstraint"
+      [fields]="detailedSheetFields"
+      [title]="detailedSheetTitle"
+      [sheetMode]="sheetMode"
+      [needsLock]="true"
+      [allowChipsInNewMode]="true"
+      [disableSaveButton]="disableSaveButton"
+      [detailedColumns]="detailedColumns"
+      (closeSheet)="closeSheet()"
+      (saveSheet)="saveImplementationConstraint($event)"
+      (editSheet)="editSheet()">
+    </app-detailed-sheet>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div class="container" style="height: calc(100% - 56px);">
+      <app-navigation-table style="width: 40%;" [hidden]="sheetMode !== SheetMode.Closed"
+        [navigationTableDefinitions]="navigationTableDefinitions"
+        [updateSelectedElementEvent]="updateSelectedItemSubject.asObservable()"
+        (clickedNavigationEmitter)="onClickedFilterElement($event)">
+      </app-navigation-table>
+      <div class="tablecontent-subcontainer">
+        <app-main-table
+          [data]="implementationConstraints"
+          [columns]="columns"
+          [sheetMode]="sheetMode"
+          (toggleEvent)="toggleSheet($event)"
+          (entitySelectedEvent)="getSelectedEntities($event)">
+        </app-main-table>
+      </div>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

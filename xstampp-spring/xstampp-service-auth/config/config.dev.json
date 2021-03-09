@@ -1,0 +1,7 @@
+{
+	"constants": {
+		"system": {
+			"secret": "superDevSecret"
+		}
+	}
+}

@@ -1,0 +1,32 @@
+.footer {
+  position: fixed;
+  bottom: 0;
+  background-color: var(--primary-color);
+  height: 60px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+.footer-div {
+  position: absolute;
+  left: 48%;
+  text-align: center;
+}
+
+.footer-text {
+  cursor: pointer;
+  text-align: center;
+  color: var(--accent-color);
+}
+
+.copyright {
+  position: absolute;
+  color: var(--accent-color);
+  right: 20px;
+}
+
+.footer-text:hover {
+  text-decoration: underline;
+}

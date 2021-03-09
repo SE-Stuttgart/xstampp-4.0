@@ -1,0 +1,65 @@
+
+.mat-icon {
+  margin: 10px;
+  font-size: 24px;
+}
+
+.table-container {
+  overflow-y: hidden;
+  height: calc(50vh - 64px);
+  border-bottom: solid #d0d0d0 1px;
+}
+
+.dashboard-container {
+  overflow-y: hidden;
+  height: 50vh;
+  /* background: lime; */
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding-left: 0px;
+  padding-right: 0px;
+  overflow: hidden;
+}
+
+table {
+  flex-direction: row;
+  width: 100%;
+}
+
+.tablecontent-subcontainer{
+  width: 100%;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+.box2{
+  padding: 5%;
+  box-sizing: border-box;
+
+}
+img {
+  height: 64px;
+
+}
+.center{
+  height: 64px;
+  text-align: center;
+}
+
+.iconTop{
+  height: 40px;
+  width: 30px;
+  position: relative;
+  padding-bottom: 1px;
+
+}
+
+.box{
+  width: 80px;
+  height: 80px;
+}

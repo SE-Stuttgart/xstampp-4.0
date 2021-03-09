@@ -1,0 +1,8 @@
+<div mat-dialog-content>
+  <p class="horizontal-center">The {{data.formula}} is syntactically incorrect, therefore no graph can be displayed.<br>
+    The following error was reported:</p>
+  <pre>{{data.errorMessage}}</pre>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCloseClick()">Close</button>
+</div>

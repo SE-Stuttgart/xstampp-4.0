@@ -1,0 +1,72 @@
+.xstampp-overlay {
+  height: calc(100% - 60px);
+  width: 50%;
+  z-index: 99;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: hsla(0, 0%, 88%, 0.9);
+  padding: 50px;
+
+  .desc {
+    display: flex;
+
+    .add {
+      margin: auto 0;
+      margin-left: auto !important;
+    }
+  }
+
+  .pm-list {
+    .pm-item {
+      cursor: pointer;
+
+      .delete {
+        margin: auto 0;
+        position: absolute;
+        top: 6px;
+        right: 48px;
+      }
+    }
+  }
+
+  .over-body {
+    margin: 0 2%;
+
+    .actuator {
+      background-color: yellow;
+    }
+
+    .input-list {
+      .input-item {
+        cursor: pointer;
+
+        .delete {
+          margin: auto 0;
+          position: absolute;
+          top: 6px;
+          right: 48px;
+        }
+      }
+    }
+  }
+
+  .over-footer {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    padding: 5px 5px;
+    width: 100%;
+  }
+}
+.title {
+  align-items: center;
+}
+
+h1.overallHeader {
+  display: flex;
+}
+
+button.shortcutButton {
+  margin-left: 10px;
+}

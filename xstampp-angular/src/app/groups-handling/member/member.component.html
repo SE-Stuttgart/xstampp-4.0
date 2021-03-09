@@ -1,0 +1,72 @@
+<!-- Top Toolbar -->
+<div>
+  <mat-toolbar class="blue-color" color="primary">
+    <div>
+      <button type="button" class="button-align" title="Home" mat-icon-button
+              routerLink="/project-overview">
+        <mat-icon class="icon-align">home</mat-icon>
+      </button>
+    </div>
+    <span>XSTAMPP4.0 - Group name : {{groupName}}</span>
+    <div  #logoBox class= "logo-box"></div>
+    <div class= "center"></div>
+    <div style="display: flex; justify-content: flex-end; width: 100%;">
+      <div *ngIf="sysAdmin === true">
+        <mat-icon style="cursor:pointer;" title="System administration" routerLink="/system-administration/users">settings</mat-icon>
+      </div>
+      <div>
+        <mat-icon style="cursor:pointer;" title="Group settings" routerLink="/groups-handling/groups">group</mat-icon>
+      </div>
+      <!-- <div>
+        <mat-icon>notifications</mat-icon>
+      </div>-->
+      <div>
+        <img class="iconTop" style="cursor:pointer;" [src]="selectedAvatar" title="User Settings"  [matMenuTriggerFor]="menu">
+
+        <mat-menu #menu>
+          <div *ngIf="sysAdmin === true">
+            <button mat-menu-item style="cursor:pointer;" routerLink = "/corporate-theme">Corporate Theme</button>
+            </div>
+
+          <button mat-menu-item style="cursor:pointer;" routerLink= "/user-settings"> User Settings</button>
+          <button mat-menu-item style="cursor:pointer;" (click)="logout()">Logout</button>
+        </mat-menu>
+
+    </div>
+    </div>
+  </mat-toolbar>
+</div>
+
+<app-action-bar (delete)="deleteMembers($event)"
+                (create)="createMember()"
+                [showBack] = "true"
+                [disableAdd] = "sheetMode !== SheetMode.Closed"
+                [disableDelete] = "sheetMode !== SheetMode.Closed">
+</app-action-bar>
+
+<mat-drawer-container style="height: calc(100% - 136px);">
+  <mat-drawer [disableClose]="true" *ngIf="sheetMode !== SheetMode.Closed" mode="side" position="end" opened>
+    <app-detailed-sheet [entity]="member"
+                        [fields]="fields"
+                        [title]="title"
+                        [sheetMode]="sheetMode"
+                        [disableSaveButton]="disableSaveButton"
+                        (closeSheet)="closeSheet()"
+                        (saveSheet)="saveMember($event)"
+                        (editSheet)="editSheet()"
+                        [showStates]="stateNotNecessary"
+                        >
+    </app-detailed-sheet>
+  </mat-drawer>
+
+  <div style="height: calc(100% - 56px);">
+    <div style="height: 100%; overflow-x: hidden;">
+      <app-main-table [data]="members"
+                      [columns]="columns"
+                      [sheetMode]="sheetMode"
+                      (toggleEvent)="toggleSheet($event)">
+      </app-main-table>
+    </div>
+  </div>
+
+</mat-drawer-container>

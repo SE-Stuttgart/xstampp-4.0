@@ -1,0 +1,121 @@
+spring-build:
+  stage: build
+  script:
+  - cd xstampp-spring
+  - mvn clean verify -DskipTests
+  - cd "$CI_PROJECT_DIR" ; xstampp-deploy/pipeline/artifacts-to-server.sh xstampp-spring/*/target/xstampp*.jar
+  image: maven:3-jdk-11
+
+spring-test:
+  stage: build
+  script:
+  - cd xstampp-spring
+  - mvn clean test
+  - cd "$CI_PROJECT_DIR" ; xstampp-deploy/pipeline/notify-server.sh
+  image: maven:3-jdk-11
+
+spring-javadoc:
+  stage: build
+  script:
+  - cd xstampp-spring
+  - mvn -DskipTests clean verify javadoc:aggregate
+  - cd target/site ; tar czf apidocs.tar.gz apidocs
+  - cd "$CI_PROJECT_DIR" ; xstampp-deploy/pipeline/javadoc-to-server.sh xstampp-spring/target/site/apidocs.tar.gz
+  image: maven:3-jdk-11
+  artifacts:
+    paths:
+    - xstampp-spring/target/site/apidocs.tar.gz
+  only:
+    refs:
+    - master
+
+angular-build:
+  stage: build
+  script:
+  - cd xstampp-angular
+  - npm install
+  - npm run-script build-prod
+  - find dist/ -type f -exec gzip -v9k {} +
+  - cd "$CI_PROJECT_DIR" ; xstampp-deploy/pipeline/artifacts-to-server.sh xstampp-angular/dist
+  image: node:10-stretch
+  artifacts:
+    paths:
+    - xstampp-angular/dist
+
+angular-dev:
+  stage: build
+  script:
+  - cd xstampp-angular
+  - npm install
+  - npm ls || true
+  - npm run-script build
+  - find dist/ -type f -exec gzip -v9k {} +
+  - cd "$CI_PROJECT_DIR" ; xstampp-deploy/pipeline/artifacts-to-server.sh xstampp-angular/dist
+  image: node:10-stretch
+  artifacts:
+    paths:
+    - xstampp-angular/dist
+    
+postman-tests:
+  stage: build
+  image:
+    name: postman/newman:ubuntu
+    entrypoint: [""]
+  script:
+  - newman --version
+  - newman run api-tests.postman_collection.json -e tokens.postman_environment.json
+
+pipeline-complete:
+  stage: deliver
+  script:
+  - cd "$CI_PROJECT_DIR" ; xstampp-deploy/pipeline/notify-server.sh
+  # buildpack-deps:stretch is closely related to the maven image, so this should
+  # be a wise choice in terms of download efficiency
+  image: buildpack-deps:stretch
+
+delivery:
+  stage: deliver
+  script:
+  - cd "$CI_PROJECT_DIR" ; xstampp-deploy/pipeline/delivery.sh
+  image: buildpack-deps:stretch # see above
+  only:
+    refs:
+    - master
+
+deploy-xstage:
+  stage: deploy
+  script:
+  - cd "$CI_PROJECT_DIR" ; xstampp-deploy/pipeline/deploy.sh "stage"
+  image: buildpack-deps:stretch # see above
+  when: manual
+  only:
+    refs:
+    - master
+  
+deploy-xdev:
+  stage: deploy
+  script:
+  - cd "$CI_PROJECT_DIR" ; xstampp-deploy/pipeline/deploy.sh "dev"
+  image: buildpack-deps:stretch # see above
+  when: manual
+  only:
+    refs:
+    - master
+  
+deploy-live:
+  stage: deploy
+  script:
+  - cd "$CI_PROJECT_DIR" ; xstampp-deploy/pipeline/deploy.sh "live"
+  image: buildpack-deps:stretch # see above
+  when: manual
+  only:
+    refs:
+    - master
+
+before_script:
+- base64 -d <<< "$CI_SSH_PREPARATION_SCRIPT" | bash
+
+stages:
+- build
+- deliver
+- deploy

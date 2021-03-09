@@ -1,0 +1,51 @@
+<app-action-bar
+  (create)="onCreatePv()"
+  (delete)="delete($event)"
+  [showNormal]="false"
+  [disableAdd]="sheetMode !== SheetMode.Closed || filteringTableDefinitions[1].dataSource.length === 0 ||(this.selectedInput !== undefined && this.selectedInput.name === this.SELECT_ALL_TEXT)"
+  [disableDelete]="sheetMode !== SheetMode.Closed|| filteringTableDefinitions[1].dataSource.length === 0"
+  [disableChangeState]= "sheetMode !== SheetMode.Closed || filteringTableDefinitions[1].dataSource.length === 0"
+  (changeEntityState)="changeEntity($event)">
+
+</app-action-bar>
+
+<mat-drawer-container style="height: calc(100% - 72px);">
+  <mat-drawer [disableClose]="true" [opened]="sheetMode !== SheetMode.Closed" mode="side" position="end">
+    <app-detailed-sheet
+      [entity]="pv"
+      [fields]="fields"
+      [title]="title"
+      [needsLock]="true"
+      [sheetMode]="sheetMode"
+      [disableSaveButton]="disableSaveButton"
+      (dropDownEvent)="dropDownPv($event)"
+      (closeSheet)="closeSheet()"
+      (saveSheet)="save($event)"
+      (editSheet)="editSheet()">
+    </app-detailed-sheet>
+  </mat-drawer>
+
+  <mat-drawer-content>
+    <div class="container" style="height: calc(100% - 56px);">
+      <app-navigation-table style="width: 24%; " [hidden]="sheetMode !== SheetMode.Closed"
+        [navigationTableDefinitions]="navigationTableDefinitions"
+        (clickedNavigationEmitter)="onClickedNavigation($event)">
+      </app-navigation-table>
+
+      <app-filtering-table style="width: 46%;" [hidden]="sheetMode !== SheetMode.Closed"
+        [navigationTableDefinitions]="filteringTableDefinitions"
+        [updateSelectedElementEvent]="updateSelectedItemSubject.asObservable()"
+        (clickedElementEmitter)="onClickedFilteringTable($event)">
+      </app-filtering-table>
+
+      <div class="tablecontent-subcontainer">
+        <app-main-table
+          [data]="processvariables"
+          [columns]="columns"
+          [sheetMode]="sheetMode"
+          (toggleEvent)="toggleSheet($event)">
+        </app-main-table>
+      </div>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

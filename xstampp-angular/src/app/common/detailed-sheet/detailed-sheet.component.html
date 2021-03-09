@@ -1,0 +1,294 @@
+<!-- <div (keypress.escape)="prevDefaultEsc($event)" (keydown.escape)="prevDefaultEsc($event)" (keyup.escape)="prevDefaultEsc($event)"  class="main-card">  -->
+<div class="main-card" *ngIf="!entityIsNull">
+  <div class="dbody">
+    <h2>{{this.title}}</h2>
+
+    <div *ngFor="let field of this.fields">
+      <div *ngIf="formFieldEnabled(field)" class="form-field-module">
+
+        <!-- Text -->
+        <div *ngIf="field.type === FieldType.Text"
+          [ngClass]="{'full-width': field.shortcutButton != null, 'full-width-link': field.shortcutButton == undefined}">
+          <!--style="margin-top: 22px-->
+          <mat-form-field class="bottom-margin" appearance="outline" [floatLabel]="'always'">
+            <mat-label>{{field.title}}</mat-label>
+            <!-- FIXME Hack for id-->
+            <!-- add field with custom conditions
+        || (field.key === 'subSafetyConstraintName' && this.entity['sc_links'].length < 1)
+      -->
+            <input matInput #input maxlength="128" autocomplete="off" [value]="entity[field.key]"
+              [disabled]="this.sheetMode === SheetMode.View || field.readonly "
+              (keyup)="onValueChange({key: field.key, value: input.value})"
+              (input)="this.entity[field.key] = $event.target.value"
+              title={{this.entity[field.key]}}>
+            <mat-icon *ngIf="this.sheetMode !== SheetMode.View && !field.readonly " matSuffix>edit</mat-icon>
+
+            <mat-hint *ngIf="field.key === name" align="end">Max. 128 characters: {{input.value?.length || 0}}/128</mat-hint>
+            <mat-hint *ngIf="field.key === referenceNumber" align="end">Max. 128 characters: {{input.value?.length || 0}}/128
+            </mat-hint>
+            <mat-hint *ngIf="field.key === subSafetyConstraintName" align="start">
+              {{(field.key === subSafetyConstraintName && this.entity['sc_links'].length < 1) ? 'Please specify a System-Level Safety Constraint':''}}
+            </mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Multiline Text -->
+        <div *ngIf="field.type === FieldType.Text_Variable"
+          [ngClass]="{'full-width': field.shortcutButton != null, 'full-width-link': field.shortcutButton == undefined}">
+          <mat-form-field autocomplete="off" appearance="outline" [floatLabel]="'always'">
+            <mat-label>{{field.title}}</mat-label>
+            <textarea matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows={{field.minRows}}
+              cdkAutosizeMaxRows={{field.maxRows}}
+              [(ngModel)]="this.entity[field.key]"
+              (keyup)="onValueChange({key: field.key, value: this.entity[field.key]})"
+              [disabled]="this.sheetMode === SheetMode.View || field.readonly">
+          </textarea>
+            <mat-icon *ngIf="this.sheetMode !== SheetMode.View && !field.readonly " matSuffix>edit</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <!-- autocomplete -->
+        <div id="auto" *ngIf="field.type === FieldType.Text_Variable_With_Auto_Completion"
+          [ngClass]="{'full-width': field.shortcutButton != null, 'full-width-link': field.shortcutButton == undefined}">
+          <mat-form-field class="no-padding" id="autocomplete" autocomplete="off" appearance="outline" [floatLabel]="'always'">
+            <mat-label>{{field.title}}</mat-label>
+            <textarea matInput
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows={{field.minRows}}
+              cdkAutosizeMaxRows={{field.maxRows}}
+              [(ngModel)]="this.entity[field.key]"
+              [disabled]="this.sheetMode === SheetMode.View || field.readonly"
+              [mention]="this.autoCompleteWords" [mentionConfig]="{labelKey:'name'}">
+                </textarea>
+            <mat-icon *ngIf="this.sheetMode !== SheetMode.View && !field.readonly " matSuffix>edit</mat-icon>
+          </mat-form-field>
+          <mat-expansion-panel
+            *ngIf="true || this.hintHeaderClosed !== ''"
+            (opened)="panelOpenState = true"
+            (closed)="panelOpenState = false">
+            <mat-expansion-panel-header [collapsedHeight]="'22px'" [expandedHeight]="'33px'">
+              <mat-panel-description id="hintList">
+                {{panelOpenState ? this.hintHeaderOpen : this.hintHeaderClosed}}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <p id="hint" *ngFor="let hintLine of this.hintLines">
+              {{hintLine}}
+            </p>
+          </mat-expansion-panel>
+        </div>
+
+        <!-- Chips -->
+        <div *ngIf="field.type === FieldType.Chips"
+          [ngClass]="{'full-width': field.shortcutButton != null, 'full-width-link': field.shortcutButton == undefined}">
+          <!-- style="margin-top: 22px;"-->
+          <mat-form-field appearance="outline" [floatLabel]="'always'">
+            <mat-label>{{field.title}}</mat-label>
+            <mat-chip-list #chipList [disabled]="this.sheetMode === SheetMode.View || field.readonly">
+              <mat-chip *ngFor="let chip of this.entity[field.key]"
+                title={{this.chip.name}}
+                [disabled]="this.sheetMode === SheetMode.View || field.readonly"
+                [removable]="!field.readonly && this.sheetMode !== SheetMode.View"
+                (removed)="this.remove(chip, field.key, displayedInput)">
+                {{field.displayShortName}}{{chip[field.listKey]}}
+                <mat-icon matChipRemove *ngIf="!field.readonly && this.sheetMode !== SheetMode.View">cancel</mat-icon>
+              </mat-chip>
+              <input matInput
+                #trigger="matAutocompleteTrigger"
+                #displayedInput
+                (focusout)=" displayedInput.value=''"
+                [value]="displayedInput.value"
+                [placeholder]="this.sheetMode === SheetMode.EditWithLock ? 'New Link...' : ''"
+                [formControl]="linksCtrl"
+                [matChipInputFor]="chipList"
+                [matAutocomplete]="auto"
+                (click)="openAutoComplete(trigger)">
+            </mat-chip-list>
+            <mat-icon *ngIf="this.sheetMode !== SheetMode.View && !field.readonly " matSuffix>edit</mat-icon>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event, field.key)">
+              <mat-option *ngFor="let linkedEntity of filteredLinkedEntities.get(field.key) | async  "
+                [value]="linkedEntity"
+                title={{this.linkedEntity.name}}>
+                {{field.displayShortName}}{{linkedEntity.id}} {{linkedEntity.name}}
+              </mat-option>
+              <mat-option *ngIf="(getFilteredLinkedEntity(field.key) | async).length === 0"
+                [value]="null">
+                {{ this.allLinksObject[field.key].length <= this.entity[field.key].length ? 'No entities for linking available. Please create new.' : 'No suggestions found for ' + displayedInput.value}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+
+        <!-- Single chips  -->
+        <div *ngIf="field.type === FieldType.Chips_Single"
+          [ngClass]="{'full-width': field.shortcutButton != null, 'full-width-link': field.shortcutButton == undefined}">
+          <!-- style="margin-top: 22px;"-->
+          <mat-form-field appearance="outline" [floatLabel]="'always'">
+            <mat-label>{{field.title + ' single'}}</mat-label>
+            <mat-chip-list
+              #chipList
+              [disabled]="field.readonly || this.sheetMode === SheetMode.View"
+              [multiple]="true"
+              [selectable]="false">
+              <mat-chip *ngFor="let chip of this.entity[field.key]"
+                title={{this.chip.name}}
+                [removable]="!field.readonly && this.sheetMode !== SheetMode.View"
+                (removed)="this.remove(chip, field.key, displayedInput)">
+                {{field.displayShortName}}{{chip[field.listKey]}}
+                <mat-icon matChipRemove *ngIf="!field.readonly && this.sheetMode !== SheetMode.View">cancel</mat-icon>
+              </mat-chip>
+              <input matInput
+                #trigger="matAutocompleteTrigger"
+                #displayedInput
+                (focusout)="displayedInput.value=''"
+                [value]="displayedInput.value"
+                [placeholder]="this.sheetMode === SheetMode.EditWithLock || SheetMode.New ? 'Only one link possible' : ''"
+                [formControl]="linksCtrl"
+                [matChipInputFor]="chipList"
+                [matAutocomplete]="auto"
+                (click)="openAutoComplete(trigger)">
+              <mat-error
+                *ngIf="this.entity[field.key].length < 1 && checkEntityHasProperty('subSafetyConstraintName') && this.entity['subSafetyConstraintName'] !== '' ">
+                Not linked </mat-error>
+            </mat-chip-list>
+            <mat-icon *ngIf="this.sheetMode !== SheetMode.View && !field.readonly " matSuffix>edit</mat-icon>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event, field.key, chipList)">
+              <mat-option *ngFor="let linkedEntity of filteredLinkedEntities.get(field.key) | async  "
+                [value]="linkedEntity"
+                title={{this.linkedEntity.name}}>
+                {{field.displayShortName}}{{linkedEntity.id}} {{linkedEntity.name}}
+              </mat-option>
+              <mat-option *ngIf="(getFilteredLinkedEntity(field.key)| async).length === 0"
+                [value]="null">
+                {{ this.allLinksObject[field.key].length === 0 ? 'You need to create a System-Level Safety Constraint first' : 'No suggestions found for ' + displayedInput.value}}
+              </mat-option>
+            </mat-autocomplete>
+
+          </mat-form-field>
+        </div>
+
+        <!-- Sub-Table -->
+        <div *ngIf="field.type === FieldType.SubTable"
+          [ngClass]="{'full-width': field.shortcutButton != null, 'full-width-link': field.shortcutButton == undefined}">
+          <mat-form-field appearance="outline" [floatLabel]="'always'">
+            <mat-label>{{field.title}}</mat-label>
+            <input matInput
+              [hidden]="true"
+              [disabled]="true">
+            <!-- FIX LATER -->
+            <div class="sub-entity-scroll-container">
+              <app-detailed-sheet-table
+                [data]="entity[field.key]"
+                [columns]="detailedColumns">
+              </app-detailed-sheet-table>
+            </div>
+          </mat-form-field>
+        </div>
+
+        <!-- Dropdown -->
+        <div *ngIf="field.type === FieldType.Dropdown"
+          [ngClass]="{'full-width': field.shortcutButton != null, 'full-width-link': field.shortcutButton == undefined}">
+          <mat-form-field autocomplete="off" appearance="outline" [floatLabel]="'always'">
+            <mat-label>{{field.title}}</mat-label>
+            <mat-select
+              (selectionChange)="onDropdownChange($event, field.title)"
+              [placeholder]="field.dropDownText"
+              [(ngModel)]="this.entity[field.key]"
+              (selectionChange)="onValueChange({key: field.key, value: this.entity[field.key]})"
+              [disabled]="this.sheetMode === SheetMode.View || field.readonly">
+              <mat-option *ngFor="let item of field.values | keyvalue" [value]="item.key" title="{{item.value}}">
+                {{item.value}}
+              </mat-option>
+            </mat-select>
+            <mat-icon *ngIf="this.sheetMode !== SheetMode.View && !field.readonly " matSuffix>edit</mat-icon>
+          </mat-form-field>
+        </div>
+
+
+        <!-- ButtonGroup -->
+        <div *ngIf="field.type === FieldType.ButtonGroup" class="bg-wrapper"
+          [ngClass]="{'full-width': field.shortcutButton != null, 'full-width-link': field.shortcutButton == undefined}">
+          <div class="bg-width">
+            <p>{{field.title}}</p>
+          </div>
+          <div class="right">
+            <button title="Add" type="button" aria-label="AddPm" mat-icon-button
+              (click)="editButton(field, '', 'Enum name', $event)">
+              <mat-icon>add_circle_outline</mat-icon>
+            </button>
+          </div>
+          <mat-button-toggle-group
+            *ngIf="entity[field.listKey].length > 0"
+            class="full-width"
+            #group="matButtonToggleGroup"
+            [value]="this.entity[field.key]"
+            [vertical]="true"
+            [disabled]="this.sheetMode === SheetMode.View || field.readonly"
+            [(ngModel)]="this.entity[field.key]">
+            <mat-button-toggle *ngFor="let item of entity[field.listKey]" [value]="item" aria-label="item">
+              <div class="toggle-btn-left">
+                {{item}}
+              </div>
+              <div class="toggle-btn-right">
+                <button
+                  *ngIf="!field.readonly && this.sheetMode !== SheetMode.View"
+                  title="Edit"
+                  type="button"
+                  aria-label="Edit"
+                  mat-icon-button
+                  (click)="editButton(field, item, 'Enum name', $event)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button
+                  *ngIf="!field.readonly && this.sheetMode !== SheetMode.View"
+                  title="Delete"
+                  type="button"
+                  aria-label="Delete"
+                  mat-icon-button
+                  (click)="delButton(field, item, $event)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+
+        <!-- States Togglegroup -->
+        <div class="buttogroup-width" *ngIf=" !field.hidden && field.type === FieldType.StateButtonGroup">
+          <mat-button-toggle-group [disabled]="this.sheetMode === SheetMode.View || field.readonly" class="buttogroup-width"
+            #group="matButtonToggleGroup"
+            [(ngModel)]="this.entity[field.key]">
+            <mat-button-toggle value="TODO" aria-label="Todo" class="togglebtn">
+              <mat-icon class="todoicon">assignment_late</mat-icon> Todo
+            </mat-button-toggle>
+            <mat-button-toggle value="DOING" aria-label="Doing" class="togglebtn">
+              <mat-icon class="doingicon">assignment</mat-icon> Doing
+            </mat-button-toggle>
+            <mat-button-toggle value="DONE" aria-label="Done" class="togglebtn">
+              <mat-icon class="doneicon">assignment_turned_in</mat-icon> Done
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+
+        <!-- Shortcut button -->
+        <button mat-icon-button *ngIf="field.shortcutButton !== undefined" class="shortcut-button"
+          title="{{field.shortcutButton.title}}" (click)="onClickedShortcutButton(field.shortcutButton.routerLink)">
+          <mat-icon>link</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="footer">
+      <button *ngIf="this.sheetMode === SheetMode.View" class="form-button" mat-raised-button
+        (click)="this.edit()" color="primary">Edit</button>
+      <button *ngIf="this.sheetMode === SheetMode.EditWithLock || this.sheetMode === SheetMode.New" class="form-button"
+        mat-raised-button (click)="this.onSave()" color="primary" [disabled]="disableSaveButton">Save</button>
+      <button class="form-button" mat-stroked-button color="primary" (click)="this.onCancel()">Cancel</button>
+      <!-- FIXME: Router Link Generic - @master student -->
+    </div>
+
+  </div>
+</div>

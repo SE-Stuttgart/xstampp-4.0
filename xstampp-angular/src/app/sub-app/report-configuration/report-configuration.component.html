@@ -1,0 +1,17 @@
+<div class="sheet">
+  <h1>Report configuration</h1>
+  <div class="config-area">
+    <!-- Recursively builds the graphical form elements and binds them
+      to their object representative in the form element tree. -->
+    <div *ngFor="let formBox of getFormStructure()">
+      <app-checkbox-group [contents]="formBox"></app-checkbox-group>
+    </div>
+  </div>
+  <div class="button-bar">
+    <div>
+      <button mat-button color="primary" (click)="deselectAll()">Deselect All</button>
+      <button mat-button color="primary" (click)="selectAll()">Select All</button>
+    </div>
+    <button mat-raised-button color="primary" (click)="exportAsPDF()">Generate Report</button>
+  </div>
+</div>

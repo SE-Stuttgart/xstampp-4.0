@@ -1,0 +1,38 @@
+<app-action-bar (delete)="deleteSafetyConstraints($event)"
+                (create)="createSafetyConstraint()"
+                [additionalDeleteMessage]="additionalDeleteMessage"
+                [disableAdd]="sheetMode !== SheetMode.Closed"
+                [disableDelete]="sheetMode !== SheetMode.Closed"
+                [disableChangeState]="sheetMode !== SheetMode.Closed"
+                (changeEntityState)="changeEntity($event)"
+                [selectedEntity]="this.selectSystemConstraintEntity">
+</app-action-bar>
+
+<mat-drawer-container style="height: calc(100% - 72px);">
+
+  <mat-drawer [disableClose]="true" [opened]="sheetMode !== SheetMode.Closed" mode="side" position="end">
+    <app-detailed-sheet [entity]="safetyConstraint"
+                        [fields]="fields"
+                        [title]="title"
+                        [sheetMode]="sheetMode"
+                        [needsLock]="true"
+                        [disableSaveButton]="disableSaveButton"
+                        [detailedColumns]="detailedColumns"
+                        (closeSheet)="closeSheet()"
+                        (saveSheet)="saveSafetyConstraint($event)"
+                        (editSheet)="editSheet()">
+    </app-detailed-sheet>
+  </mat-drawer>
+
+  <div style="height: calc(100% - 56px);">
+    <div style="height: 100%; overflow-x: hidden;">
+      <app-main-table [data]="safetyConstraints"
+                      [columns]="columns"
+                      [sheetMode]="sheetMode"
+                      (toggleEvent)="toggleSheet($event)"
+                      (entitySelectedEvent)="getSelectedEntities($event)">
+      </app-main-table>
+    </div>
+  </div>
+
+</mat-drawer-container>

@@ -1,0 +1,16 @@
+<app-create-dependent-elements *ngIf="this.controllerTreeSelected"
+                               [selectedEntity]="this.selectedEntity"
+                               (entitySelectedEvent)="deleteTree($event)">
+</app-create-dependent-elements>
+
+<app-create-dependency-tree-step-one *ngIf="this.stepOneSelected"
+                                     [selectedEntity]="this.selectedEntity"
+                                     (entitySelectedEvent)="deleteTree($event)">
+
+</app-create-dependency-tree-step-one>
+
+<app-create-dependency-tree-step-two *ngIf="this.stepTwoSelected"
+                                     [selectedEntity]="this.selectedEntity"
+                                     (entitySelectedEvent)="deleteTree($event)">
+</app-create-dependency-tree-step-two>
+

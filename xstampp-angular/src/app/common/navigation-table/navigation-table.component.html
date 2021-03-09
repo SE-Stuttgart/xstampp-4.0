@@ -1,0 +1,38 @@
+<div class="navContainer">
+  <div
+    *ngFor="let tableDefinition of navigationTableDefinitions; index as tableNum"
+    class="scrollcontainer"
+    [ngStyle]="tableDefinition.style">
+    <table
+      mat-table
+      [dataSource]="dataSourceWithSingleObjectForSingleRow[tableNum].dataSource"
+      class="navTable"
+      [style.background-color]=" tableNum === 0 ?  '#FAFAFA' : '#FDFDFD'">
+
+      <ng-container matColumnDef="default-column">
+        <th mat-header-cell *matHeaderCellDef>
+          <div class="cell-header">
+            <div>{{tableDefinition.columnHeaderName}}</div>
+            <button *ngIf="tableDefinition.columnHeaderButton !== undefined" class="listShortcut"
+              mat-icon-button title="{{tableDefinition.columnHeaderButton.title}}"
+              (click)="onClickedShortcutButton(tableDefinition.columnHeaderButton.routerLink)">
+              <mat-icon>link</mat-icon>
+            </button>
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div matRipple color="accent"
+            (click)="onClickedNavigation(element, tableNum);updateSelectedNavigation(element,tableNum)"
+            [ngStyle]="selectedNavigationMap.get(tableNum) === element ? {'background': '#F0F0F0', 'filter': 'brightness( '+ (100-tableNum*10) + '%)'} : {} "
+            class="navRipple focus-selected-item-color" title="{{element.name || 'Loading...'}}">
+            <div [ngClass]="tableDefinition.allowLineBreak ?  'truncateAllowLineBreak' :  'truncate'"
+              class="navText truncate-width"> {{element.name || 'Loading...'}}</div>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="defaultDisplayedColumn; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: defaultDisplayedColumn;"></tr>
+    </table>
+  </div>
+</div>

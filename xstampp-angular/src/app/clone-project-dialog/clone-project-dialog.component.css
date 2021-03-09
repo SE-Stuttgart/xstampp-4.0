@@ -1,0 +1,23 @@
+.content {
+    width: 100%;
+    margin: 0;
+    margin-top: 20px;
+    align-content: center;
+    text-align: center;
+}
+
+.header {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+}
+
+.button-box {
+    width: 100%;
+    margin-top: 5px;
+    display: inline-flex;
+}
+
+.right {
+    margin-left: auto !important;
+}

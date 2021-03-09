@@ -1,0 +1,27 @@
+@import '~@angular/material/theming';
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+// List of predefined colors can be found here https://github.com/angular/material2/blob/master/src/lib/core/theming/_palette.scss
+// General description how methods declared here are working https://github.com/angular/material2/blob/master/src/lib/core/theming/_theming.scss
+// default-background color can be found in the previous link under "$mat-light-theme-background"
+$default-primary: mat-palette($mat-light-blue);
+$default-accent:  mat-palette($mat-grey);
+$default-warn:    mat-palette($mat-red);
+
+
+// Create the theme object (a Sass map containing all of the palettes).
+$default-theme: mat-light-theme($default-primary, $default-accent, $default-warn);
+
+
+// Include theme styles for core and each "angular-material-component" used in your app.
+@include angular-material-theme($default-theme);
+
+
+// example if only some specific angular material should be themed
+// @include mat-bottom-sheet-theme($your-theme);
+// @include mat-button-theme($theme-theme);
+

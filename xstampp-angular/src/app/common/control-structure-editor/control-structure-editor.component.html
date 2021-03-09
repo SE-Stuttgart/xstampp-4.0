@@ -1,0 +1,57 @@
+<mat-drawer-container style="height: 100%; width: 100%;">
+
+  <mat-drawer class="side-bar" [opened]="this.mode === CsToolbarMode.OPEN" [disableClose]="true" mode="side" position="end">
+    <app-cs-toolbar
+      [diaType]="diaType"
+      (zoomEvent)="zoom($event)"
+      (saveEvent)="saveControlStructure()"
+      (cancelEvent)="cancelEdit()">
+    </app-cs-toolbar>
+  </mat-drawer>
+
+
+  <mat-drawer-content>
+    <div class="container">
+      <div class="toolbar-button" *ngIf="mode === CsToolbarMode.READONLY">
+        <div class="sub-button" (click)="startEdit()">
+          <mat-icon class="closeButton" title="Edit">edit</mat-icon>
+        </div>
+        <div class="sub-button">
+          <mat-icon title="Zoom In" (click)="zoom(true)">add</mat-icon>
+        </div>
+        <div class="sub-button">
+          <mat-icon title="Zoom Out" (click)="zoom(false)">remove</mat-icon>
+        </div>
+      </div>
+      <div class="toolbar-button arrow" *ngIf="mode !== CsToolbarMode.READONLY" (click)="closeOpenBar()">
+        <mat-icon
+          class="closeButton"
+          [ngClass]="{'closeButtonOpen': mode === CsToolbarMode.OPEN}"
+          title="Open Toolbar">
+          keyboard_backspace
+        </mat-icon>
+      </div>
+      <div
+        #paper
+        (drop)="drop($event)"
+        (dragover)="allowDrop($event)"
+        style="height: 100%; width: 100%; overflow-y: auto; overflow-x: auto;"
+        id="paper">
+      </div>
+      <app-process-model-overlay [inputData]="cscontextmenuData" (cancelClick)="closeRefine()" *ngIf="refine">
+      </app-process-model-overlay>
+      <div *ngIf="cscontextmenu">
+        <app-cs-context-menu
+          [coordData]="csCoorinateData"
+          [data]="cscontextmenuData"
+          [diaType]="diaType"
+          [wasEdited]="wasEdited"
+          (closeMenu)="this.closeContextmenu($event)"
+          (deleteEntity)="this.deleteShape($event)"
+          (createEntity)="this.createEntity($event)"
+          (refineEntity)="this.refineEntity($event)"
+          (resizeBox)="resizeBox($event)"></app-cs-context-menu>
+      </div>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

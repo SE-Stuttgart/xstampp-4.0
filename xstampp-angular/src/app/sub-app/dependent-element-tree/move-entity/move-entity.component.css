@@ -1,0 +1,29 @@
+.example-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+.example-radio-button {
+  margin: 5px;
+}
+
+.mat-form-field {
+  margin-right: 4px;
+}
+
+.selectionButton {
+  float: right;
+  float: bottom;
+}
+
+.reworkElement {
+  color: #39802d;
+}
+
+.moveHeader {
+  color: #2699FB;
+}
+
+
+

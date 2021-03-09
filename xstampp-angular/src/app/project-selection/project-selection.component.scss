@@ -1,0 +1,88 @@
+mat-toolbar {
+  color: var(--accent-color);
+
+  height: 64px;
+  background-color: var(--primary-color);
+}
+
+
+.mat-icon {
+  margin: 10px;
+  font-size: 24px;
+}
+
+.logo-box {
+  height: 60px;
+  margin-left: 5px;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+.table-container {
+  overflow-y: hidden;
+  height: calc(100vh - 64px);
+  border-bottom: solid #d0d0d0 1px;
+}
+
+.table-container-dashboard {
+  overflow-y: hidden;
+  height: calc(50vh - 64px);
+  border-bottom: solid #d0d0d0 1px;
+}
+
+.dashboard-container {
+  overflow-y: hidden;
+  height: 50vh;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding-left: 0px;
+  padding-right: 0px;
+  overflow: hidden;
+}
+
+table {
+  flex-direction: row;
+  width: 100%;
+}
+
+.tablecontent-subcontainer {
+  width: 100%;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+.table-container {
+  overflow-y: hidden;
+  height: calc(100vh - 64px);
+}
+
+.button-align {
+  margin-bottom: 5px;
+  margin-right: 5px;
+}
+
+.iconTop {
+  height: 40px;
+  width: 30px;
+  position: relative;
+  padding-bottom: 1px;
+
+}
+
+.center {
+  height: 64px;
+  width: 80px;
+  text-align: center;
+  padding-right: 300px;
+}
+
+.box {
+  padding: 5%;
+  box-sizing: border-box;
+
+}

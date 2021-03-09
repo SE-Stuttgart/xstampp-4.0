@@ -1,0 +1,13 @@
+.container {
+  top: 0px;
+  right: 0px;
+  height: 100%;
+  width: 50%;
+  z-index: 999999;
+  position: absolute;
+}
+
+.full {
+  width: 100%;
+  height: 100%;
+}

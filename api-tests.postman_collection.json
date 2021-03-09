@@ -1,0 +1,3649 @@
+{
+	"info": {
+		"_postman_id": "b14dead6-36ab-4fee-a86b-4d90e2324dbf",
+		"name": "xstampp4_1-API collection for monitoring",
+		"description": "base url is: `http://{{xstamppURL}}/`\n\n\n- to execute the requests, **valid user-or project-token** is neccessary for Authorization, which you can receive via **login** and performing the **get project-token request**\n- project-token expire quickly, its recommended to createa pre-set in the variables for efficency \n- **valid ids** to fill in the **{{variables}}** in the urls\n- one has to perform a specific order to execute certain requests, like needing to create a loss before linking it\n- if there is no correct Authorization, one will get a Status: `401(Unauthorized)`\n- project to\n- this collection can be extended by importing it in postman and adding new requests\n- the current collection has been successfully performed at least once with actual tokens and IDs\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "automatic",
+			"item": [
+				{
+					"name": "register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8930d461-f908-4596-96aa-1d9b75bb4aa6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\": \"@mail\", \"displayName\": \"Muster\", \"password\": \"123\", \"passwordRepeat\": \"123\"}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						},
+						"description": "the body of this request contains an example to register a new user. "
+					},
+					"response": []
+				},
+				{
+					"name": "get site",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{xstamppURL}}/",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "valid login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2e3a70ad-58d4-478e-8be1-3fea60df23ca",
+								"exec": [
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"auth-token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\": \"@mail\", \"password\": \"123\"}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create group",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6c7a07e5-7f24-4807-b2ea-f057cfe68cbe",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3f1dbdd9-1896-4344-b21f-1ea02c40602f",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"groupId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{auth-token}}",
+								"description": "insert token you received from login in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"test\", \"description\": \"test test\"}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/auth/group",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"group"
+							]
+						},
+						"description": "return created group, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "modify group",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{auth-token}}",
+								"description": "insert token you received from login in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"string\", \"description\": \"string\"}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/auth/group/{{groupId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"group",
+								"{{groupId}}"
+							]
+						},
+						"description": "returns modified group, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "delete group",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{auth-token}}",
+								"description": "insert token you received from login in value",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/auth/group/{{groupId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"group",
+								"{{groupId}}"
+							]
+						},
+						"description": "returns the message \"SUCCESS\" or \"ERROR\", if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "create project",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "fde5c1c5-85c1-46eb-a767-713dfe9c816e",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "570c5752-dd45-4962-85a7-d7b3bb102a7c",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"projectId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{auth-token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"test\", \"referenceNumber\": \"445\", \"description\": \"test test\"}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/auth/project/",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"project",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete project",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth-token}}",
+								"description": "insert token you received from login in value",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/auth/project/{{projectId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"project",
+								"{{projectId}}"
+							]
+						},
+						"description": "replace token in url with existing projectId to succesfully delete a project again"
+					},
+					"response": []
+				},
+				{
+					"name": "create project",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "fde5c1c5-85c1-46eb-a767-713dfe9c816e",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "dd7d99a9-2a74-4f65-9c51-0ad428020bf5",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"projectId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{auth-token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"test\", \"referenceNumber\": \"445\", \"description\": \"test test\"}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/auth/project/",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"project",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get project token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7c2fe559-9300-4712-b376-c460fbd7b535",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"project-token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth-token}}",
+								"description": "inserts token you received from login in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"projectId\": \"{{projectId}}\"}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/auth/project-token",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"project-token"
+							]
+						},
+						"description": "for authorization to test in \"api/project\" further\nafter creating a project, use the ID to create a project token"
+					},
+					"response": []
+				},
+				{
+					"name": "get project",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth-token}}",
+								"description": "insert token you received from login in value",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/auth/project/{{projectId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"project",
+								"{{projectId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit project",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"habla\", \"description\": \"espagnol\"}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/auth/project/{{projectId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"project",
+								"{{projectId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create a system description",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0adc5bbc-8567-42d8-9b6c-4affc402cc51",
+								"exec": [
+									"pm.environment.get(\"project-token\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"description\": \"testing example\"}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/system-description",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"system-description"
+							]
+						},
+						"description": "returns system description, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get system description",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "840dfaec-250b-47e7-bb0a-631c61f5531d",
+								"exec": [
+									"pm.environment.get(\"project-token\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/system-description",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"system-description"
+							]
+						},
+						"description": "returns system description, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "create loss",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "82f22ddd-2059-4408-ade6-1cd47a542dc0",
+								"exec": [
+									"pm.environment.get(\"project-token\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "eafe4e5a-c907-4a74-ad19-40f5b024023f",
+								"exec": [
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"lossId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"test-loss\", \"description\": \"example\"}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/loss",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"loss"
+							]
+						},
+						"description": "returns created loss, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "create Hazard",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "de84147f-7ef5-4527-88d5-e130a9f21b1a",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3bf3f31d-e756-485c-9c92-9dc3361fa02c",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"hazardId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Insert a valid project-token in value",
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{project-token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"string\",\n  \"description\": \"string\"}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/hazard",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"hazard"
+							]
+						},
+						"description": "returns created Hazard, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get project token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7c2fe559-9300-4712-b376-c460fbd7b535",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"project-token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth-token}}",
+								"description": "inserts token you received from login in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"projectId\": \"{{projectId}}\"}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/auth/project-token",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"project-token"
+							]
+						},
+						"description": "for authorization to test in \"api/project\" further\nafter creating a project, use the ID to create a project token"
+					},
+					"response": []
+				},
+				{
+					"name": "get loss by Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0196be3d-38f7-42b7-a8c9-4b9fcf33e058",
+								"exec": [
+									"pm.environment.get(\"project-token\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/loss/{{lossId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"loss",
+								"{{lossId}}"
+							]
+						},
+						"description": "returns searched loss, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "link loss and hazard",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/loss/{{lossId}}/link/hazard/{{hazardId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"loss",
+								"{{lossId}}",
+								"link",
+								"hazard",
+								"{{hazardId}}"
+							]
+						},
+						"description": "returns message \"SUCCESS\" or \"ERROR\", if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get all losses",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"filter\": {},\n  \"orderDirection\": \"asc\",\n  \"from\": 0,\n  \"amount\": 100}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/loss/search",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"loss",
+								"search"
+							]
+						},
+						"description": "returns all losses defined in the HTTP-Body, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get Hazard by lossId",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"from\": 0,\n  \"amount\": 100\n}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/loss/{{lossId}}/hazards",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"loss",
+								"{{lossId}}",
+								"hazards"
+							]
+						},
+						"description": "This requests will show an array of the linked Hazards to the lossId"
+					},
+					"response": []
+				},
+				{
+					"name": "get Hazard by Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/hazard/{{hazardId}}/",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"hazard",
+								"{{hazardId}}",
+								""
+							]
+						},
+						"description": "returns seached hazard, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "delete link between hazard and loss",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/hazard/{{hazardId}}/link/loss/{{lossId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"hazard",
+								"{{hazardId}}",
+								"link",
+								"loss",
+								"{{lossId}}"
+							]
+						},
+						"description": "returns message \"SUCCESS\" or \"ERROR\", if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "link hazard with loss",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/hazard/{{hazardId}}/link/loss/{{lossId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"hazard",
+								"{{hazardId}}",
+								"link",
+								"loss",
+								"{{lossId}}"
+							]
+						},
+						"description": "returns message \"SUCCESS\" or \"ERROR\", if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get project token ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7c2fe559-9300-4712-b376-c460fbd7b535",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"project-token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth-token}}",
+								"description": "inserts token you received from login in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"projectId\": \"{{projectId}}\"}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/auth/project-token",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"project-token"
+							]
+						},
+						"description": "for authorization to test in \"api/project\" further\nafter creating a project, use the ID to create a project token"
+					},
+					"response": []
+				},
+				{
+					"name": "create safety constraints",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1306d9b1-445c-4a40-ac30-9ccaefc35ba0",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"systemConstraintId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"safety3\",\n  \"description\": \"test\"}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/system-constraint",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"system-constraint"
+							]
+						},
+						"description": "returns created safety constraints, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get loss by hazardId",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"from\": 0 , \"amount\": 100}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/hazard/{{hazardId}}/losses",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"hazard",
+								"{{hazardId}}",
+								"losses"
+							]
+						},
+						"description": "returns losses linked to hazardId, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "link hazard with system constraint",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/hazard/{{hazardId}}/link/system-constraint/{{systemConstraintId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"hazard",
+								"{{hazardId}}",
+								"link",
+								"system-constraint",
+								"{{systemConstraintId}}"
+							]
+						},
+						"description": "returns linked hazard, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "delete link between hazard and system-constraint",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/hazard/{{hazardId}}/link/system-constraint/{{systemConstraintId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"hazard",
+								"{{hazardId}}",
+								"link",
+								"system-constraint",
+								"{{systemConstraintId}}"
+							]
+						},
+						"description": "returns message \"SUCCESS\" or \"ERROR\", if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "link hazard with system constraint",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/hazard/{{hazardId}}/link/system-constraint/{{systemConstraintId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"hazard",
+								"{{hazardId}}",
+								"link",
+								"system-constraint",
+								"{{systemConstraintId}}"
+							]
+						},
+						"description": "returns linked hazard, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get system-constraints by hazardId",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"from\": 0 , \"amount\": 100}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/hazard/{{hazardId}}/system-constraints",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"hazard",
+								"{{hazardId}}",
+								"system-constraints"
+							]
+						},
+						"description": "returns system-constrainst linked to hazardId, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get all hazards",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"filter\": {},\n    \"orderDirection\": \"asc\",\n    \"from\": 0,\n    \"amount\": 100\n}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/hazard/search",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"hazard",
+								"search"
+							]
+						},
+						"description": "returns all hazards, defined in the HTTP-Body, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "create control action",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5800dfd3-0cea-4de4-bec3-479acdd2fa17",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"controlActionId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \n  \"name\": \"CA\",\n  \"description\": \"hubabbaba\"\n}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/control-action/",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"control-action",
+								""
+							]
+						},
+						"description": "return created control action, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get project token ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7c2fe559-9300-4712-b376-c460fbd7b535",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"project-token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth-token}}",
+								"description": "inserts token you received from login in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"projectId\": \"{{projectId}}\"}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/auth/project-token",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"project-token"
+							]
+						},
+						"description": "for authorization to test in \"api/project\" further\nafter creating a project, use the ID to create a project token"
+					},
+					"response": []
+				},
+				{
+					"name": "get control action by Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/control-action/{{controlActionId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"control-action",
+								"{{controlActionId}}"
+							]
+						},
+						"description": "once succesful, it will return the content of the control action"
+					},
+					"response": []
+				},
+				{
+					"name": "get all control action",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"filter\": {},\n  \"orderBy\": \"string\",\n  \"orderDirection\": \"asc\",\n  \"from\": 0,\n  \"amount\": 100}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/control-action/search",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"control-action",
+								"search"
+							]
+						},
+						"description": "returns all control actions, defined by the http-body"
+					},
+					"response": []
+				},
+				{
+					"name": "create UCA Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0dc5ab3d-ba73-4066-bb17-b189dc17c69a",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"ucaId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"string\",\n  \"description\": \"string\", \"category\":\"provided\"}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/ControlAction/{{controlActionId}}/UCA",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"ControlAction",
+								"{{controlActionId}}",
+								"UCA"
+							]
+						},
+						"description": "returns created UCA, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get hazard by UcaId",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \n    \"from\": 0,\n    \"amount\": 100\n}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/ControlAction/{{controlActionId}}/UCA/{{ucaId}}/link/hazard",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"ControlAction",
+								"{{controlActionId}}",
+								"UCA",
+								"{{ucaId}}",
+								"link",
+								"hazard"
+							]
+						},
+						"description": "returns hazards linked to UCAid, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get safety constraints by Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/system-constraint/{{systemConstraintId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"system-constraint",
+								"{{systemConstraintId}}"
+							]
+						},
+						"description": "returns searched safety constraints, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get all safety constraints",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"filter\": {},\n  \"orderDirection\": \"asc\",\n  \"from\": 0,\n  \"amount\": 100}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/system-constraint/search",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"system-constraint",
+								"search"
+							]
+						},
+						"description": "returns all safety constraints, defined in the HTTP-Body, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "link system constraint with hazard",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/system-constraint/{{systemConstraintId}}/link/hazard/{{hazardId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"system-constraint",
+								"{{systemConstraintId}}",
+								"link",
+								"hazard",
+								"{{hazardId}}"
+							]
+						},
+						"description": "returns message \"SUCCESS\" or \"ERROR\", if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "delete link between system constraint and Hazard",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/system-constraint/{{systemConstraintId}}/link/hazard/{{hazardId}}/",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"system-constraint",
+								"{{systemConstraintId}}",
+								"link",
+								"hazard",
+								"{{hazardId}}",
+								""
+							]
+						},
+						"description": "returns message \"SUCCESS\" or \"ERROR\", if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "link system constraint with hazard",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/system-constraint/{{systemConstraintId}}/link/hazard/{{hazardId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"system-constraint",
+								"{{systemConstraintId}}",
+								"link",
+								"hazard",
+								"{{hazardId}}"
+							]
+						},
+						"description": "returns message \"SUCCESS\" or \"ERROR\", if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get hazards by system constraintsId",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"from\": 0,\n  \"amount\": 100}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/system-constraint/{{systemConstraintId}}/hazards",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"system-constraint",
+								"{{systemConstraintId}}",
+								"hazards"
+							]
+						},
+						"description": "returns hazard linked to systemconstraintsId, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "create controller",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "33bdfff9-a71f-4534-bba9-85692bf01cd9",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"controllerId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n  \"name\": \"string\",\n  \"description\": \"string\"\n}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/controller",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"controller"
+							]
+						},
+						"description": "returns created controller, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get project token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7c2fe559-9300-4712-b376-c460fbd7b535",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"project-token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth-token}}",
+								"description": "inserts token you received from login in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"projectId\": \"{{projectId}}\"}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/auth/project-token",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"project-token"
+							]
+						},
+						"description": "for authorization to test in \"api/project\" further\nafter creating a project, use the ID to create a project token"
+					},
+					"response": []
+				},
+				{
+					"name": "get controller by Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/controller/{{controllerId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"controller",
+								"{{controllerId}}"
+							]
+						},
+						"description": "returns searched controller, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "create output",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "0a3c81d9-ba2c-4c26-ad19-4013e07ef24d",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "e857c64e-177d-4e58-b578-0e3720f5c955",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"outputId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"string\",\n  \"description\": \"string\"}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/output/",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"output",
+								""
+							]
+						},
+						"description": "returns created output"
+					},
+					"response": []
+				},
+				{
+					"name": "get output by Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/output/{{outputId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"output",
+								"{{outputId}}"
+							]
+						},
+						"description": "returns searched output information, if carried succesfully(200OK)"
+					},
+					"response": []
+				},
+				{
+					"name": "get all output",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"filter\": {},\n  \"orderDirection\": \"asc\",\n  \"from\": 0,\n  \"amount\": 100}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/output/search",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"output",
+								"search"
+							]
+						},
+						"description": "returns all output, defined by the http-body"
+					},
+					"response": []
+				},
+				{
+					"name": "get all controller",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"filter\": {},\n  \"orderBy\": \"string\",\n  \"orderDirection\": \"asc\",\n  \"from\": 0,\n  \"amount\": 100}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/controller/search",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"controller",
+								"search"
+							]
+						},
+						"description": "returns all controller, defined in the HTTP-Body, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "create feedback",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e63b077c-f72b-4524-9fb9-773ec5c8089c",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "76cba5ae-4adf-4a71-b67c-fcd34990ade6",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"feedbackId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"string\",\n  \"description\": \"string\"}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/feedback/",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"feedback",
+								""
+							]
+						},
+						"description": "returns created feedback, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get feedback",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/feedback/{{feedbackId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"feedback",
+								"{{feedbackId}}"
+							]
+						},
+						"description": "returns searched feedback, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get all feedback",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"filter\": {},\n  \"orderBy\": \"string\",\n  \"orderDirection\": \"asc\",\n  \"from\": 0,\n  \"amount\": 100}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/feedback/search",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"feedback",
+								"search"
+							]
+						},
+						"description": "returns all feedbacks, defined by the HTTP-Body, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "create controlled process",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ceed3865-b84d-44af-8f8b-1ae1e0a8695d",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"controlledProcessId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n  \"name\": \"string\",\n  \"description\": \"string\"\n}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/controlled-process/",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"controlled-process",
+								""
+							]
+						},
+						"description": "returns created controlled process, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get controlled-process",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/controlled-process/{{controlledProcessId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"controlled-process",
+								"{{controlledProcessId}}"
+							]
+						},
+						"description": "returns searched controlled-process, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get all controlled-processes",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"filter\": {},\n  \"orderBy\": \"string\",\n  \"orderDirection\": \"asc\",\n  \"from\": 0,\n  \"amount\": 100}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/controlled-process/search",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"controlled-process",
+								"search"
+							]
+						},
+						"description": "returns all controlled-processes, defined by HTTP-Body, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "create input",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e34fd353-dcea-44ee-b6c3-25fd203ad2b0",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"inputId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"string\",\n  \"description\": \"string\"}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/input/",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"input",
+								""
+							]
+						},
+						"description": "returns created input, if carried succesfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get input Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/input/{{inputId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"input",
+								"{{inputId}}"
+							]
+						},
+						"description": "returns seached input, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get all inputs",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"filter\": {},\n  \"orderDirection\": \"asc\",\n  \"from\": 0,\n  \"amount\": 100}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/input/search",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"input",
+								"search"
+							]
+						},
+						"description": "returns all inputs defined in the HTTP-Body, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "create actuator",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f7b6f68c-8534-4866-8c32-4e9f28f8dbf0",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "fd98147d-bfd7-4617-88d6-b00671012c21",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"actuatorId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n  \"name\": \"string\",\n  \"description\": \"string\"\n}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/actuator/",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"actuator",
+								""
+							]
+						},
+						"description": "returns created actuator, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get actuator by Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/actuator/{{actuatorId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"actuator",
+								"{{actuatorId}}"
+							]
+						},
+						"description": "returns searched actuator, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get all actuator",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"filter\": {},\n  \"orderDirection\": \"asc\",\n  \"from\": 0,\n  \"amount\": 100}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/actuator/search",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"actuator",
+								"search"
+							]
+						},
+						"description": "returns all actuator, defined in the HTTP-Body, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "create sensor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1ad9286c-6815-44e1-aa53-b540c85ef45d",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"sensorId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n  \"name\": \"string\",\n  \"description\": \"string\"\n}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/sensor/",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"sensor",
+								""
+							]
+						},
+						"description": "returns created sensor, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get sensor by Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/sensor/{{sensorId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"sensor",
+								"{{sensorId}}"
+							]
+						},
+						"description": "returns searched sensor, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get all sensor",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"filter\": {},\n  \"orderDirection\": \"asc\",\n  \"from\": 0,\n  \"amount\": 100}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/sensor/search",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"sensor",
+								"search"
+							]
+						},
+						"description": "returns all sensor, defined in the HTTP-Body, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "load control-structure",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "Insert a valid project-token in value",
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{project-token}}"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/control-structure",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"control-structure"
+							]
+						},
+						"description": "returns control structure  and its elements as an array, if carried correctly"
+					},
+					"response": []
+				},
+				{
+					"name": "create controller-constraint",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7586f1f9-6831-41fa-a397-c8ec192feb7c",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"controllerConstraintId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \n\"name\": \"string\",\n  \"description\": \"string\"\n}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/control-action/{{controllerId}}/UCA/{{ucaId}}/controller-constraint/",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"control-action",
+								"{{controllerId}}",
+								"UCA",
+								"{{ucaId}}",
+								"controller-constraint",
+								""
+							]
+						},
+						"description": "returns controller-constraint, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get project token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7c2fe559-9300-4712-b376-c460fbd7b535",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"project-token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth-token}}",
+								"description": "inserts token you received from login in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"projectId\": \"{{projectId}}\"}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/auth/project-token",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"project-token"
+							]
+						},
+						"description": "for authorization to test in \"api/project\" further\nafter creating a project, use the ID to create a project token"
+					},
+					"response": []
+				},
+				{
+					"name": "get controller-constraint by Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/control-action/{{controllerId}}/UCA/{{ucaId}}/controller-constraint/{{controllerConstraintId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"control-action",
+								"{{controllerId}}",
+								"UCA",
+								"{{ucaId}}",
+								"controller-constraint",
+								"{{controllerConstraintId}}"
+							]
+						},
+						"description": "returns searched controller-constraint, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "create sub-hazard",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec18592d-35f3-4ba5-b314-a15c2947e758",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"subhazardId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n  \"name\": \"string\",\n  \"description\": \"string\"\n}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/hazard/{{hazardId}}/sub-hazard",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"hazard",
+								"{{hazardId}}",
+								"sub-hazard"
+							]
+						},
+						"description": "returns created sub-hazard, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get sub-hazard by Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/hazard/{{hazardId}}/sub-hazard/{{subhazardId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"hazard",
+								"{{hazardId}}",
+								"sub-hazard",
+								"{{subhazardId}}"
+							]
+						},
+						"description": "returns searched sub-hazard, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get system-constraint by subhazardId",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/system-constraint/hazard/{{hazardId}}/sub-hazard/{{subhazardId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"system-constraint",
+								"hazard",
+								"{{hazardId}}",
+								"sub-hazard",
+								"{{subhazardId}}"
+							]
+						},
+						"description": "returns system constraints, linked to sub-hazard, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get hazards by UCAid",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/ControlAction/{{controlActionId}}/UCA/{{ucaId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"ControlAction",
+								"{{controlActionId}}",
+								"UCA",
+								"{{ucaId}}"
+							]
+						},
+						"description": "returns hazard linked to uca, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get all sub-hazards",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"filter\": {},\n  \"orderDirection\": \"asc\",\n  \"from\": 0,\n  \"amount\": 100}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/hazard/{{hazardId}}/sub-hazard/search",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"hazard",
+								"{{hazardId}}",
+								"sub-hazard",
+								"search"
+							]
+						},
+						"description": "returns all sub-hazards, defined in the HTTP-Body"
+					},
+					"response": []
+				},
+				{
+					"name": "create sub-system-constraint",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1456d8e6-68d2-46f9-97ed-5e4d4819db6d",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"subSystemConstraintId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n  \"name\": \"string\",\n  \"description\": \"string\"\n}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/system-constraint/{{systemConstraintId}}/sub-system-constraint",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"system-constraint",
+								"{{systemConstraintId}}",
+								"sub-system-constraint"
+							]
+						},
+						"description": "returns created sub-system-constraint, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get sub-system-constraint by Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/system-constraint/{{systemConstraintId}}/sub-system-constraint/{{subsystemConstraintId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"system-constraint",
+								"{{systemConstraintId}}",
+								"sub-system-constraint",
+								"{{subsystemConstraintId}}"
+							]
+						},
+						"description": "returns searched sub-system-constraint, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get all sub-system-constraints",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"filter\": {},\n  \"orderDirection\": \"asc\",\n  \"from\": 0,\n  \"amount\": 100}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/system-constraint/{{systemConstraintId}}/sub-system-constraint/search",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"system-constraint",
+								"{{systemConstraintId}}",
+								"sub-system-constraint",
+								"search"
+							]
+						},
+						"description": "returns all sub-system-constraints, defined in the HTTP-Body, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "create sub-hazard with sub-system-constraint Link",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{project-token}}",
+								"description": "Insert a valid project-token in value",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/hazard/{{hazardId}}/sub-hazard/{{subhazardId}}/link/system-constraint/{{systemConstraintId}}/sub-system-constraint/{{subSystemConstraintId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"hazard",
+								"{{hazardId}}",
+								"sub-hazard",
+								"{{subhazardId}}",
+								"link",
+								"system-constraint",
+								"{{systemConstraintId}}",
+								"sub-system-constraint",
+								"{{subSystemConstraintId}}"
+							]
+						},
+						"description": "returns message \"SUCCESS\" or \"ERROR\", if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get UCA by Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"description": "Insert a valid project-token in value",
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{project-token}}"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/ControlAction/{{controlActionId}}/UCA/{{ucaId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"ControlAction",
+								"{{controlActionId}}",
+								"UCA",
+								"{{ucaId}}"
+							]
+						},
+						"description": "returns searched UCA, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get project token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7c2fe559-9300-4712-b376-c460fbd7b535",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"project-token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth-token}}",
+								"description": "inserts token you received from login in value",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"projectId\": \"{{projectId}}\"}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/auth/project-token",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"project-token"
+							]
+						},
+						"description": "for authorization to test in \"api/project\" further\nafter creating a project, use the ID to create a project token"
+					},
+					"response": []
+				},
+				{
+					"name": "get all UCAS",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Insert a valid project-token in value",
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{project-token}}"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"from\": 0,\n    \"amount\": 100\n}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/ControlAction/{{controlActionId}}/UCAs",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"ControlAction",
+								"{{controlActionId}}",
+								"UCAs"
+							]
+						},
+						"description": "returns all UCAs, defined in the HTTP-Body, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get all UCAs by types",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Insert a valid project-token in value",
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{project-token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"filter\": {},\n  \"orderDirection\": \"asc\",\n  \"from\": 0,\n  \"amount\": 100}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/ControlAction/{{controlActionId}}/type/UCAs",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"ControlAction",
+								"{{controlActionId}}",
+								"type",
+								"UCAs"
+							]
+						},
+						"description": "returns all UCAs, defined in the HTTP-Body, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "get UCAs count by Id and type",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Insert a valid project-token in value",
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{project-token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"filter\": {},\n  \"orderDirection\": \"asc\",\n  \"from\": 0,\n  \"amount\": 100}"
+						},
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/ControlAction/{{controlActionId}}/UCAs/count",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"ControlAction",
+								"{{controlActionId}}",
+								"UCAs",
+								"count"
+							]
+						},
+						"description": "returns UCAs, defined in the HTTP-Body, if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "link uca with sub-hazard",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Insert a valid project-token in value",
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{project-token}}"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/ControlAction/{{controlActionId}}/UCA/{{ucaId}}/link/hazard/{{hazardId}}//subHazard/{{subhazardId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"ControlAction",
+								"{{controlActionId}}",
+								"UCA",
+								"{{ucaId}}",
+								"link",
+								"hazard",
+								"{{hazardId}}",
+								"",
+								"subHazard",
+								"{{subhazardId}}"
+							]
+						},
+						"description": "returns the message \"SUCCESS\" or \"ERROR\", if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "delete link between uca and sub-hazard",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"description": "Insert a valid project-token in value",
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{project-token}}"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/ControlAction/{{controlActionId}}/UCA/{{ucaId}}/link/hazard/{{hazardId}}//subHazard/{{subhazardId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"ControlAction",
+								"{{controlActionId}}",
+								"UCA",
+								"{{ucaId}}",
+								"link",
+								"hazard",
+								"{{hazardId}}",
+								"",
+								"subHazard",
+								"{{subhazardId}}"
+							]
+						},
+						"description": "returns the message \"SUCCESS\" or \"ERROR\", if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "link uca with sub-hazard",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"description": "Insert a valid project-token in value",
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{project-token}}"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/project/{{projectId}}/ControlAction/{{controlActionId}}/UCA/{{ucaId}}/link/hazard/{{hazardId}}//subHazard/{{subhazardId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"project",
+								"{{projectId}}",
+								"ControlAction",
+								"{{controlActionId}}",
+								"UCA",
+								"{{ucaId}}",
+								"link",
+								"hazard",
+								"{{hazardId}}",
+								"",
+								"subHazard",
+								"{{subhazardId}}"
+							]
+						},
+						"description": "returns the message \"SUCCESS\" or \"ERROR\", if carried successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "delete project ",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth-token}}",
+								"description": "insert token you received from login in value",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{xstamppURL}}/api/auth/project/{{projectId}}",
+							"protocol": "http",
+							"host": [
+								"{{xstamppURL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"project",
+								"{{projectId}}"
+							]
+						},
+						"description": "replace token in url with existing projectId to succesfully delete a project again"
+					},
+					"response": []
+				}
+			],
+			"description": "- no token necessary for these requests\n- one can receive the user-token by performing the valid login-request"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "4fb330ef-02bd-4e4d-b828-f59a8b207abb",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "a6d585bd-e033-4a50-820b-ab41d4c36d84",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

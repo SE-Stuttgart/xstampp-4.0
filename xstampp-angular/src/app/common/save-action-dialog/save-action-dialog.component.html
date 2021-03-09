@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Changes Detected!</h1>
+<div mat-dialog-content>
+  <p *ngIf="!isRouting">There are unsaved changes. Do you want to save them?</p>
+  <p *ngIf="isRouting">Do you want to leave without saving?</p>
+</div>
+<div class="button-box" mat-dialog-actions>
+  <button mat-button color="warn" (click)="onClose()">{{isRouting ? 'Leave' : 'Don\'t Save'}}</button>
+  <button
+    class="right"
+    mat-button
+    (click)="onCancel()">
+    {{isRouting ? 'Stay' : 'Cancel'}}
+  </button>
+  <button
+    *ngIf="!isRouting"
+    mat-raised-button
+    color="primary"
+    (click)="onSave()" cdkFocusInitial>
+    Save and Close
+  </button>
+</div>

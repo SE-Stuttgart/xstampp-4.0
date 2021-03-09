@@ -1,0 +1,155 @@
+<!-- Top Toolbar  -->
+<div>
+  <mat-toolbar class="blue-color" color="primary">
+    <div>
+      <button type="button" class="button-align" title="Home" aria-label="Return to project overview." mat-icon-button
+        routerLink="/project-overview">
+        <mat-icon class="icon-align">home</mat-icon>
+      </button>
+    </div>
+    <span>XSTAMPP4.1 - Privacy {{userNameString}} </span>
+    <div style="display: flex; justify-content: flex-end; width: 100%;">
+      <div>
+        <mat-icon (click)="logout()" style="cursor:pointer;" title="Logout: {{userName}}">account_circle</mat-icon>
+      </div>
+    </div>
+  </mat-toolbar>
+</div>
+
+<!-- Content... -->
+<div class="card-container">
+  <mat-card>
+    <mat-card-content>
+      <h1>I. Informationen nach Art. 13 DS-GVO</h1>
+      <h4>Anlässlich der Datenerhebung bei Nutzung der Plattform XSTAMPP des Instituts für Softwaretechnologie der Universität Stuttgart</h4>
+      <br />
+
+      <h4>Verantwortlich im datenschutzrechtlichen Sinne</h4>
+      <p>Universität Stuttgart<br />Keplerstraße 7<br />70174 Stuttgart<br />Deutschland<br />Tel: +49 711/685-0<br />E-Mail: poststelle@uni-stuttgart.de</p>
+      <br />
+
+      <h4>Datenschutzbeauftragter</h4>
+      
+      <p>Universität Stuttgart<br />Datenschutzbeauftragter<br />Breitscheidstr. 2<br />70174<br />Stuttgart<br />Tel: +49 711 685-83687<br />Fax: +49 711 685-83688<br />E-Mail: datenschutz@uni-stuttgart.de</p>
+      <br />
+
+      <h4>Verarbeitete Datenkategorien</h4>
+
+      <p>Außer den mit der Registrierung für Sie offensichtlich erhobenen Daten (E-Mailadresse, Benutzername, Passwort) werden von der
+      Anwendung selbst gespeichert die ID des Benutzers und der Zeitpunkt der letzten Bearbeitung eines Objekts. Sobald das Objekt das
+      nächste Mal geändert wird, werden diese Informationen überschrieben.</p>
+
+      <p>Wenn Sie XSTAMPP aufrufen, übermitteln Sie über Ihren Browser Daten an unseren <b>Webserver</b>. Die folgenden Daten werden während einer
+      laufenden Verbindung temporär in einer Logdatei aufgezeichnet:</p>
+
+      <ul>
+        <li>IP-Adresse des anfragenden Rechners</li>
+        <li>Datum und Uhrzeit des Zugriffs</li>
+        <li>Name, URL und übertragene Datenmenge der abgerufenen Datei</li>
+        <li>Zugriffsstatus (angeforderte Datei übertragen, nicht gefunden etc.)</li>
+        <li>Browsertyp und Betriebssystem (sofern vom anfragenden Webbrowser übermittelt)</li>
+        <li>Datum der letzten Anmeldung</li>
+        <br />
+      </ul>
+
+      <p>Die Verarbeitung der Daten in dieser Logdatei geschieht wie folgt:</p>
+
+      <ul>
+        <li>Die Logeinträge werden kontinuierlich automatisch ausgewertet, um Angriffe auf die Webserver erkennen und entsprechend reagieren
+        zu können.</li>
+        <li>In Einzelfällen, d.h. bei gemeldeten Störungen, Fehlern und Sicherheitsvorfällen, erfolgt eine manuelle Analyse.</li>
+        <br />
+      </ul>
+
+      <p>Außerdem werden an den aktiven Netzwerk-Komponenten der Universität Stuttgart beim Aufruf von Webseiten Datum und Zeitstempel, IP-Adresse + Port (Quelle), IP-Adresse + Port (Ziel) sowie die Paketgröße protokolliert.</p>
+      <br />
+
+      <h4>Zweck der Datenverarbeitung und Folgen der Nichtangabe der personenbezogenen Daten</h4>
+
+      <ul>
+        <li>Nutzung von XSTAMPP</li>
+        <br />
+      </ul>
+
+      <p>Eine Registrierung ist für die Nutzung von XSTAMPP erforderlich. Dabei können Sie als Benutzername ein Pseudonym wählen, ebenso eine E-Mailadresse, die für die Universität Stuttgart keinen Rückschluss auf Ihre Person zulässt. Sie können also Registrierungsdaten verwenden, die die Universität keiner Person zuordnen kann.</p>
+
+      <p>Ohne eine Registrierung ist eine Nutzung von XSTAMPP nicht möglich.</p>
+
+      <ul>
+        <li>Auslieferung der Website</li>
+        <br />
+      </ul>
+
+      <p>Die vorübergehende Speicherung der IP-Adresse durch das System ist notwendig, um eine Auslieferung der Website an den Rechner des Nutzers zu ermöglichen. Hierfür muss die IP-Adresse des Nutzers für die Dauer der Sitzung gespeichert bleiben.</p>
+
+      <ul>
+        <li>Optimierung der Website, Sicherstellung des ordnungsgemäßen Betriebs</li>
+        <br />
+      </ul>
+
+      <p>Die Speicherung in einer Logdatei erfolgt, um die Funktionsfähigkeit der Website sicherzustellen. Zudem dienen uns die Daten zur Optimierung der Website und zur Sicherstellung der Sicherheit unserer informationstechnischen Systeme. Die in den Logeinträgen
+      enthaltenen IP-Adressen werden nicht mit anderen Datenbeständen zusammengeführt, es sei denn, es liegen tatsächliche Anhaltspunkte für eine Störung des ordnungsgemäßen Betriebs vor.</p>
+
+      <p>Die Protokollierung auf aktiven Netzwerk-Komponenten dient ebenso der Sicherstellung der Sicherheit der informationstechnischen Systeme.</p>
+
+      <p>Die Erfassung der Daten zur Bereitstellung der Website und die Speicherung der Daten in Logfiles ist für den Betrieb der Internetseite zwingend erforderlich.</p>
+      <br />
+
+      <h4>Rechtsgrundlage</h4>
+
+      <p>Art. 6 Abs. 1 lit. e in Verbindung mit Art. 6 Abs. 3 Datenschutz-Grundverordnung (DS- GVO) in Verbindung mit § 4 Landesdatenschutzgesetz Baden-Württemberg.</p>
+      <br />
+
+      <h4>Empfänger</h4>
+
+      <p>Sofern wegen Angriffen auf unsere informationstechnischen System Ermittlungsmaßnahmen eingeleitet werden, können die oben genannten Daten bzw. Logdateien an staatliche Ermittlungsorgane (z.B. Polizei, Staatsanwaltschaft) weitergegeben werden.</p>
+
+      <p>Dasselbe gilt, wenn entsprechende Behörden und/oder Gerichte Anfragen an die Universität richten und die Universität dazu verpflichtet ist, diesen Folge zu leisten.</p>
+
+      <p>Darüber hinaus müssen entsprechend der archivrechtlichen Vorschriften Unterlagen vor ihrer Löschung dem Universitätsarchiv angeboten werden. Dieses entscheidet über die Übernahme von Unterlagen.</p>
+      <br />
+
+      <h4>Dauer der Speicherung</h4>
+
+      <ul>
+        <li>Ihre Registrierungsdaten werden gelöscht, wenn Sie uns entweder dazu auffordern (Kontakt siehe unten) oder spätestens, wenn Sie sich zwei Jahre lang unter Ihrem Account nicht mehr angemeldet haben.</li>
+        <br />
+      
+        <li>Die für die Bereitstellung der Website vorübergehend erfassten Daten werden gelöscht, wenn die jeweilige Sitzung beendet ist.</li>
+        <br />
+      
+        <li>Die Speicherung der Daten in Logdateien werden unverzüglich anonymisiert. Dies geschieht durch Kürzung der IP-Adressen.</li>
+        <br />
+      </ul>
+
+      <p>Ggf. werden die Unterlagen vom zuständigen Universitätsarchiv übernommen und dort in der Regel unbegrenzt aufbewahrt.</p>
+      <br />
+
+      <h4>Ihre Rechte</h4>
+
+      <ul>
+        <li>Sie haben das Recht, von der Universität Stuttgart Auskunft über die zu Ihrer Person gespeicherten Daten zu erhalten und/oder unrichtig gespeicherte Daten berichtigen zu lassen.</li>
+        <br />
+
+        <li>Sie haben darüber hinaus das Recht auf Löschung oder auf Einschränkung der Verarbeitung oder ein Widerspruchsrecht gegen die Verarbeitung.</li>
+        <br />
+      </ul>
+
+      <p>Bitte wenden Sie sich dazu jeweils an folgende Person:
+      Herrn Fechner, E-Mail: wolfgang.fechner@iste.uni-stuttgart.de, Telefon +49 711 685-88546 oder an den Datenschutzbeauftragten der Universität.</p>
+
+      <ul>
+        <li>Sie haben das Recht auf Beschwerde bei einer Aufsichtsbehörde, wenn Sie der Ansicht sind, dass die Verarbeitung der Sie betreffenden personenbezogenen Daten gegen die Rechtvorschriften verstößt.</li>
+        <br />
+      </ul>
+
+      <p>Die Aufsichtsbehörde in Baden-Württemberg ist der Landesbeauftragte für den Datenschutz und die Informationsfreiheit Baden-Württemberg.</p>
+      <br />
+
+      <h2>II. Information über Ihr Widerspruchsrecht nach Art. 21 Abs. 1 DS-GVO</h2>
+      <br />
+
+      <p>Sie haben das Recht, aus Gründen, die sich aus Ihrer besonderen Situation ergeben, jederzeit gegen die Verarbeitung Sie betreffender Daten, die aufgrund von Art. 6 Abs. 1 lit. e DS-GVO (Datenverarbeitung im öffentlichen Interesse) erfolgt, Widerspruch einzulegen.</p>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,47 @@
+<app-action-bar (delete)="deleteSubHazards($event)"
+                (create)="createSubHazard()"
+                [disableAdd]="sheetMode !== SheetMode.Closed || selectedHazard === undefined"
+                [disableDelete]="sheetMode !== SheetMode.Closed"
+                [disableChangeState]="sheetMode !== SheetMode.Closed"
+                (changeEntityState)="changeEntity($event)"
+                [selectedEntity]="this.selectSubHazardEntity"
+>
+</app-action-bar>
+<mat-drawer-container style="height: calc(100% - 72px);">
+
+  <mat-drawer [disableClose]="true" [opened]="sheetMode !== SheetMode.Closed" mode="side" position="end">
+    <app-detailed-sheet [entity]="subHazard"
+                        [fields]="fields"
+                        [title]="title"
+                        [needsLock]="true"
+                        [sheetMode]="sheetMode"
+                        [disableSaveButton]="disableSaveButton"
+                        (closeSheet)="closeSheet()"
+                        (saveSheet)="saveSubHazard($event)"
+                        (editSheet)="editSheet()">
+    </app-detailed-sheet>
+  </mat-drawer>
+  <mat-drawer-content>
+
+    <div class="container" style="height: calc(100% - 56px);">
+
+      <app-navigation-table style="width: 20%;" [hidden]="sheetMode !== SheetMode.Closed"
+                            [navigationTableDefinitions]="navigationTableDefinitions"
+                            (clickedNavigationEmitter)="onClickedNavigation($event)">
+      </app-navigation-table>
+
+      <div class="tablecontent-subcontainer">
+        <app-main-table
+          [data]="subHazards"
+          [columns]="columns"
+          [sheetMode]="sheetMode"
+          (toggleEvent)="toggleSheet($event)"
+          (entitySelectedEvent)="getSelectedEntities($event)">
+        </app-main-table>
+      </div>
+    </div>
+
+  </mat-drawer-content>
+</mat-drawer-container>
+
+

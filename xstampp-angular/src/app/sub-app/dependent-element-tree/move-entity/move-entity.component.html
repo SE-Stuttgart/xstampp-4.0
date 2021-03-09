@@ -1,0 +1,37 @@
+<div mat-dialog-content>
+  <p *ngIf="this.showDeleteMessage"  class="horizontal-center" style="color: #2699FB">Control Structure</p>
+  <p *ngIf="!this.showDeleteMessage" class="horizontal-center" style="color: #2699FB">Move Element To</p>
+
+  <div *ngIf="this.showDeleteMessage">
+    To move <i>Element</i>, go to <br>
+    <i>Control Structure</i> and rework <br>
+    <i class="reworkElement">{{this.selectedDependecyNode.entity.name}}.</i> <br>
+  </div>
+
+  <div *ngFor="let showedEntity of this.entitiesToMoveTo; index as selectedIndex">
+    <table>
+      <tr>
+        <th>
+          <mat-radio-button class="example-margin"
+                            [name]="this.entityTitle"
+                            [value]="selectedIndex"
+                            indeterminate="true"
+                            (change)="selectEntity()"
+                            *ngIf="!this.showDeleteMessage">
+
+            <div *ngIf="!this.controlActionSelected">{{ showedEntity.name }}</div>
+            <div *ngIf="this.controlActionSelected">{{ showedEntity.rule }}</div>
+          </mat-radio-button>
+        </th>
+      </tr>
+    </table>
+  </div>
+  <br>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button class="mat-raised-button" cdkFocusInitial *ngIf="!this.showDeleteMessage" (click)="moveEntity()">Move</button>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+</div>
+
+

@@ -1,0 +1,84 @@
+<!-- Top Toolbar  -->
+<div>
+  <mat-toolbar class="blue-color" >
+    <div>
+      <button type="button" class="button-align" title="Home" mat-icon-button routerLink="/project-overview">
+        <mat-icon class="icon-align">home</mat-icon>
+      </button>
+    </div>
+    <span>XSTAMPP4.0 - System Administration</span>
+    <div #logoBox class="logo-box"></div>
+    <div class= "center"></div>
+    <div style="display: flex; justify-content: flex-end; width: 100%;">
+      <div>
+        <mat-icon style="cursor:pointer;" title="System administration" routerLink="/system-administration/users">settings</mat-icon>
+      </div>
+      <div>
+        <mat-icon style="cursor:pointer;" title="Group settings" routerLink="/groups-handling/groups">group
+        </mat-icon>
+      </div>
+      <!-- <div>
+        <mat-icon>notifications</mat-icon>
+      </div>-->
+      <div>
+        <img class="iconTop" style="cursor:pointer;" [src]="selectedAvatar" title="User Settings"  [matMenuTriggerFor]="menu">
+
+        <mat-menu #menu>
+
+                <button mat-menu-item style="cursor:pointer;" routerLink = "/corporate-theme">Corporate Theme</button>
+
+               <button mat-menu-item style="cursor:pointer;" routerLink= "/user-settings"> User Settings</button>
+               <button mat-menu-item style="cursor:pointer;" (click)="logout()">Logout</button>
+      </mat-menu>
+
+
+      </div>
+    </div>
+  </mat-toolbar>
+</div>
+
+<div class="table-container">
+
+  <app-action-bar [disableAdd]="true"
+                  [disableDelete] = "sheetMode !== SheetMode.Closed"
+                  (delete)="deleteUsers($event)"
+                  [disableChangeState]="true"
+  ></app-action-bar>
+
+  <mat-drawer-container style="height: calc(100% - 72px);">
+
+    <mat-drawer [disableClose]="true" *ngIf="sheetMode !== SheetMode.Closed" mode="side" position="end" opened>
+       <app-detailed-sheet [entity]="group"
+                          [fields]="fields"
+                          [title]="title"
+                          [sheetMode]="sheetMode"
+                          (closeSheet)="closeSheet()"
+                          (saveSheet)="saveGroup($event)"
+                          (editSheet)="editSheet()">
+       </app-detailed-sheet>
+    </mat-drawer>
+
+    <mat-drawer-content>
+      <div class="container" style="height: calc(100% - 56px);">
+
+        <app-navigation-table style="width: 20%;" [hidden]="sheetMode !== SheetMode.Closed"
+              [navigationTableDefinitions]="navigationTableDefinitions"
+              (clickedNavigationEmitter)="onClickedNavigation($event)">
+        </app-navigation-table>
+
+        <div class="tablecontent-subcontainer">
+            <app-main-table [data]="users"
+                            [columns]="columns"
+                            [sheetMode]="sheetMode"
+                            [sysAdmin]="true"
+                            (toggleEvent)="toggleSheet($event)"
+                            (openChangePWDialog)="openChangePWDialog($event)">
+            </app-main-table>
+        </div>
+
+        </div>
+      </mat-drawer-content>
+
+  </mat-drawer-container>
+
+</div>

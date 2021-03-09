@@ -1,0 +1,13 @@
+<h1 mat-dialog-title class="header">Copy existing project</h1>
+<div mat-dialog-content class="content">
+  <mat-form-field>
+    <mat-label>Select project</mat-label>
+    <mat-select [(ngModel)]="this.selectedProject">
+      <mat-option [value]="v.id" [title]="v.name" *ngFor='let v of allProjects'>{{ v.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions class="button-box">
+  <button class="right" mat-button (click)="clone(this.selectedProject)">Clone</button>
+  <button mat-button (click)="onCancel()">Cancel</button>
+</div>

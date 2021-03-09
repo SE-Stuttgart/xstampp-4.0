@@ -1,0 +1,327 @@
+mat-card {
+  height: 40%;
+  margin-top: 5%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 60px;
+  background-color: #F0F0F0;
+}
+
+/*Top Toolbar*/
+mat-toolbar {
+  color: var(--accent-color);
+  height: 64px;
+  background-color: var(--primary-color);
+}
+
+mat-form-field {
+  text-align: center;
+
+  background-color: #F0F0F0;
+  margin-left: 24%;
+  width: 15%;
+}
+
+.mat-icon {
+  margin: 10px;
+  font-size: 24px;
+}
+
+/*centrieren von input feldern*/
+.center{
+  text-align: center;
+  height: 64px;
+}
+
+.center2 {
+  background: #F0F0F0;
+  text-align: center;
+  width: 50%;
+  margin-top: 5%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+input{
+  margin-bottom: 1%;
+  margin-left: 2%;
+  text-align: center;
+
+
+}
+
+/*sidebar*/
+
+mat-sidenav-container {
+  width: 100%;
+  height: 450px;
+  margin: 0px;
+  /* overflow-x: hidden; */
+}
+
+mat-sidenav {
+  width: 150px;
+  background-color: #F0F0F0;
+  /* height: 100vh; Temporary*/
+  /* calc(100vh - 64px); */
+  /* overflow-x: hidden; */
+}
+
+mat-nav-list {
+  height: 100vh; /*Temporary*/
+  width: 10%;
+  padding: 0px;
+}
+router-outlet{
+  width: 200px;
+}
+mat-sidenav-content {
+  height: calc(100vh - 64px); /*Seems to be the most important*/
+  width: 500px;
+  overflow-x: hidden;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+
+}
+
+
+.sidenav-elements {
+  width: 100% !important;
+}
+
+.strech-content {
+  width: 100%
+}
+
+.focus-selected-item-color:focus {
+  background-image: linear-gradient(to right, #2699FB, #2699FB 4%, transparent 4%, transparent 100%) !important;
+  background-image: -webkit-linear-gradient(to right, #2699FB, #2699FB 4%, transparent 4%, transparent 100%) !important;
+  background-image: -moz-linear-gradient(to right, #2699FB, #2699FB 4%, transparent 4%, transparent 100%) !important;
+  background-image: -ms-linear-gradient(to right, #2699FB, #2699FB 4%, transparent 4%, transparent 100%) !important;
+  background-image: -o-linear-gradient(to right, #2699FB, #2699FB 4%, transparent 4%, transparent 100%) !important;
+}
+
+::ng-deep .keep-blue-nav-by-focus {
+  background-image: linear-gradient(to right, #2699FB, #2699FB 4%, transparent 4%, transparent 100%) !important;
+  background-image: -webkit-linear-gradient(to right, #2699FB, #2699FB 4%, transparent 4%, transparent 100%) !important;
+  background-image: -moz-linear-gradient(to right, #2699FB, #2699FB 4%, transparent 4%, transparent 100%) !important;
+  background-image: -ms-linear-gradient(to right, #2699FB, #2699FB 4%, transparent 4%, transparent 100%) !important;
+  background-image: -o-linear-gradient(to right, #2699FB, #2699FB 4%, transparent 4%, transparent 100%) !important;
+}
+
+.mat-raised-button{
+  color:var(--accent-color);
+  background: var(--primary-color);
+
+}
+.warnButton{
+  background: var(--warn-color);
+  color: var(--accent-color);
+  color: var(--prevAcc-color);
+}
+
+.height40 {
+  height: 40px !important;
+}
+
+.font-size-14 {
+  font-size: 14px;
+}
+
+.height48 {
+  height: 48px;
+}
+
+.font-size-20 {
+  font-size: 20px;
+}
+
+.mat-icon {
+  margin: 10px;
+  font-size: 24px;
+}
+
+.button-align {
+  margin-bottom: 5px;
+}
+
+.icon-align {
+  margin: auto;
+}
+
+section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 16px;
+  position: relative;
+  height: inherit;
+}
+
+.mat-expansion-panel-header.mat-expanded {
+  color: rgb(207, 205, 205);
+  height: 40px !important;
+}
+
+.mat-expansion-panel-header:hover {
+
+  color: rgb(207, 205, 205);
+  height: 40px !important;
+}
+
+.mat-expansion-panel-header.mat-expanded:hover {
+
+  color: rgb(207, 205, 205);
+  height: 40px !important;
+}
+
+mat-expansion-panel-header {
+  height: 40px !important;
+  background-color: rgb(207, 205, 205);
+
+}
+
+::ng-deep .mat-expansion-panel-body {
+  background-color: rgb(207, 205, 205);
+  width: 100% !important;
+  padding: 0 0 0 0 !important;
+
+}
+
+.adjust-padding {
+  padding-top: 0px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 0px;
+
+}
+
+.indention-padding {
+  padding-top: 0px;
+  padding-left: 15px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  -ms-text-overflow: ellipsis;
+}
+.title{
+  color: black;
+
+}
+.truncate-width {
+  width: 100%;
+}
+.box{
+  padding: 5%;
+  box-sizing: border-box;
+
+}
+.iconTop{
+  height: 40px;
+  width: 30px;
+  position: relative;
+  padding-bottom: 1px;
+
+}
+
+mat-list-item-content{
+  color: rgb(207, 205, 205);
+}
+
+
+
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: #008CBA;
+}
+
+.container:hover .overlay {
+  opacity: 1;
+}
+
+.text {
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.container {
+  position: relative;
+  width: 50%;
+}
+
+
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%)
+}
+
+.text {
+  background-color: transparent;
+  color: black;
+  font-size: 16px;
+  padding: 16px 32px;
+}
+
+
+.iconTop{
+  height: 40px;
+  width: 30px;
+  position: relative;
+  padding-bottom: 1px;
+
+}
+
+img{
+  height: 64px !important;
+  width: 100px;
+}
+.box{
+  padding: 5%;
+  box-sizing: border-box;
+
+}
+
+.logo-box {
+  height: 60px;
+margin-left: 5px;
+margin-top: 5%;
+margin-bottom: 5%;
+}
+
+.prevTop{
+  background-color: var(--prevPrim-color);
+  color: var(--prevAcc-color);
+
+}
+
+

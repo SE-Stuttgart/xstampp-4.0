@@ -1,0 +1,41 @@
+.mat-dialog-actions {
+    justify-content: flex-end;
+    height: calc(100% + 30px);
+    align-items: flex-end;
+    float: right;
+    flex: 50%;
+}
+
+.row {
+  height: calc(100% - 375px);
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.wrapper {
+  /* width: 100%;
+  display: flex;
+  justify-content: center; */
+}
+
+.graphRoot {
+  /* margin: 0 auto; */
+}
+
+.form-group {
+  margin-left: 20px;
+}
+
+label {
+  width: 150px;
+  text-align: right;
+}
+
+input {
+  margin-left: 20px;
+  width: 90px;
+}

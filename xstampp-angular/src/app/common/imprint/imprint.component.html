@@ -1,0 +1,34 @@
+<!-- Top Toolbar  -->
+<div>
+  <mat-toolbar class="blue-color" color="primary">
+    <div>
+      <button type="button" class="button-align" title="Home" aria-label="Return to project overview." mat-icon-button
+        routerLink="/project-overview">
+        <mat-icon class="icon-align">home</mat-icon>
+      </button>
+    </div>
+    <span>XSTAMPP4.1 - Imprint {{userNameString}} </span>
+    <div style="display: flex; justify-content: flex-end; width: 100%;">
+      <div>
+        <mat-icon (click)="logout()" style="cursor:pointer;" title="Logout: {{userNameString}}">account_circle</mat-icon>
+      </div>
+    </div>
+  </mat-toolbar>
+</div>
+
+<div class="card-container">
+<mat-card>
+  <mat-card-content>
+    <h1>Imprint</h1>
+    <h2>Information in accordance with &sect; 5 Telemedia Act</h2>
+    <p>University of Stuttgart<br />Keplerstra&szlig;e 7<br />70174 Stuttgart <br />Germany</p>
+    <p><strong>Represented by:</strong><br />The University of Stuttgart is a public corporation.
+      <br />It is legally represented by rector Prof. Dr.-Ing. Wolfram Ressel (rektor@uni-stuttgart.de).</p>
+    <h2>Contact</h2>
+    <p>Phone: +49 (0) 711/685-0<br />Fax: +49 (0) 711/685-82113<br />E-Mail: poststelle@uni-stuttgart.de <br />Internet: http://www.uni-stuttgart.de/</p>
+    <h2>Tax ID</h2>
+    <p>Tax identification number according to &sect;27 a of Value Added Tax Act:<br />DE 1477 94 196</p>
+
+  </mat-card-content>
+</mat-card>
+</div>

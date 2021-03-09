@@ -1,0 +1,85 @@
+<div class="xstampp-overlay">
+  <h1 class="overallHeader">Process Models
+    <button mat-icon-button class="shortcutButton" [matMenuTriggerFor]="shortcutMenu">
+      <mat-icon>link</mat-icon>
+    </button>
+    <mat-menu #shortcutMenu="matMenu">
+      <button mat-menu-item (click)="onClickedShortcutButton('model')">
+        <span>Go to Process Models</span>
+      </button>
+      <button mat-menu-item (click)="onClickedShortcutButton('variable')">
+        <span>Go to Process Variables</span>
+      </button>
+    </mat-menu>  
+  </h1>
+  
+  <mat-accordion class="over-head">
+    <mat-expansion-panel #exPanel>
+      <mat-expansion-panel-header>
+        <mat-panel-title class="title">
+          {{pmSelect.name}}
+        </mat-panel-title>
+        <mat-panel-description class="desc">
+          <button class="add" width="50px" mat-button color="primary" (click)="openDetailsheetPm($event)">
+            <mat-icon>add_circle_outline</mat-icon>
+          </button>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-list class="pm-list">
+        <ng-container *ngFor="let pm of pmList;let i = index">
+          <mat-divider *ngIf="i!==0"></mat-divider>
+          <mat-list-item class="pm-item" (click)="onPmItemClick(pm, exPanel)">
+            {{pm.name}}
+            <button class="delete" width="50px" mat-button color="primary" (click)="deletePm($event, pm)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-list-item>
+        </ng-container>
+      </mat-list>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <div class="over-body">
+    <mat-accordion class="over-body">
+      <mat-expansion-panel #exPanelInput
+        *ngFor="let input of inputList; let i = index">
+        <mat-expansion-panel-header (click)="onInputClicked($event, input, exPanelInput)">
+          <mat-panel-title class="title">
+            {{input.name}}
+          </mat-panel-title>
+          <mat-panel-description class="desc">
+            <button class="add" width="50px" mat-button color="primary" (click)="openDetailsheetPv(input, $event)">
+              <mat-icon>add_circle_outline</mat-icon>
+            </button>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-list class="input-list">
+          <ng-container *ngFor="let variable of variableList;let i = index">
+            <mat-divider *ngIf="i!==0"></mat-divider>
+            <mat-list-item class="input-item" (click)="onInputItemClick(variable, exPanelInput)">
+              {{variable.name}}
+              <button class="delete" width="50px" mat-button color="primary" (click)="deletePv($event, variable)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-list-item>
+          </ng-container>
+        </mat-list>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+  <div class="over-footer">
+    <button mat-raised-button color="primary" (click)="onCancel()">Close</button>
+  </div>
+</div>
+
+<app-detail-oversheet
+  [pmRef]="this.pmSelect"
+  [pvRef]="this.selectPv"
+  [isNew]="this.isNewPmOrPv"
+  [isPm]="this.isPmDs"
+  [transfer]="cscontextmenuData"
+  (close)="onOverClose($event)"
+  [selectedInput]="this.inputSelect"
+  *ngIf="detailsheet"></app-detail-oversheet>

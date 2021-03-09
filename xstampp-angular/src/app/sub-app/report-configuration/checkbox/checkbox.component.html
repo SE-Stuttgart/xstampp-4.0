@@ -1,0 +1,8 @@
+<!-- Graphical checkbox element, used by the report-configuration Component -->
+<mat-checkbox [ngModel]="contents.selected" [ngStyle]="{'margin-left': this.contents.calculateIndent()}"
+    [disabled]="this.contents.disabled" (change)="onFormChange($event)">
+    {{this.contents.label}}</mat-checkbox>
+<!-- Recursively build subcheckboxes -->
+<div *ngFor="let subBox of this.contents.subboxes" class="indented">
+    <app-checkbox [contents]="subBox"></app-checkbox>
+</div>

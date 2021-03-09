@@ -1,0 +1,339 @@
+<div class="wrapper">
+
+    <button type="button" title="Close" (click)="this.onCancel()" style="float: right;" mat-icon-button>
+        <mat-icon>close_button</mat-icon>
+    </button>
+    <h1 align="center" mat-dialog-title>Loss Scenario</h1>
+    <br>
+    <!--3 Rows to create an Scenario-->
+    <mat-dialog-content>
+        <div class="row">
+            <!--Right site of the dialog-->
+            <div class="column-left, general">
+                <h2 mat-dialog-title>1. General information</h2>
+                <form>
+                    <br>
+                    <mat-form-field class="form-input, create-size" appearance="outline">
+                        <mat-label>Name</mat-label>
+                        <input required #input maxlength="128" [(ngModel)]="this.lossScenarioEntity.name" name="Name"
+                            matInput [disabled]="this.sheetMode === SheetMode.View" placeholder="Name Loss Scenario">
+                        <mat-hint align="end">Max. 128 characters: {{input.value?.length || 0}}/128</mat-hint>
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field class="form-input, create-size" appearance="outline">
+                        <mat-label>Control Action</mat-label>
+                        <input matInput [value]="selectedControlActionFromTable.name" placeholder="Control Action"
+                            [disabled]="true">
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field disabled class="form-input, create-size" appearance="outline">
+                        <mat-label>UCA</mat-label>
+                        <input [value]='selectedUcaFromTable.name' [disabled]="true" matInput placeholder="UCA">
+                    </mat-form-field>
+                    <mat-form-field disabled class="form-input, create-size" appearance="outline">
+                        <mat-label>UCA Category</mat-label>
+                        <input [value]='selectedUcaFromTable.category' [disabled]="true" matInput
+                            placeholder="UCA Category">
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field class="form-input, create-size" appearance="outline">
+                        <mat-label>ID</mat-label>
+                        <input [(ngModel)]="this.lossScenarioEntity.id" matInput name="Id" [disabled]="true">
+                    </mat-form-field>
+                </form>
+            </div>
+            <!--Middle site of the Dialog-->
+            <div class="column-middle, category">
+                <h2 mat-dialog-title>2. Category</h2>
+                <div>
+                    <mat-form-field class="create-size">
+                        <mat-label>Head Category</mat-label>
+                        <mat-select required matNativeControl [(ngModel)]="this.lossScenarioEntity.headCategory"
+                            name="headCategory" (selectionChange)="firstDropDownChanged($event)"
+                            [title]="this.headCategoryString" [disabled]="this.sheetMode === SheetMode.View">
+                            <mat-option [title]="category" [value]="category" *ngFor="let category of headCategory">
+                                {{ category }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <br>
+                    <!-- Second dropdown -->
+                    <div *ngIf="beginDropDownID === false">
+                        <mat-form-field class="create-size">
+                            <mat-label>Sub Category</mat-label>
+                            <mat-select required [(ngModel)]="this.lossScenarioEntity.subCategory" name="subCategory"
+                                (selectionChange)="secondDropDownChanged($event)" [title]="this.subCategoryString"
+                                [disabled]="this.sheetMode === SheetMode.View">
+                                <mat-option [value]="v" *ngFor='let v of subCategory'>{{ v }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <br>
+                    <!-- Possibilities for the different ID's-->
+                    <div *ngIf="firstDropDownID === 0">
+                        <br>
+                        <mat-form-field class="create-size">
+                            <mat-label>Controller</mat-label>
+                            <mat-select required [(ngModel)]="this.lossScenarioEntity.controller1Id"
+                                name="selectedController" [disabled]="this.sheetMode === SheetMode.View">
+                                <!-- Load possible controller-->
+                                <mat-option [value]="v.id" [title]="v.name" *ngFor='let v of allControllers'>
+                                    {{ v.name }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field appearance="outline" class="create-size">
+                            <mat-label>Description of the failure</mat-label>
+                            <textarea required [(ngModel)]="this.lossScenarioEntity.description1"
+                                name="DescriptionFailure" matInput cdkTextareaAutosize cdkAutosizeMinRows="1"
+                                cdkAutosizeMaxRows="15" [disabled]="this.sheetMode === SheetMode.View"
+                                class="description1"></textarea>
+                        </mat-form-field>
+                    </div>
+                    <!--Next ID / Head Category 2-->
+                    <div
+                        *ngIf="secondDropDownID == 10 || secondDropDownID == 11 || secondDropDownID == 12 || secondDropDownID == 13">
+                        <mat-form-field class="create-size">
+                            <mat-label>Controller</mat-label>
+                            <mat-select [(ngModel)]="this.lossScenarioEntity.controller1Id" name="selectedController"
+                                required [disabled]="this.sheetMode === SheetMode.View">
+                                <!-- Load possible controller-->
+                                <mat-option [value]="v.id" [title]="v.name" *ngFor='let v of allControllers'>
+                                    {{ v.name }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field class="create-size">
+                            <mat-label>Control Action</mat-label>
+                            <mat-select [(ngModel)]="this.lossScenarioEntity.controlActionId"
+                                name="selectedControlAction" required [disabled]="this.sheetMode === SheetMode.View">
+                                <!-- Load possible controller-->
+                                <mat-option [value]="v.id" [title]="v.name" *ngFor='let v of allControlActions'>
+                                    {{ v.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <br>
+                        <mat-label class="create-size">Description of the failure of the algorithm</mat-label>
+                        <mat-form-field appearance="outline" class="create-size">
+                            <mat-label>Description</mat-label>
+                            <textarea required [(ngModel)]="this.lossScenarioEntity.description1"
+                                name="DescriptionFailure" matInput cdkTextareaAutosize cdkAutosizeMinRows="1"
+                                cdkAutosizeMaxRows="15" [disabled]="this.sheetMode === SheetMode.View"
+                                class="description1"></textarea>
+                        </mat-form-field>
+                        <div *ngIf="secondDropDownID == 13">
+                            <mat-label>Attacker</mat-label>
+                            <mat-form-field appearance="outline" class="create-size">
+                                <mat-label>Attacker</mat-label>
+                                <textarea required [(ngModel)]="this.lossScenarioEntity.description3" name="Attacker"
+                                    matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="15"
+                                    [disabled]="this.sheetMode === SheetMode.View" class="description1"></textarea>
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="secondDropDownID == 12 || secondDropDownID == 13">
+                            <br>
+                            <mat-label *ngIf="secondDropDownID == 12" class="create-size">Change / Degradation in the
+                                system</mat-label>
+                            <mat-label *ngIf="secondDropDownID == 13" class="create-size">Procedure of the attacker
+                            </mat-label>
+                            <mat-form-field appearance="outline" class="create-size">
+                                <mat-label>Description</mat-label>
+                                <textarea required [(ngModel)]="this.lossScenarioEntity.description2" name="Description"
+                                    matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="15"
+                                    [disabled]="this.sheetMode === SheetMode.View" class="description1"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!--Next ID / Head Category 3-->
+                    <div *ngIf="secondDropDownID == 20">
+                        <mat-form-field class="create-size">
+                            <mat-label>Control Action</mat-label>
+                            <mat-select [(ngModel)]="this.lossScenarioEntity.controlActionId"
+                                name="selectedControlAction" required [disabled]="this.sheetMode === SheetMode.View">
+                                <!--Load possible control action-->
+                                <mat-option [value]="v.id" [title]="v.name" *ngFor='let v of allControlActions'>
+                                    {{ v.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field class="create-size">
+                            <mat-label>Source Controller</mat-label>
+                            <mat-select [(ngModel)]="this.lossScenarioEntity.controller1Id"
+                                name="selectedSourceController" required [disabled]="this.sheetMode === SheetMode.View">
+                                <!--Load possible source controller-->
+                                <mat-option [value]="v.id" [title]="v.name" *ngFor='let v of allControllers'>
+                                    {{ v.name }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field class="create-size">
+                            <mat-label>Target Controller</mat-label>
+                            <mat-select [(ngModel)]="this.lossScenarioEntity.controller2Id"
+                                name="selectedTargetController" required [disabled]="this.sheetMode === SheetMode.View">
+                                <!-- Load possible target controller-->
+                                <mat-option [value]="v.id" [title]="v.name" *ngFor='let v of allControllers'>
+                                    {{ v.name }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <!--Next ID / Head Category 4-->
+                    <div *ngIf="secondDropDownID == 30 || secondDropDownID == 31 || secondDropDownID == 32">
+                        <!--Controller-->
+                        <mat-form-field class="create-size">
+                            <mat-label>Controller</mat-label>
+                            <mat-select [(ngModel)]="this.lossScenarioEntity.controller1Id" name="selectedController"
+                                required [disabled]="this.sheetMode === SheetMode.View">
+                                <!--Load possible target controller-->
+                                <mat-option [value]="v.id" [title]="v.name" *ngFor='let v of allControllers'>
+                                    {{ v.name }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <br>
+                        <!--End Controller-->
+                        <!--Beginn Input / Feedback-->
+                        <mat-form-field class="create-size">
+                            <mat-label>Input</mat-label>
+                            <mat-select [(ngModel)]="this.lossScenarioEntity.inputArrowId" name="selectedInput" required
+                                [disabled]="this.sheetMode === SheetMode.View">
+                                <!-- Load possible Input-->
+                                <mat-option [value]="v.id" [title]="v.name" *ngFor='let v of allInput'>{{ v.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field class="create-size">
+                            <mat-label>Feedback</mat-label>
+                            <mat-select [(ngModel)]="this.lossScenarioEntity.feedbackArrowId" name="selectedFeedback"
+                                required [disabled]="this.sheetMode === SheetMode.View">
+                                <!-- Load possible Feedback-->
+                                <mat-option [value]="v.id" [title]="v.name" *ngFor='let v of allFeedback'>{{ v.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <!--End Input Feedback-->
+                        <!--Beginn special Items for Subcategory 4.1-->
+                        <div *ngIf="secondDropDownID == 30">
+                            <!--Beginnn Sencor-->
+                            <mat-form-field class="create-size">
+                                <mat-label>Sensor</mat-label>
+                                <mat-select [(ngModel)]="this.lossScenarioEntity.sensorId" name="selectedSensor"
+                                    required [disabled]="this.sheetMode === SheetMode.View">
+                                    <!-- Load possible Sensor-->
+                                    <mat-option [value]="v.id" [title]="v.name" *ngFor='let v of allSensor'>{{ v.name }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <br>
+                            <!--End Sensor-->
+                        </div>
+                        <!--End special Items for Subcategory 4.1-->
+                        <!--Beginn special Items for Subcategory 4.3-->
+                        <div *ngIf="secondDropDownID == 32 || secondDropDownID == 31">
+                            <!--Beginn InputBox / Sensor-->
+                            <mat-form-field class="create-size">
+                                <mat-label>Input Box</mat-label>
+                                <mat-select [(ngModel)]="this.lossScenarioEntity.inputBoxId" name="selectedInputBox"
+                                    required [disabled]="this.sheetMode === SheetMode.View">
+                                    <mat-option [value]="v.id" [title]="v.name" *ngFor='let v of allInputBox'>
+                                        {{ v.name }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <br>
+                            <mat-form-field class="create-size">
+                                <mat-label>Sensor</mat-label>
+                                <mat-select [(ngModel)]="this.lossScenarioEntity.sensorId" name="selectedSensor"
+                                    required [disabled]="this.sheetMode === SheetMode.View">
+                                    <!-- Load possible Sensor-->
+                                    <mat-option [value]="v.id" [title]="v.name" *ngFor='let v of allSensor'>{{ v.name }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <!--Begin InputBox / Sensor-->
+                            <mat-label class="create-size">Wrong controller internal belief</mat-label>
+                            <mat-form-field appearance="outline" class="create-size">
+                                <mat-label>Description</mat-label>
+                                <textarea required [(ngModel)]="this.lossScenarioEntity.description1"
+                                    name="DescriptionMisinterpretedHypothesis" matInput cdkTextareaAutosize
+                                    cdkAutosizeMinRows="1" cdkAutosizeMaxRows="15"
+                                    [disabled]="this.sheetMode === SheetMode.View" class="description1"></textarea>
+                            </mat-form-field>
+
+                        </div>
+                        <!--End special Items for Subcategory 4.3-->
+                        <!--Begin add reason-->
+                        <div *ngIf="secondDropDownID == 30 || secondDropDownID == 32">
+                            <mat-label>Add possible reason</mat-label>
+                            <br>
+                            <mat-form-field class="create-size">
+                                <mat-label *ngIf="secondDropDownID == 30">For not received information</mat-label>
+                                <mat-label *ngIf="secondDropDownID == 32">For missing information</mat-label>
+                                <mat-select [(ngModel)]="this.lossScenarioEntity.reason" name="selectedReason" required
+                                    [disabled]="this.sheetMode === SheetMode.View">
+                                    <!--Load possible reason-->
+                                    <mat-option [value]="selectedReason" [title]="selectedReason"
+                                        *ngFor='let selectedReason of reason'>
+                                        {{ selectedReason }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <br>
+                        </div>
+                        <div *ngIf="secondDropDownID == 30 || secondDropDownID == 31 || secondDropDownID == 32">
+                            <mat-label class="create-size">Reason description</mat-label>
+                            <mat-form-field appearance="outline" class="create-size">
+                                <mat-label>Description</mat-label>
+                                <textarea required [(ngModel)]="this.lossScenarioEntity.description2"
+                                    name="DescriptionReason" matInput cdkTextareaAutosize cdkAutosizeMinRows="1"
+                                    cdkAutosizeMaxRows="15" [disabled]="this.sheetMode === SheetMode.View"
+                                    class="description1"></textarea>
+                            </mat-form-field>
+                        </div>
+                        <!--End add reason-->
+                    </div>
+
+                </div>
+            </div>
+            <!--Right Site of the dialog-->
+            <div class="column-right, description">
+                <h2 mat-dialog-title>3. Description</h2>
+                <br>
+                <mat-form-field appearance="outline" class="create-size">
+                    <mat-label>Description</mat-label>
+                    <textarea required minlength="2" [(ngModel)]="this.lossScenarioEntity.description"
+                        name="DescriptionGeneral" matInput cdkTextareaAutosize cdkAutosizeMinRows="1"
+                        cdkAutosizeMaxRows="15" [disabled]="this.sheetMode === SheetMode.View" class="description1"></textarea>
+                    </mat-form-field>
+                
+                    <mat-button-toggle-group [disabled]="this.sheetMode === SheetMode.View" class="buttogroup-width" #group="matButtonToggleGroup"  [(ngModel)]="this.lossScenarioEntity.state">
+                        <mat-button-toggle value="TODO" aria-label="Todo" class="togglebtn">
+                            <mat-icon class="todoicon">assignment_late</mat-icon> Todo
+                        </mat-button-toggle>
+                        <mat-button-toggle value="DOING" aria-label="Doing" class="togglebtn">
+                            <mat-icon class="doingicon">assignment</mat-icon> Doing
+                        </mat-button-toggle>
+                        <mat-button-toggle value="DONE" aria-label="Done" class="togglebtn">
+                            <mat-icon class="doneicon">assignment_turned_in</mat-icon> Done
+                        </mat-button-toggle>
+                    </mat-button-toggle-group>
+               
+            </div>
+
+           
+        </div>
+
+
+
+    </mat-dialog-content>
+
+    <!--Save Button from the Dialog-->
+    <div class="col-xs-6 align-left" style="float: right;">
+        <button *ngIf="this.sheetMode === SheetMode.View" mat-raised-button (click)="this.edit()"
+            color="primary">Edit</button>
+        <button type="submit" *ngIf="this.sheetMode === SheetMode.EditWithLock || this.sheetMode === SheetMode.New"
+            mat-raised-button color="primary" (click)="save(this.lossScenarioEntity)" cdkFocusInitial
+            [disabled]="this.disableSaveButton">Save</button>
+
+        <button mat-stroked-button color="primary" (click)="this.onCancel()">Cancel</button>
+    </div>
+</div>

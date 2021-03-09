@@ -1,0 +1,14 @@
+<h1 mat-dialog-title style="text-align: center; color: var(--warn-color);">{{data.title}}</h1>
+<div mat-dialog-content>
+  <p>{{data.description}}</p>
+  <mat-form-field class="form-input">
+    <input #passwordInput matInput (keyup.enter)="onConfirmClick(passwordInput.value)"type="password" placeholder="Password"  >
+  </mat-form-field>
+</div>
+<div mat-dialog-actions >
+
+  <button  mat-button class="blueButton"  (click)="onConfirmClick(passwordInput.value)" cdkFocusInitial>Confirm</button>
+  <button mat-button  class="blueButton" (click)="onCancelClick()">Cancel</button>
+
+</div>
+

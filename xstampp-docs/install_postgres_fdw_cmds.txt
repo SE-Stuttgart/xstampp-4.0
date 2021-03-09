@@ -1,0 +1,19 @@
+Um es zu einer bestehenden Datenbank, die nicht beim ersten Start mit der neuen basic-setup.sh in postgres-initdb.d
+initialisiert wurde:
+
+scp -v install_postgres_fdw.sh stuproadm@xstage:/home/stuproadm/
+on xserver as stuproadm:
+cd ~
+sudo su
+cp install_postgres_fdw.sh /opt/xstampp/xstampp-ci
+cd /opt/xstampp/xstampp-ci  
+chown xstampp-ci install_postgres_fdw.sh
+chgrp xstampp install_postgres_fdw.sh
+docker cp install_postgres_fdw.sh [containerName of postgres]:/install_postgres_fdw.sh
+docker exec -it [containerName of postgres] bash
+in container:
+chmod +x install_postgres_fdw.sh
+./install_postgres_fdw.sh
+
+Für eine leere Datenbank geschieht dies beim ersten Start des postgres Containers durch die
+Datei /opt/xstampp/xstampp-ci/deploy/volumes/postgres-initdb.d/basic_setup.sh

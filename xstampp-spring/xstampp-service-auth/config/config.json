@@ -1,0 +1,32 @@
+{
+	"services": {
+		"push": "xstampp-push:8080",
+		"project-manager": "xstampp-project:8080",
+		"notify": "xstampp-notify:8080"
+	},
+	"constants": {
+		"system": {
+			"name": "XSTAMPP 4.0",
+			"secret": "secret",
+			"baseurl": "http://127.0.0.1/"
+		}
+	},
+	"database-auth": {
+		"url": "",
+		"user": "",
+		"password": "",
+		"dialect": "org.hibernate.dialect.PostgreSQL95Dialect",
+		"driver":"org.postgresql.Driver",
+		"showSQL": "false",
+		"defaultsJdbcMetadata": "false",
+		"pool": {
+			"min-size": "5",
+			"max-size": "20"
+		}
+	},
+	"self": {
+		"name": "template",
+		"commit": "a6e1c51bd186b65a41f",
+		"release": "2018-11-28T18:14Z"
+	}
+}

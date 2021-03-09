@@ -1,0 +1,84 @@
+<div *ngIf="this.mode === ContextMenuMode.Link" class="cscontextmenu"
+  [ngStyle]="{'left.px': coordData.position.x, 'top.px': coordData.position.y}">
+  {{this.text}}
+  <div class="cstable">
+    <table mat-table [dataSource]="this.dataSource" class="mat-elevation-z8">
+
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox *ngIf="this.data.shape !== boxShape.BOX" (change)="$event ? masterToggle() : null"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="select($event, row)"
+            (change)="$event ? selection.toggle(row) : null"
+            [checked]="selection.isSelected(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> No.</th>
+        <td mat-cell *matCellDef="let element"> {{element.id}}</td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name</th>
+        <td mat-cell *matCellDef="let element">
+          <div>{{element.name}}</div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  <button mat-raised-button color="primary" [disabled]="!selection.hasValue()" (click)="this.onSave()">Save
+  </button>
+  <button mat-raised-button
+    (click)="close()">Abort
+  </button>
+</div>
+<div *ngIf="this.mode === ContextMenuMode.Menu" class="cscontextmenu"
+  [ngStyle]="{'left.px': coordData.position.x, 'top.px': coordData.position.y}">
+  <div class="textAndIcon" *ngIf="isStep2">
+    <mat-icon (click)="startCreation()">create</mat-icon>
+    <span (click)="startCreation()">Create</span>
+  </div>
+  <div class="textAndIcon">
+    <mat-icon (click)="link()">compare_arrow</mat-icon>
+    <span (click)="link()">Link</span>
+  </div>
+  <div class="textAndIcon" *ngIf="isStep2">
+    <mat-icon (click)="delete()">delete</mat-icon>
+    <span (click)="delete()">Delete</span>
+  </div>
+  <div class="textAndIcon" *ngIf="canRefine">
+    <mat-icon (click)="refine()">reply</mat-icon>
+    <span (click)="refine()">Refine</span>
+  </div>
+  <div *ngIf="data.shape === boxShape.BOX" class="textAndIcon">
+    <mat-icon (click)="resize()">format_shapes</mat-icon>
+    <span (click)="resize()">Resize</span>
+  </div>
+  <div class="textAndIcon">
+    <mat-icon (click)="close()">clear</mat-icon>
+    <span (click)="close()">Close</span>
+  </div>
+</div>
+<div
+  *ngIf="this.mode === ContextMenuMode.New"
+  class="cscontextmenu"
+  [ngStyle]="{'left.px': coordData.position.x, 'top.px': coordData.position.y}">
+  <input matInput #nameInput autocomplete="off" (keydown.enter)="create(nameInput.value)">
+  <div class="textAndIcon">
+    <mat-icon (click)="create(nameInput.value)">save</mat-icon>
+    <span (click)="create(nameInput.value)">Save</span>
+    <mat-icon (click)="close()">clear</mat-icon>
+    <span (click)="close()">Abort</span>
+  </div>
+</div>

@@ -1,0 +1,111 @@
+<table style="width: 100%">
+  <tr style="align-items: center;">
+
+    <td *ngIf="showChipsFilter" style="width: 40%;">
+      <mat-form-field style="width: 90%">
+        <mat-chip-list #chipList>
+          <mat-chip *ngFor="let chip of this.chips"
+            [removable]="true"
+            (removed)="this.remove(chip)"
+            title={{chip.name}}>
+            c-{{chip.id}}
+            <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+          </mat-chip>
+          <input #trigger="matAutocompleteTrigger"
+            #displayedInput
+            (focusout)=" displayedInput.value=''"
+            [value]="displayedInput.value"
+            [placeholder]="'Filter by Controllers '"
+            [formControl]="linksCtrl"
+            [matAutocomplete]="auto"
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="add($event)"
+            (click)="openAutoComplete()">
+        </mat-chip-list>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event);">
+          <mat-option *ngFor="let linkedEntity of filteredElements | async  "
+            [value]="linkedEntity"
+            title={{linkedEntity.name}}>
+            {{linkedEntity.name}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </td>
+
+    <td style="width: 40%;">
+      <div id="filter-elements">
+        <mat-form-field id="filter-input">
+          <input matInput [formControl] = "mainTableQuery" (keyup)="fireFilterEvent($event.target.value)" placeholder="Filter">
+          <mat-hint><span [innerHtml]="filterHintText"></span></mat-hint>
+           <mat-icon matSuffix *ngIf="!this.queryInvalid">sentiment_very_satisfied</mat-icon>
+           <mat-icon matSuffix *ngIf="this.queryInvalid">sentiment_dissatisfied</mat-icon>
+        </mat-form-field>
+        <button id="filter-help-button" mat-button type="button" (click)="logClick()" class="filterButton">
+          Help
+        </button>
+      </div>
+    </td>
+
+    <td style="width: 20%;" class="content-right">
+      <button *ngIf="showUndoRedo" type="button" aria-label="Undo" mat-icon-button>
+        <mat-icon>undo</mat-icon>
+      </button>
+      <button *ngIf="showUndoRedo" type="button" aria-label="Redo" mat-icon-button>
+        <mat-icon>redo</mat-icon>
+      </button>
+      <button *ngIf="showBack" type="button" title="Back to groups" (click)="goBack()" mat-icon-button>
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <button *ngIf="showAdd" [disabled]="disableAdd" title="New" type="button" aria-label="Add" mat-icon-button
+        (click)="onCreate()">
+        <mat-icon>add_circle_outline</mat-icon>
+      </button>
+      <button mat-icon-button [matMenuTriggerFor]="menuImport" *ngIf="showMenu" [disabled]="disableMenu" title="Menu"
+        type="button" aria-label="Menu" (click)="onCreate()">
+        <mat-icon>add_circle_outline</mat-icon>
+      </button>
+
+      <mat-menu #menuImport="matMenu">
+        <button mat-menu-item (click)="newProject()">New project</button>
+        <button mat-menu-item [matMenuTriggerFor]="importProjectMenu"> Import existing Project </button>
+
+        <button mat-menu-item (click)="copyProject()">Copy existing project</button>
+        <button mat-menu-item (click)="exampleProject()">Example project</button>
+      </mat-menu>
+      <mat-menu #importProjectMenu="matMenu">
+        <button mat-menu-item (click)="importProject()">XSTAMPP 4.1</button>
+        <button mat-menu-item (click)="importProjectFromEclipsePlugin()"> XSTAMPP 3.0 (experimental) </button>
+      </mat-menu>
+      <button *ngIf="showDelete" [disabled]="deleteDisabled || disableDelete" title="Move" type="button" aria-label="Move"
+              mat-icon-button (click)="deleteDialog(true)">
+        <mat-icon>forward</mat-icon>
+      </button>
+      <button *ngIf="showDelete" [disabled]="deleteDisabled || disableDelete" title="Delete" type="button" aria-label="Delete"
+        mat-icon-button (click)="deleteDialog(false)">
+        <mat-icon>delete</mat-icon>
+      </button>
+
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu"
+        [disabled]="disableChangeState || stateDisabled">
+        <mat-icon class="stateIcon" svgIcon="assignment_clear"></mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="changeEntityStateDialog($event, 'TODO')">
+          <mat-icon class="todoicon">assignment_late</mat-icon>
+          <span>
+            Todo
+          </span>
+        </button>
+        <button mat-menu-item (click)="changeEntityStateDialog($event, 'DOING')">
+          <mat-icon class="doingicon">assignment</mat-icon>
+          <span>Doing</span>
+        </button>
+        <button mat-menu-item (click)="changeEntityStateDialog($event, 'DONE')">
+          <mat-icon class="doneicon">assignment_turned_in</mat-icon>
+          <span>Done</span>
+        </button>
+      </mat-menu>
+    </td>
+  </tr>
+</table>

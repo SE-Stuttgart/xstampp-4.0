@@ -1,0 +1,165 @@
+<!-- Top Toolbar  -->
+
+<div>
+    <mat-toolbar>
+              <div>
+                <button type="button" class="button-align" title="Home" aria-label="Return to project overview." mat-icon-button
+                        routerLink="/project-overview">
+                  <mat-icon class="icon-align">home</mat-icon>
+                </button>
+              </div>
+              <span>CORPORATE THEME: {{userName}}</span>
+
+              <div #logoBox class="logo-box">
+                </div>
+
+              <div class="center"></div>
+              <div style="display: flex; justify-content: flex-end; ">
+                <div *ngIf="sysAdmin === true">
+                  <mat-icon style="cursor:pointer;" title="System administration" routerLink="/system-administration/users">settings</mat-icon>
+                </div>
+            </div>
+            <div>
+              <mat-icon style="cursor:pointer;" title="Group settings" routerLink="/groups-handling/groups">group</mat-icon>
+            </div>
+            <!-- <div>
+        <mat-icon>notifications</mat-icon>
+      </div>-->
+            <div>
+              <img class="iconTop" style="cursor:pointer;" [src]="selectedAvatar"  title="User Settings" (click)="changeRoute()">
+            </div>
+        </mat-toolbar>
+     </div>
+
+  <div class="center2">
+    <label style="margin-left: 25%;" >Upload SVG: </label>
+    <input #file accept=".svg" type="file" name="logo" [disabled]="!sysAdmin" (change)="onFileChange($event.target.files)" style=" margin-top: 3%;" />
+
+
+    <button mat-raised-button class="warnButton" (click)="deleteLogo()" style="float: right; margin-right: 5%;margin-top: 1%;" [disabled]="!logoBoolean">Delete existing logo</button>
+    <button mat-raised-button type="submit" [disabled]="!upload" (click)="uploadFile()" style="float: right;margin-right: 1%; margin-top: 1%;" >Upload</button>
+
+    <div>
+      <mat-form-field style="margin-left: 0%;">
+        <mat-label>Select a theme</mat-label>
+        <mat-select #selectedTheme (selectionChange)="changeTheme(selectedTheme)">
+          <mat-option *ngFor="let fileForDropdown of fileForDropdown" [value]="[fileForDropdown.id, fileForDropdown.name]" >
+            {{fileForDropdown.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div>
+    <mat-form-field>
+      <input matInput #themeName type = "text" id = "name" [placeholder]="selectedTheme.value" name = "themeName" >
+    </mat-form-field>
+    <button mat-raised-button class = "warnButton"(click)="deleteTheme(selectedTheme)" color="primary" [disabled]="newTheme" style="float: right; margin-right: 15%;">Delete Theme</button>
+    </div>
+
+    <div>
+      <label for="primary">Primary: </label>
+      <input #primary type="color" id="primary" name="primary" [disabled]="!edit"
+          [value]="getPrimaryColor()" (input)= setNewColor(primary.value,primary.name)>
+    </div>
+
+    <div>
+      <label for="accent">Accent: </label>
+      <input #accent type="color" id="accent" name="accent" [disabled]="!edit"
+        [value]= "getAccentColor()" (input)=setNewColor(accent.value,accent.name)>
+    </div>
+
+    <div>
+        <label for="warn">Warn: </label>
+        <input #warn class= "warn" type="color" id="warn" name="warn" [disabled]="!edit"
+          [value]="getWarnColor()" (input)=setNewColor(warn.value,warn.name) style="margin-left:3%;">
+    </div>
+
+    <div>
+      <button mat-raised-button  (click)="saveTheme(selectedTheme,themeName.value, primary.value, accent.value, warn.value)" [disabled]="!sysAdmin" >save</button>
+      <button mat-raised-button  style="margin-left: 5px" (click)="cancle()" [disabled]="!sysAdmin">cancel</button>
+    </div>
+
+    <mat-card style="height: 600px">
+      <div>
+        <mat-toolbar class="prevTop">
+          <div>
+            <button type="button" class="button-align" title="Toggle Menu" aria-label="Toggle Menu" mat-icon-button>
+              <mat-icon class="icon-align">menu</mat-icon>
+            </button>
+          </div>
+
+          <div>
+            <button type="button" class="button-align" title="Home" aria-label="Return to project overview." mat-icon-button
+              routerLink="/project-overview">
+              <mat-icon class="icon-align">home</mat-icon>
+            </button>
+          </div>
+
+          <span>PREVIEW</span>
+          <div>
+            <img class= "logo-box"[src]='logoPreview' >
+          </div>
+          <div class="center"></div>
+          <div style="display: flex; justify-content: flex-end; ">
+            <mat-icon style="cursor:pointer;" title="System administration" >settings</mat-icon>
+          </div>
+
+          <div>
+            <mat-icon style="cursor:pointer;" title="Group settings" >group</mat-icon>
+          </div>
+
+          <div>
+            <mat-icon title="Export">get_app</mat-icon>
+          </div>
+
+          <!-- <div>
+        <mat-icon>notifications</mat-icon>
+      </div>-->
+
+          <div>
+            <mat-icon style="cursor:pointer;" title="User Settings" [matMenuTriggerFor]="menu">account_circle</mat-icon>
+            <mat-menu #menu>
+              <div label class="box"title="User Setting" > User Settings</div>
+              <div label class="box"title="Corporate Theme" >Corporate Theme</div>
+              <div label class="box" title ="Logout">Logout</div>
+            </mat-menu>
+          </div>
+        </mat-toolbar>
+
+        <div>
+          <mat-sidenav-container style="float: left ">
+            <mat-sidenav opened #drawer mode="side" role="navigation" height="10%">
+              <mat-nav-list role="navigation" class="strech-content">
+                <div class="sidenav-elements">
+                  <a mat-list-item class="font-size-14 height40 focus-selected-item-color">
+                    <span class="title">Vorschau</span>
+                  </a>
+                </div>
+                <div class="sidenav-elements">
+                  <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+                    [routerLink]="['/corporate-theme']"
+                    routerLinkActive=" keep-blue-nav-by-focus">
+
+                    <span class="title">Prévisualisation</span>
+                  </a>
+                </div>
+              </mat-nav-list>
+            </mat-sidenav>
+
+            <mat-sidenav-content style=" width: 1800px; float: right">
+            <router-outlet>
+              <div style="height: calc(100% - 56px);  z-index: 99999; margin-bottom: 500px; float: right;">
+                <div style="height: 100%; overflow-x: hidden; float: right;">
+                  <app-main-table style="width: 900px; margin-left: 50px; margin-bottom:30000px; text-align: center; float:right;"
+                    [columns]="columns">
+                  </app-main-table>
+                </div>
+              </div>
+            </router-outlet>
+          </mat-sidenav-content>
+        </mat-sidenav-container>
+      </div>
+    </div>
+  </mat-card>
+  </div>

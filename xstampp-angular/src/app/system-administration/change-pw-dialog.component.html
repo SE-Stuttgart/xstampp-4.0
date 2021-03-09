@@ -1,0 +1,21 @@
+<div mat-dialog-content>
+  <form>
+    <mat-form-field class="form-input">
+      <input matInput type="password" placeholder="Admin Password" [(ngModel)]="adminPassword" [ngModelOptions]="{standalone: true}">
+    </mat-form-field>
+    <br>
+    <mat-form-field class="form-input">
+      <input matInput type="password" placeholder="Password" [(ngModel)]="password"
+             [ngModelOptions]="{standalone: true}">
+    </mat-form-field>
+    <br>
+    <mat-form-field class="form-input">
+      <input matInput type="password" placeholder="Confirm Password" [(ngModel)]="passwordRepeat"
+             [ngModelOptions]="{standalone: true}">
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancelClick()">Cancel</button>
+  <button mat-button color="warn"  (click)="onChangeClick()" cdkFocusInitial>Change</button>
+</div>

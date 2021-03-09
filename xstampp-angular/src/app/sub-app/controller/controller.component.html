@@ -1,0 +1,38 @@
+<app-action-bar
+  (delete)="deleteControllers($event)"
+  (create)="createController()"
+  [disableAdd]="sheetMode !== SheetMode.Closed"
+  [disableDelete]="sheetMode !== SheetMode.Closed"
+  [disableChangeState]="sheetMode !== SheetMode.Closed"
+  (changeEntityState)="changeEntity($event)"
+  [selectedEntity]="this.selectControllerEntity">
+</app-action-bar>
+
+<mat-drawer-container style="height: calc(100% - 72px);">
+  <mat-drawer [disableClose]="true" *ngIf="sheetMode !== SheetMode.Closed" mode="side" position="end" opened>
+    <app-detailed-sheet [entity]="controller"
+                        [fields]="fields"
+                        [title]="title"
+                        [needsLock]="true"
+                        [sheetMode]="sheetMode"
+                        [disableSaveButton]="disableSaveButton"
+                        (closeSheet)="closeSheet()"
+                        (saveSheet)="saveController($event)"
+                        (editSheet)="editSheet()">
+    </app-detailed-sheet>
+  </mat-drawer>
+  <div style="height: calc(100% - 56px);">
+    <div style="height: 100%; overflow-x: hidden;">
+      <app-main-table [data]="controllers"
+                      [columns]="columns"
+                      [sheetMode]="sheetMode"
+                      (toggleEvent)="toggleSheet($event)"
+                      (entitySelectedEvent)="getSelectedEntities($event)">
+      </app-main-table>
+    </div>
+  </div>
+
+</mat-drawer-container>
+
+
+

@@ -1,0 +1,78 @@
+  .table {
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .tablecontent-subcontainer {
+    width: 100%;
+    overflow: auto;
+    overflow-x: hidden;
+  }
+
+  .column-left {
+    float: left;
+    width: 33.33%;
+    margin-left: 100px;
+  }
+
+  .column-right {
+    float: right;
+    width: 33.33%;
+  }
+
+  .column-middle {
+    float: middle;
+    width: 33.33%;
+  }
+
+  .create-size {
+    float: middle;
+    width: 95%;
+  }
+
+  .wrapper {
+    height: 100%;
+    width: 100%;
+    padding: 0 30px;
+    overflow: hidden;
+  }
+
+  .todoicon {
+    color: #cc001a !important;
+  }
+
+  .doingicon {
+    color: #d59f00 !important;
+  }
+
+  .doneicon {
+    color: #196400 !important;
+  }
+
+  .buttogroup-width {
+    width: calc(100% - 20px);
+    height: 50px;
+    float: left;
+  }
+
+  .togglebtn {
+    width: calc(100%/3);
+  }
+
+  @media screen and (min-width: 800px) {
+    .content {
+      display: flex;
+    }
+    .general {
+      flex: 1;
+      order: 1;
+    }
+    .category {
+      flex: 1;
+      order: 2;
+    }
+    .description {
+      flex: 1;
+      order: 3;
+    }
+  }

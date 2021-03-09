@@ -1,0 +1,26 @@
+<div class="row center-xs middle-xs form-alignment">
+  <div class="col-xs-4">
+    <h1 class="login-headline">Login</h1>
+    <mat-card class="login-form">
+      <form>
+        <mat-form-field class="form-input">
+          <input autofocus matInput placeholder="Email address" [(ngModel)]="email" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+        <br>
+        <mat-form-field class="form-input">
+          <input matInput type="password" placeholder="Password" [(ngModel)]="password"
+            [ngModelOptions]="{standalone: true}" (keypress.enter)="login()">
+        </mat-form-field>
+
+        <div class="row">
+          <div class="col-xs-6 align-left">
+            <button mat-raised-button color="primary" (click)="login()">Login</button>
+          </div>
+          <div class="col-xs-6 align-right">
+            <button mat-stroked-button color="primary" routerLink="/register">Register</button>
+          </div>
+        </div>
+      </form>
+    </mat-card>
+  </div>
+</div>

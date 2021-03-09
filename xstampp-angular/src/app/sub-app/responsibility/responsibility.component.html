@@ -1,0 +1,47 @@
+<app-action-bar
+  (delete)="deleteResponsibility($event)"
+  (create)="createResponsibility()"
+  [disableAdd]="sheetMode !== SheetMode.Closed || selectedController === undefined || selectedConstraint === undefined"
+  [disableDelete]="sheetMode !== SheetMode.Closed"
+  [disableChangeState]="sheetMode !== SheetMode.Closed"
+  (changeEntityState)="changeEntity($event)"
+  [selectedEntity]="this.selectResponsibilityEntity"
+>
+</app-action-bar>
+
+<mat-drawer-container style="height: calc(100% - 72px);">
+  <mat-drawer [disableClose]="true" [opened]="sheetMode !== SheetMode.Closed" mode="side" position="end">
+    <!-- FIXME: Regarding allowChipsInNewMode. See its comment in detailed-sheet.component.ts @Rico-->
+    <app-detailed-sheet [entity]="responsibility"
+                        [fields]="detailedSheetFields"
+                        [title]="detailedSheetTitle"
+                        [sheetMode]="sheetMode"
+                        [needsLock]="true"
+                        [allowChipsInNewMode]="true"
+                        [disableSaveButton]="disableSaveButton"
+                        [detailedColumns]="detailedColumns"
+                        (closeSheet)="closeSheet()"
+                        (saveSheet)="saveResponsibility($event)"
+                        (editSheet)="editSheet()">
+    </app-detailed-sheet>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div class="container" style="height: calc(100% - 56px);">
+      <app-filtering-table style="width: 40%;" [hidden]="sheetMode !== SheetMode.Closed"
+                           [navigationTableDefinitions]="navigationTableDefinitions"
+                           [previewNumbers]="previewNumbers"
+                           [updateSelectedElementEvent]="updateSelectedItemSubject.asObservable()"
+                           (clickedElementEmitter)="onClickedFilterElement($event)">
+      </app-filtering-table>
+      <div class="tablecontent-subcontainer">
+        <app-main-table
+          [data]="responsibilities"
+          [columns]="columns"
+          [sheetMode]="sheetMode"
+          (toggleEvent)="toggleSheet($event)"
+          (entitySelectedEvent)="getSelectedEntities($event)">
+        </app-main-table>
+      </div>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

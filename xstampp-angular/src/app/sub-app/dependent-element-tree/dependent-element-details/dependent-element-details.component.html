@@ -1,0 +1,61 @@
+<div mat-dialog-content class="horizontal-center">
+  <div *ngIf="!showInformation && !showDeleteShapeInformation">
+    <h2 *ngIf="this.entityTitle"><i>{{this.entityTitle}}</i></h2>
+    <div class="row">
+      <div class="column-left, general">
+        <mat-form-field appearance="outline" [floatLabel]="'always'">
+          <mat-label *ngIf="!this.showRule">Name</mat-label>
+          <textarea *ngIf="!this.showRule"
+                    matInput
+                    cdkTextareaAutosize
+                    cdkAutosizeMinRows="1"
+                    [cdkAutosizeMaxRows]="this.maxAutoSize"
+                    [readonly]="true"
+                    [(ngModel)]="this.entity.name"
+          ></textarea>
+          <textarea *ngIf="this.showRule"
+                    matInput
+                    cdkTextareaAutosize
+                    cdkAutosizeMinRows="1"
+                    [cdkAutosizeMaxRows]="this.maxAutoSize"
+                    [readonly]="true"
+                    [(ngModel)]="this.entity.rule"
+          ></textarea>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="outline" [floatLabel]="'always'">
+          <mat-label *ngIf="!this.showRule">Description</mat-label>
+          <textarea *ngIf="!this.showRule"
+                    matInput
+                    cdkTextareaAutosize
+                    cdkAutosizeMinRows="1"
+                    [cdkAutosizeMaxRows]="this.maxAutoSize"
+                    [readonly]="true"
+                    [(ngModel)]="this.entity.description"
+          ></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showInformation">
+  <h2> Info </h2>
+  The dependencies are shown here. <br>
+  Elements marked in <i class="dependentElement">red</i> are dependent. <br>
+  Elements marked in <i class="linkElement">orange</i> are just <br>
+  semantically linked. <br>
+</div>
+<br>
+
+<div *ngIf="showDeleteShapeInformation" class="removeElement">
+  {{this.removeShapeMessage}}
+</div>
+
+<div mat-dialog-actions style="float: right; float: bottom;">
+  <button *ngIf="this.showDeleteShapeInformation" mat-button clasa="mat-raise-button" (click)="removeShape()">Remove
+  </button>
+  <button mat-button class="mat-raised-button" (click)=cancelDetails()>Cancel</button>
+</div>
+
+

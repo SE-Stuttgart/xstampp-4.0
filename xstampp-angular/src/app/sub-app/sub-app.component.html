@@ -1,0 +1,315 @@
+<!-- Top Toolbar -->
+<div>
+  <mat-toolbar>
+    <div>
+      <button type="button" class="button-align" title="Toggle Menu" aria-label="Toggle Menu" mat-icon-button
+        (click)="drawer.toggle()">
+        <mat-icon class="icon-align">menu</mat-icon>
+      </button>
+    </div>
+    <div>
+      <button type="button" class="button-align" title="Home" aria-label="Return to project overview." mat-icon-button
+        routerLink="/project-overview" >
+        <mat-icon class="icon-align">home</mat-icon>
+      </button>
+    </div>
+    <span>XSTAMPP4.1 - {{name}}</span>
+    <div  #logoBox class="logo-box">
+    </div>
+    <div class= "center"></div>
+    <div style="display: flex; justify-content: flex-end; width: 100%;">
+      <div *ngIf="sysAdmin === true">
+        <mat-icon style="cursor:pointer;" title="System administration" routerLink="/system-administration/users">
+          settings
+        </mat-icon>
+      </div>
+      <div>
+        <mat-icon title="Group settings" style="cursor:pointer;" routerLink="/groups-handling/groups">group</mat-icon>
+
+      </div>
+      <div>
+        <button mat-icon-button [matMenuTriggerFor]="menu" title="Menu" type="button" aria-label="Menu">
+          <mat-icon style="cursor:pointer;" title="Export">get_app</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="exportAsFile()">Download project as file</button>
+          <button mat-menu-item routerLink="/project/{{projectId}}/report-configuration">Download project as
+            PDF</button>
+          <button mat-menu-item [matMenuTriggerFor]="downloadSVG">Download Control Structure</button>
+        </mat-menu>
+
+        <mat-menu #downloadSVG="matMenu">
+          <button mat-menu-item (click)="exportControlStructure(true)">with Colour</button>
+          <button mat-menu-item (click)="exportControlStructure(false)">Black & White</button>
+        </mat-menu>
+
+        <button mat-icon-button title="Shortcut Help" type="button" aria-label="Shortcut Help">
+          <mat-icon style="cursor:pointer;" (click)="shortcutHelp()">keyboard</mat-icon>
+        </button>
+      </div>
+      <div>
+        <img class="iconTop" style="cursor:pointer;" [src]="selectedAvatar" title="User Settings"
+          [matMenuTriggerFor]="userMenu">
+
+        <mat-menu #userMenu>
+          <div *ngIf="sysAdmin === true">
+            <button mat-menu-item style="cursor:pointer;" routerLink = "/corporate-theme">Corporate Theme</button>
+            </div>
+
+          <button mat-menu-item style="cursor:pointer;" routerLink= "/user-settings"> User Settings</button>
+          <button mat-menu-item style="cursor:pointer;" (click)="logout()">Logout</button>
+        </mat-menu>
+
+      </div>
+    </div>
+  </mat-toolbar>
+</div>
+
+<!-- Sidenav -->
+<div>
+  <mat-sidenav-container>
+    <mat-sidenav opened #drawer mode="side" role="navigation">
+      <mat-nav-list role="navigation" class="strech-content">
+        <div class="sidenav-elements">
+          <section class="font-size-20 height48">
+            <span class="title truncate truncate-width" title="{{project?.name}}"><b>{{project?.name}}</b></span>
+          </section>
+        </div>
+        <mat-divider class="sidenav-elements"></mat-divider>
+        <div class="sidenav-elements">
+          <section class="font-size-14 height40">
+            <span class="title"><b>STEP 1</b></span>
+          </section>
+        </div>
+        <div class="sidenav-elements">
+          <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+            routerLink="/project/{{projectId}}/system-description"
+            routerLinkActive="active-link keep-blue-nav-by-focus">
+            <span class="title">System Description</span>
+          </a>
+        </div>
+        <div class="sidenav-elements">
+          <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+            routerLink="/project/{{projectId}}/identify-losses" routerLinkActive="active-link keep-blue-nav-by-focus">
+            <span class="title">Losses</span>
+          </a>
+        </div>
+        <div class="sidenav-elements">
+          <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+            routerLink="/project/{{projectId}}/system-level-hazards"
+            routerLinkActive="active-link keep-blue-nav-by-focus">
+            <span class="title">System-Level Hazards</span>
+          </a>
+        </div>
+        <div class="sidenav-elements">
+          <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+            routerLink="/project/{{projectId}}/system-level-safety-constraints"
+            routerLinkActive="active-link keep-blue-nav-by-focus">
+            <span class="title">System-Level Safety Constraints</span>
+          </a>
+        </div>
+        <div class="sidenav-elements">
+          <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+            routerLink="/project/{{projectId}}/refine-hazards" routerLinkActive="active-link keep-blue-nav-by-focus">
+            <span class="title">Sub-Hazards</span>
+          </a>
+        </div>
+        <mat-divider class="sidenav-elements"></mat-divider>
+        <div class="sidenav-elements">
+          <section class="font-size-14 height40">
+            <span class="title"><b>STEP 2</b></span>
+          </section>
+        </div>
+        <div class="sidenav-elements">
+          <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+            routerLink="/project/{{projectId}}/control-structure-diagram/STEP2"
+            routerLinkActive="active-link keep-blue-nav-by-focus">
+            <span class="title">Control Structure Diagram</span>
+          </a>
+        </div>
+        <div>
+          <!--First DropDown Menu-->
+          <mat-expansion-panel class="mat-elevation-z0" #dropDown1>
+            <mat-expansion-panel-header class="adjust-padding font-size-14" [@.disabled]="true">
+              <!--Disable the animation-->
+              <mat-panel-title class="title">
+                System Components
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="sidenav-elements indention-padding">
+              <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+                routerLink="/project/{{projectId}}/controller" routerLinkActive="active-link keep-blue-nav-by-focus">
+                <span class="title">Controller</span>
+              </a>
+            </div>
+            <div class="sidenav-elements indention-padding">
+              <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+                routerLink="/project/{{projectId}}/actuator" routerLinkActive="active-link keep-blue-nav-by-focus">
+                <span class="title">Actuator</span>
+              </a>
+            </div>
+            <div class="sidenav-elements indention-padding">
+              <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+                routerLink="/project/{{projectId}}/sensor" routerLinkActive="active-link keep-blue-nav-by-focus">
+                <span class="title">Sensor</span>
+              </a>
+            </div>
+            <div class="sidenav-elements indention-padding">
+              <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+                routerLink="/project/{{projectId}}/controlled-process"
+                routerLinkActive="active-link keep-blue-nav-by-focus">
+                <span class="title">Controlled Process</span>
+              </a>
+            </div>
+          </mat-expansion-panel>
+          <!--Second DropDown Menu-->
+          <mat-expansion-panel class="mat-elevation-z0" #dropDown2>
+            <mat-expansion-panel-header class="adjust-padding font-size-14" [@.disabled]="true">
+              <!--Disable the animation-->
+              <mat-panel-title class="title">
+                Information Flow
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="sidenav-elements indention-padding">
+              <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+                routerLink="/project/{{projectId}}/control-action"
+                routerLinkActive="active-link keep-blue-nav-by-focus">
+                <span class="title">Control Action</span>
+              </a>
+            </div>
+            <div class="sidenav-elements indention-padding">
+              <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+                routerLink="/project/{{projectId}}/feedback" routerLinkActive="active-link keep-blue-nav-by-focus">
+                <span class="title">Feedback</span>
+              </a>
+            </div>
+            <div class="sidenav-elements indention-padding">
+              <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+                routerLink="/project/{{projectId}}/input-arrow" routerLinkActive="active-link keep-blue-nav-by-focus">
+                <span class="title">Input</span>
+              </a>
+            </div>
+            <div class="sidenav-elements indention-padding">
+              <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+                routerLink="/project/{{projectId}}/output-arrow" routerLinkActive="active-link keep-blue-nav-by-focus">
+                <span class="title">Output</span>
+              </a>
+            </div>
+          </mat-expansion-panel>
+        </div>
+        <div class="sidenav-elements">
+          <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+            routerLink="/project/{{projectId}}/responsibilities" routerLinkActive="active-link keep-blue-nav-by-focus">
+            <span class="title">Responsibilities</span>
+          </a>
+        </div>
+        <mat-divider class="sidenav-elements"></mat-divider>
+        <div class="sidenav-elements">
+          <section class="font-size-14 height40">
+            <span class="title"><b>STEP 3</b></span>
+          </section>
+        </div>
+        <div class="sidenav-elements">
+          <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+            routerLink="/project/{{projectId}}/uca-table" routerLinkActive="active-link keep-blue-nav-by-focus">
+            <span class="title">UCA Table</span>
+          </a>
+        </div>
+        <div class="sidenav-elements">
+          <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+            routerLink="/project/{{projectId}}/controller-constraints"
+            routerLinkActive="active-link keep-blue-nav-by-focus">
+            <span class="title">Controller Constraints</span>
+          </a>
+        </div>
+        <mat-divider class="sidenav-elements"></mat-divider>
+        <div class="sidenav-elements">
+          <section class="font-size-14 height40">
+            <span class="title"><b>STEP 4</b></span>
+          </section>
+        </div>
+        <div class="sidenav-elements">
+          <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+            routerLink="/project/{{projectId}}/control-structure-diagram/STEP4"
+            routerLinkActive="active-link keep-blue-nav-by-focus">
+            <span class="title">Detailed Control Structure</span>
+          </a>
+        </div>
+        <div class="sidenav-elements">
+          <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+            routerLink="/project/{{projectId}}/processmodel-table"
+            routerLinkActive="active-link keep-blue-nav-by-focus">
+            <span class="title">Process Model</span>
+          </a>
+        </div>
+        <div class="sidenav-elements">
+          <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+            routerLink="/project/{{projectId}}/processvariable-table"
+            routerLinkActive="active-link keep-blue-nav-by-focus">
+            <span class="title">Process Variable</span>
+          </a>
+        </div>
+        <div class="sidenav-elements">
+          <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+            routerLink="/project/{{projectId}}/control-algorithm" routerLinkActive="active-link keep-blue-nav-by-focus">
+            <span class="title">Control Algorithm</span>
+          </a>
+        </div>
+        <div class="sidenav-elements">
+          <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+            routerLink="/project/{{projectId}}/conversion-table" routerLinkActive="active-link keep-blue-nav-by-focus">
+            <span class="title">Conversion Table</span>
+          </a>
+        </div>
+        <div class="sidenav-elements">
+          <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+            routerLink="/project/{{projectId}}/loss-scenario-table"
+            routerLinkActive="active-link keep-blue-nav-by-focus">
+            <span class="title">Loss Scenarios Table</span>
+          </a>
+        </div>
+        <div class="sidenav-elements">
+          <a mat-list-item class="font-size-14 height40 focus-selected-item-color"
+            routerLink="/project/{{projectId}}/implementation-constraints"
+            routerLinkActive="active-link keep-blue-nav-by-focus">
+            <span class="title">Implementation Constraints</span>
+          </a>
+        </div>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+
+
+
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+
+<!-- Several maybe useful icons -->
+<!-- <div>
+  <mat-icon class="fill-remaining-space">edit</mat-icon>
+  <mat-icon>visibility</mat-icon>
+  <mat-icon>visibility_off</mat-icon>
+  <mat-icon>verified_user</mat-icon>
+  <mat-icon>notifications_active</mat-icon>
+  <mat-icon>notification_important</mat-icon>
+  <mat-icon>undo</mat-icon>
+  <mat-icon>redo</mat-icon>
+  <mat-icon>save</mat-icon>
+  <mat-icon>add_circle</mat-icon>
+  <mat-icon>account_box</mat-icon>
+  <mat-icon>account_circle</mat-icon>
+  <mat-icon>lock</mat-icon> -->
+<!-- Alternative -->
+<!-- <i class="material-icons">lock</i>
+  <mat-icon>lock_open</mat-icon>
+  <mat-icon>block</mat-icon>
+</div> -->
+<!-- <div>
+  <mat-drawer-container color="primary" item-width="300px">
+    <mat-drawer color="primary">Start</mat-drawer>
+    <mat-drawer-content color="primary">Main</mat-drawer-content>
+  </mat-drawer-container>
+</div> -->

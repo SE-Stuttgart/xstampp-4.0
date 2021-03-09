@@ -1,0 +1,101 @@
+.navContainer {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding-left: 0px;
+  padding-right: 0px;
+  overflow: hidden;
+}
+
+.scrollcontainer {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+/* necessary to unset the default 48px height from mat-row */
+.mat-row {
+  height: unset;
+}
+
+.mat-cell {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  min-height: 30px;
+  /* remove border attributes if they cause problmes */
+  border-bottom-style: solid !important;
+  border-bottom-color: white;
+}
+.mat-header-cell {
+  padding-left: 3% !important;
+  padding-right: 0 !important;
+}
+
+th, td {
+  overflow: hidden;
+  width:auto;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+div.cell-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+button.listShortcut {
+  margin-right: 5px;
+}
+
+.navRipple {
+  cursor: pointer;
+  /* width: 100%; */
+  margin-top: -1px;
+  height: 48px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* remove border attributes if they cause problmes */
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: rgba(0, 0, 0, 0.12);
+}
+
+.navText {
+  margin-left: 3%;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+  margin-bottom: 60px;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  color: white;
+  text-align: center;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  -ms-text-overflow: ellipsis;
+}
+
+.truncate-line-break {
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  -ms-text-overflow: ellipsis;
+}
+
+.truncate-width {
+  width: 90%;
+}

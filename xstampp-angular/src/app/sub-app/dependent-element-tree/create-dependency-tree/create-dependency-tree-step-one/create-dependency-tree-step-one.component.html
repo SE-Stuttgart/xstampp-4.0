@@ -1,0 +1,230 @@
+<div mat-dialog-content class="horizontal-center">
+  <mat-toolbar class="toolbar" color="primary">
+    <div class="toolbar-header">Dependencies</div>
+    <button (click)="detailedInformation()"
+            type="button"
+            aria-label="Edit"
+            mat-icon-button
+            class="detailed-toolbar-Icon">
+      <mat-icon class="info-button">info</mat-icon>
+    </button>
+  </mat-toolbar>
+  <br>
+  <div class="row">
+    <div class="column-left, general">
+      <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+        <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+          <button mat-icon-button disabled></button>
+          <table mat-table class="mat-elevation-z8">
+            <ng-container matColumnDef="name">
+
+              <div *ngIf="node.rootElement && node.entityTitle === 'Sub-Hazard'">
+                <mat-header-cell mat-header-cell *matHeaderCellDef>
+                  <div class="dependentElement">{{node.name}}</div>
+                  <button (click)="selectedEntityToMove(node)" mat-icon-button>
+                    <mat-icon class="elementIcon">forward</mat-icon>
+                  </button>
+                  <button
+                    title="View"
+                    class="visibleButtonPosition"
+                    (click)="detailedInformation(node)"
+                    mat-icon-button>
+                    <mat-icon class="elementIcon">visibility</mat-icon>
+                  </button>
+                </mat-header-cell>
+              </div>
+
+              <div *ngIf="node.titleElement">
+                <mat-header-cell mat-header-cell *matHeaderCellDef>
+                  <div class="titleElement">{{node.name}}</div>
+                </mat-header-cell>
+              </div>
+
+              <div *ngIf="(node.entityTitle === 'Hazard' || node.entityTitle === 'System-Constraint' || node.entityTitle === 'Loss') && node.rootElement">
+                <mat-header-cell mat-header-cell *matHeaderCellDef>
+                  <div class="dependentElement">{{node.name}}</div>
+                  <button title="View"
+                          mat-icon-button
+                          (click)="detailedInformation(node)">
+                    <mat-icon
+                      class="elementIcon">
+                      visibility
+                    </mat-icon>
+                  </button>
+                </mat-header-cell>
+              </div>
+
+              <div *ngIf="node.moveElement">
+                <mat-header-cell mat-header-cell *matHeaderCellDef>
+                  <div class="dependentElement">{{node.name}}</div>
+                  <button (click)="selectedEntityToMove(node)" mat-icon-button>
+                    <mat-icon class="elementIcon">forward</mat-icon>
+                  </button>
+                  <button title="View"
+                          class="visibleButtonPosition"
+                          mat-icon-button
+                          (click)="detailedInformation(node)">
+                    <mat-icon
+                      class="elementIcon">
+                      visibility
+                    </mat-icon>
+                  </button>
+                </mat-header-cell>
+              </div>
+
+              <div *ngIf="node.linkTitleElement">
+                <mat-header-cell mat-header-cell *matHeaderCellDef>
+                  <div class="titleElement">{{node.name}}</div>
+                </mat-header-cell>
+              </div>
+
+              <div *ngIf="node.linkElement">
+                <mat-header-cell mat-header-cell *matHeaderCellDef>
+                  <div class="linkElement">{{node.name}}</div>
+                </mat-header-cell>
+              </div>
+
+              <div *ngIf="node.controlStructureElement">
+                <mat-header-cell mat-header-cell *matHeaderCellDef>
+                  <div class="dependentElement">{{node.name}}</div>
+                  <button (click)="selectedEntityToMove(node)" mat-icon-button>
+                    <mat-icon class="elementIcon">forward</mat-icon>
+                  </button>
+                  <button title="View"
+                          class="visibleButtonPosition"
+                          (click)="detailedInformation(node)"
+                          mat-icon-button>
+                    <mat-icon class="elementIcon">visibility</mat-icon>
+                  </button>
+                </mat-header-cell>
+              </div>
+
+              <div *ngIf="node.entityTitle === 'Process-Variable'">
+                <mat-header-cell mat-header-cell *matHeaderCellDef>
+                  <div class="dependentElement">{{node.name}}</div>
+                  <button title="View" (click)="detailedInformation(node)" mat-icon-button>
+                    <mat-icon class="elementIcon">visibility</mat-icon>
+                  </button>
+                </mat-header-cell>
+              </div>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </table>
+        </mat-tree-node>
+
+        <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+          <button mat-icon-button matTreeNodeToggle>
+            <mat-icon class="mat-icon-rtl-mirror">
+              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            </mat-icon>
+          </button>
+
+          <table mat-table class="mat-elevation-z8">
+            <ng-container matColumnDef="name">
+              <div *ngIf="(node.entityTitle === 'Hazard' || node.entityTitle === 'System-Constraint' || node.entityTitle === 'Loss') && node.rootElement">
+                <mat-header-cell mat-header-cell *matHeaderCellDef>
+                  <div class="dependentElement">{{node.name}}</div>
+                  <button title="View"
+                          mat-icon-button
+                          (click)="detailedInformation(node)">
+                    <mat-icon
+                      class="elementIcon">
+                      visibility
+                    </mat-icon>
+                  </button>
+                </mat-header-cell>
+              </div>
+
+              <div *ngIf="node.titleElement">
+                <mat-header-cell mat-header-cell *matHeaderCellDef>
+                  <div class="titleElement">{{node.name}}</div>
+                </mat-header-cell>
+              </div>
+
+              <div *ngIf="node.rootElement && node.entityTitle === 'Sub-Hazard'">
+                <mat-header-cell mat-header-cell *matHeaderCellDef>
+                  <div class="dependentElement">{{node.name}}</div>
+                  <button (click)="selectedEntityToMove(node)" mat-icon-button>
+                    <mat-icon class="elementIcon">forward</mat-icon>
+                  </button>
+                  <button
+                    title="View"
+                    class="visibleButtonPosition"
+                    (click)="detailedInformation(node)"
+                    mat-icon-button>
+                    <mat-icon class="elementIcon">visibility</mat-icon>
+                  </button>
+                </mat-header-cell>
+              </div>
+
+              <div *ngIf="node.moveElement">
+                <mat-header-cell mat-header-cell *matHeaderCellDef>
+                  <div class="dependentElement">{{node.name}}</div>
+                  <button (click)="selectedEntityToMove(node)" mat-icon-button>
+                    <mat-icon class="elementIcon">forward</mat-icon>
+                  </button>
+                  <button title="View" class="visibleButtonPosition" (click)="detailedInformation(node)"
+                          mat-icon-button>
+                    <mat-icon class="elementIcon">visibility</mat-icon>
+                  </button>
+                </mat-header-cell>
+              </div>
+
+              <div *ngIf="node.linkTitleElement">
+                <mat-header-cell mat-header-cell *matHeaderCellDef>
+                  <div class="titleElement">{{node.name}}</div>
+                </mat-header-cell>
+              </div>
+
+              <div *ngIf="node.linkElement">
+                <mat-header-cell mat-header-cell *matHeaderCellDef>
+                  <div class="linkElement">{{node.name}}</div>
+                </mat-header-cell>
+              </div>
+
+              <div *ngIf="node.controlStructureElement">
+                <mat-header-cell mat-header-cell *matHeaderCellDef>
+                  <div class="dependentElement">{{node.name}}</div>
+                  <button (click)="selectedEntityToMove(node)" mat-icon-button>
+                    <mat-icon class="elementIcon">forward</mat-icon>
+                  </button>
+                  <button
+                    title="View"
+                    class="visibleButtonPosition"
+                    (click)="detailedInformation(node)"
+                    mat-icon-button>
+                    <mat-icon class="elementIcon">visibility</mat-icon>
+                  </button>
+                </mat-header-cell>
+              </div>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </table>
+        </mat-tree-node>
+      </mat-tree>
+    </div>
+  </div>
+</div>
+
+<div mat-dialog-actions class="selectionButton">
+  <button mat-button class="mat-raised-button" *ngIf="!this.selectedEntity.moveTree" style="right: 10px" color="warn"
+          (click)="deleteDependentElementTree()" cdkFocusInitial>Delete
+  </button>
+  <button mat-button class="mat-raised-button" cdkFocusInitial (click)="cancelDialog()">Cancel</button>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

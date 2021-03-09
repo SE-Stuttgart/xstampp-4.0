@@ -1,0 +1,36 @@
+<div class="row center-xs middle-xs form-alignment">
+  <div class="col-xs-4">
+    <h1 class="registration-headline">Registration</h1>
+    <mat-card class="registration-form">
+      <form>
+        <mat-form-field class="form-input">
+          <input matInput #input maxlength="128" type="email" placeholder="Email address" [(ngModel)]="email"
+                [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+        <br>
+        <mat-form-field class="form-input">
+          <input matInput #input maxlength="128" placeholder="Display Name" [(ngModel)]="displayName" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+        <br>
+        <mat-form-field class="form-input">
+          <input matInput #input maxlength="256" type="password" placeholder="Password" [(ngModel)]="password"
+                 [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+        <br>
+        <mat-form-field class="form-input">
+          <input matInput #input maxlength="256" type="password" placeholder="Confirm Password" [(ngModel)]="passwordRepeat"
+                 [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+
+        <div class="row">
+          <div class="col-xs-6 align-left">
+            <button mat-raised-button color="primary" (click)="register()">Register</button>
+          </div>
+          <div class="col-xs-6 align-right">
+            <button mat-stroked-button color="primary" routerLink="/login">Cancel</button>
+          </div>
+        </div>
+      </form>
+    </mat-card>
+  </div>
+</div>

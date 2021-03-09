@@ -1,0 +1,87 @@
+.mat-icon {
+  margin: 10px;
+  font-size: 24px;
+}
+
+.background {
+  background-color: #fafafa;
+  width: 100%;
+  flex-direction: row;
+  display: flex;
+  height: 100%;
+  white-space: pre-wrap;
+}
+
+.box {
+  width: 98%;
+  margin: 0 auto;
+  height: 300px;
+  padding: 10px;
+  box-sizing: border-box;
+  border: solid 1px #ccc;
+  color: rgba(0, 0, 0, 0.87);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: #fff;
+  border-radius: 4px;
+  position: relative;
+  z-index: 1;
+  transition: box-shadow 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cardPosition {
+  position: absolute;
+  top: 10px;
+  right: 30px;
+  height: 50px;
+  flex-direction: row;
+  display: flex;
+  .changePosition {
+    cursor: move;
+  }
+}
+
+.buttonadd {
+  position: absolute;
+  right: 3%;
+}
+
+.droplist {
+  width: 100%;
+  height: fit-content;
+  min-height: 300px;
+  background: #fafafa;
+  border-radius: 4px;
+  overflow: hidden;
+  display: block;
+  align-content: center;
+}
+.container {
+  align-items: center;
+  width: calc(100vw / 3);
+  height: 100%;
+  margin: 0;
+  display: inline-block;
+  border: solid #d0d0d0 1px;
+  color: rgb(87, 87, 87);
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.droplist.cdk-drop-list-dragging .box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

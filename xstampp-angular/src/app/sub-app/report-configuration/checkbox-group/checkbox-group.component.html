@@ -1,0 +1,16 @@
+<!-- Graphical checkbox-group element, used by the report-configuration Component -->
+<div class="form-box" [ngStyle]="this.contents.layer > 0 ? {'filter': 'brightness(95%)'} : {}">
+  <!-- The group's master checkbox, controlling all checkboxes inside it -->
+  <mat-checkbox class="head1" [ngStyle]="{'margin-left': this.contents.calculateIndent()}"
+  [ngModel]="contents.selected" [indeterminate]="contents.indeterminate" (change)="onFormChange($event)">
+    {{this.contents.label}}</mat-checkbox>
+  <!-- Recursively build the contents of this group -->
+  <div *ngFor="let element of this.contents.content">
+    <div *ngIf="element.type==='box'">
+      <app-checkbox [contents]="element"></app-checkbox>
+    </div>
+    <div *ngIf="element.type==='group'">
+      <app-checkbox-group [contents]="element"></app-checkbox-group>
+    </div>
+  </div>
+</div>

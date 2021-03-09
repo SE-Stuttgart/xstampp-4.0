@@ -1,0 +1,40 @@
+<app-action-bar (delete)="deleteHazards($event)"
+                (create)="createHazard()"
+                [additionalDeleteMessage]="additionalDeleteMessage"
+                [disableAdd]="sheetMode !== SheetMode.Closed"
+                [disableDelete]="sheetMode !== SheetMode.Closed"
+                [disableChangeState]="sheetMode !== SheetMode.Closed"
+                (changeEntityState)="changeEntity($event)"
+                [selectedEntity]="this.selectHazardEntity"
+>
+</app-action-bar>
+
+<mat-drawer-container style="height: calc(100% - 72px);">
+
+  <mat-drawer [disableClose]="true" [opened]="sheetMode !== SheetMode.Closed" mode="side" position="end">
+    <app-detailed-sheet [entity]="hazard"
+                        [fields]="fields"
+                        [title]="title"
+                        [needsLock]="true"
+                        [sheetMode]="sheetMode"
+                        [disableSaveButton]="disableSaveButton"
+                        [detailedColumns]="detailedColumns"
+                        (closeSheet)="closeSheet()"
+                        (saveSheet)="saveHazard($event)"
+                        (editSheet)="editSheet()">
+    </app-detailed-sheet>
+  </mat-drawer>
+
+  <div style="height: calc(100% - 56px);">
+    <div style="height: 100%; overflow-x: hidden;">
+      <app-main-table [data]="hazards"
+                      [columns]="columns"
+                      [sheetMode]="sheetMode"
+                      (toggleEvent)="toggleSheet($event)"
+                      (entitySelectedEvent)="getSelectedEntities($event)">
+      </app-main-table>
+    </div>
+  </div>
+
+
+</mat-drawer-container>

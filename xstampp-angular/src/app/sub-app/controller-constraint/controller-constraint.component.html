@@ -1,0 +1,42 @@
+<app-action-bar
+  (delete)="deleteControllerConstraints($event)"
+  (create)="createControllerConstraint()"
+  [disableAdd]="true"
+  [disableDelete]="sheetMode !== SheetMode.Closed"
+  [disableChangeState]="sheetMode !== SheetMode.Closed || sheetMode === SheetMode.Closed"
+  (changeEntityState)="changeEntity($event)">
+</app-action-bar>
+
+<mat-drawer-container style="height: calc(100% - 72px);">
+
+  <mat-drawer [disableClose]="true" *ngIf="sheetMode !== SheetMode.Closed" mode="side" position="end" opened>
+    <app-detailed-sheet [entity]="ucaAndConstraint"
+                        [fields]="fields"
+                        [title]="title"
+                        [sheetMode]="sheetMode"
+                        [disableSaveButton]="disableSaveButton"
+                        [needsLock]="true"
+                        (closeSheet)="closeSheet()"
+                        (saveSheet)="saveControllerConstraint($event)"
+                        (editSheet)="editSheet()">
+    </app-detailed-sheet>
+  </mat-drawer>
+
+  <mat-drawer-content>
+    <div class="container" style="height: calc(100% - 56px);">
+      <app-navigation-table style="width: 20%;" [hidden]="sheetMode !== SheetMode.Closed"
+                            [navigationTableDefinitions]="navigationTableDefinitions"
+                            (clickedNavigationEmitter)="onClickedNavigation($event)">
+      </app-navigation-table>
+      <div class="tablecontent-subcontainer">
+        <app-main-table
+          [data]="ucas"
+          [columns]="columns"
+          [sheetMode]="sheetMode"
+          (toggleEvent)="toggleSheet($event)">
+        </app-main-table>
+      </div>
+    </div>
+  </mat-drawer-content>
+
+</mat-drawer-container>

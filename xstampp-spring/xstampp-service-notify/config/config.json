@@ -1,0 +1,22 @@
+{
+	"services": {
+		"push": "123.123.123:2011",
+		"project-manager": "251.121.85.19:1100"
+	},
+	"constants": {
+		"system": {
+			"name": "XSTAMPP 4.0",
+			"secret": "secret"
+		}
+	},
+	"smtp": {
+		"upstream": "mail.example.com",
+		"fromaddress": "xstamppweb.example.com",
+		"fromname": "XSTAMPP 4.0"
+	},
+	"self": {
+		"name": "notify",
+		"commit": "a6e1c51bd186b65a41f",
+		"release": "2018-11-28T18:14Z"
+	}
+}

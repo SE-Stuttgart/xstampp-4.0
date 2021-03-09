@@ -1,0 +1,13 @@
+<div id="graphRoot" mat-dialog-content></div>
+
+<div class="row">
+  <div class="form-group">
+    <p *ngFor="let variable of data.variables; index as i">
+      <label for="{{variable}}">{{variable}}</label>
+      <input #input type="text" (input)="onUpdate(input)" [(ngModel)]="this.values[i]" id="{{variable}}">
+    </p>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onCloseClick()">Close</button>
+  </div>
+</div>

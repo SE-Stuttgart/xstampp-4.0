@@ -1,0 +1,50 @@
+<app-action-bar
+  (delete)="deleteUCA($event)"
+  (create)="createUCA()"
+  [disableAdd]="selectedControlAction === undefined || (selectedCategory !== undefined && selectedCategory['type'] ===  Category.ALL)"
+  [showChipsFilter]=true
+  [suggestedFilterElements]=allControllers
+  [additionalDeleteMessage]="additionalDeleteMessage"
+  [disableAdd]="sheetMode !== SheetMode.Closed"
+  [disableDelete]="sheetMode !== SheetMode.Closed"
+  [disableChangeState]="sheetMode !== SheetMode.Closed"
+  (changeEntityState)="changeEntity($event)"
+  [selectedEntity]="this.selectUCAEntity">
+</app-action-bar>
+<mat-drawer-container style="height: calc(100% - 72px);">
+  <mat-drawer [disableClose]="true" [opened]="sheetMode !== SheetMode.Closed" mode="side" position="end">
+    <app-detailed-sheet [entity]="uca"
+                        [fields]="fields"
+                        [title]="title"
+                        [needsLock]="true"
+                        [sheetMode]="sheetMode"
+                        [disableSaveButton]="disableSaveButton"
+                        (closeSheet)="closeSheet()"
+                        (saveSheet)="saveUCA($event)"
+                        (editSheet)="editSheet()"
+                        (selectedChips)="selected($event)"
+                        (removeChips)="remove($event)">
+    </app-detailed-sheet>
+  </mat-drawer>
+  <mat-drawer-content>
+
+    <div class="container" style="height: calc(100% - 56px);">
+
+      <app-navigation-table style="width: 40%; min-width: 350px;" [hidden]="sheetMode !== SheetMode.Closed"
+                            [navigationTableDefinitions]="navigationTableDefinitions"
+                            (clickedNavigationEmitter)="onClickedNavigation($event)">
+      </app-navigation-table>
+
+      <div class="tablecontent-subcontainer">
+        <app-main-table
+          [data]="ucaArray"
+          [columns]="columns"
+          [sheetMode]="sheetMode"
+          (toggleEvent)="toggleSheet($event)"
+          (entitySelectedEvent)="getSelectedEntities($event)">
+        </app-main-table>
+      </div>
+
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

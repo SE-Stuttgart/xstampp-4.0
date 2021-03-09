@@ -1,0 +1,60 @@
+<div class="container">
+  <quill-editor
+    [(ngModel)]="systemDescription"
+    [readOnly]="!editable"
+    [sanitize]="true">
+    <div quill-editor-toolbar style="height:49px">
+      <span [hidden]="!editable" class="ql-formats sysdescr-tb">
+        <button class="ql-bold" [title]="'Bold'"></button>
+        <button class=" ql-italic" [title]="'Italic'"></button>
+        <button class="ql-underline" [title]="'Underline'"></button>
+        <button class="ql-strike" [title]="'Strike'"></button>
+      </span>
+      <span [hidden]="!editable" class="ql-formats sysdescr-tb">
+        <select class="ql-font">
+          <!-- Note a missing, thus falsy value, is used to reset to default -->
+          <option selected></option>
+          <option value="serif"></option>
+          <option value="monospace"></option>
+        </select>
+        <select class="ql-size">
+          <option value="small"></option>
+          <!-- Note a missing, thus falsy value, is used to reset to default -->
+          <option selected></option>
+          <option value="large"></option>
+          <option value="huge"></option>
+        </select>
+      </span>
+      <span [hidden]="!editable" class="ql-formats sysdescr-tb">
+        <select class="ql-align">
+          <option selected></option>
+          <option value="center"></option>
+          <option value="right"></option>
+          <option value="justify"></option>
+        </select>
+        <button class="ql-indent" value="-1"></button>
+        <button class="ql-indent" value="+1"></button>
+      </span>
+      <span [hidden]="!editable" class="ql-formats sysdescr-tb">
+        <button class="ql-list" value="ordered"></button>
+        <button class="ql-list" value="bullet"></button>
+      </span>
+      <span *ngIf="editable" class="ql-formats">
+        <button title="Save" (click)="this.onSave()">
+          <mat-icon>save</mat-icon>
+        </button>
+      </span>
+      <span *ngIf="editable" class="ql-formats">
+        <button title="Cancel" (click)="this.onCancel()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </span>
+      <span *ngIf="!editable" class="ql-formats">
+        <button title="Edit" (click)="this.onEdit()">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </span>
+      <span *ngIf="!editable" class="title sysdescr-tb">{{lastEdited}}</span>
+    </div>
+  </quill-editor>
+</div>

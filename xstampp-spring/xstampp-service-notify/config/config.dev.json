@@ -1,0 +1,12 @@
+{
+	"constants": {
+		"system": {
+			"secret": "superDevSecret"
+		}
+	},
+	"smtp": {
+		"upstream": "127.0.0.1",
+		"fromaddress": "noreply@stupro66.informatik.uni-stuttgart.de",
+		"fromname": "XSTAMPP 4.0"
+	}
+}

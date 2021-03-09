@@ -1,0 +1,80 @@
+version: "3"
+services:
+
+  ext-postgresql:
+    image: postgres:11
+    ports:
+    - 5432:5432
+    networks:
+    - xstampp4
+    volumes:
+    - ../../xstampp-data:/var/lib/postgresql/data
+    - ../../xstampp-deploy/sql/postgres-initdb.d:/docker-entrypoint-initdb.d
+    env_file: ../../xstampp-config/postgresql/pw.env
+    restart: unless-stopped
+  
+  ext-nginx:
+    image: nginx:1.15
+    ports:
+    - 80:80
+    depends_on:
+    - auth
+    - project
+    - notify
+    - push
+    networks:
+    - xstampp4
+    volumes:
+    - ../../xstampp-angular/dist/xstampp-angular:/opt/xstampp-frontend
+    - ../../xstampp-deploy/nginx:/etc/nginx
+    restart: unless-stopped
+
+
+
+  auth:
+    image: openjdk
+    command: java -jar -Djava.security.egd=file:/dev/./urandom -Dserver.port=8080 app.jar
+    depends_on:
+    - ext-postgresql
+    networks:
+    - xstampp4
+    volumes:
+    - ../../xstampp-config/service-auth:/config
+    - ../../xstampp-spring/xstampp-service-auth/target/xstampp-service-auth-runnable.jar:/app.jar
+    restart: unless-stopped
+
+  project:
+    image: openjdk
+    command: java -jar -Djava.security.egd=file:/dev/./urandom -Dserver.port=8080 app.jar
+    depends_on:
+    - ext-postgresql
+    networks:
+    - xstampp4
+    volumes:
+    - ../../xstampp-config/service-project:/config
+    - ../../xstampp-spring/xstampp-service-project/target/xstampp-service-project-runnable.jar:/app.jar
+    restart: unless-stopped
+
+  notify:
+    image: openjdk
+    command: java -jar -Djava.security.egd=file:/dev/./urandom -Dserver.port=8080 app.jar
+    networks:
+    - xstampp4
+    volumes:
+    - ../../xstampp-config/service-notify:/config
+    - ../../xstampp-spring/xstampp-service-notify/target/xstampp-service-notify-runnable.jar:/app.jar
+    restart: unless-stopped
+
+  push:
+    image: openjdk
+    command: java -jar -Djava.security.egd=file:/dev/./urandom -Dserver.port=8080 app.jar
+    networks:
+    - xstampp4
+    volumes:
+    - ../../xstampp-config/service-push:/config
+    - ../../xstampp-spring/xstampp-service-push/target/xstampp-service-push-runnable.jar:/app.jar
+    restart: unless-stopped
+
+networks:
+  xstampp4:
+    driver: bridge

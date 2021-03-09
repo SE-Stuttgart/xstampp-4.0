@@ -1,0 +1,28 @@
+.login-headline {
+  color: white;
+  font-weight: bolder;
+}
+
+.login-form {
+  min-width: 200px;
+}
+
+.form-alignment {
+  height: 100vh;
+  width: 100%;
+  /* flexboxgrid2 overwrites margin 0 of body from style.css, therefore we need to overwrite margin here again */
+  margin:0;
+  background-color: #2699FB;
+}
+
+.align-left {
+  text-align: left;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.form-input {
+  width: 100%;
+}

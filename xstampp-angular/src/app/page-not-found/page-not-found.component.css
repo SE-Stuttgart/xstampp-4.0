@@ -1,0 +1,9 @@
+.center-in-screen {
+  position: fixed;
+  height: 100px;
+  width: 400px;
+  top: 50%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -200px;
+}

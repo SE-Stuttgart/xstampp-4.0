@@ -1,0 +1,144 @@
+.main-card {
+  min-width: 500px;
+  margin: 5px 20px 5px 20px;
+  overflow-y: hidden;
+}
+
+.bottom-spacer {
+  padding-bottom: 20px;
+}
+
+mat-form-field {
+  min-width: 500px;
+  width: 100%;
+}
+
+div.form-field-module {
+  display: flex;
+  align-items: center;
+}
+
+.sub-entity-scroll-container {
+  overflow-y: scroll;
+  height: 35vh;
+}
+
+.bottom-margin {
+  margin-bottom: 10px !important;
+}
+
+.dbody {
+  /*padding-bottom: 50px;*/
+  width: 100%;
+  margin-bottom: 120px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.full-width-link {
+  width: calc(100% - 40px);
+}
+
+.toggle-btn-left {
+  text-align: left;
+}
+
+.toggle-btn-right {
+  position: absolute;
+  z-index: 9999;
+  right: 0px;
+  top: 0px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 59px;
+  left: 0px;
+  width: calc(100% - 10px);
+  z-index: 555;
+  background-color: white;
+  border-top: 1px #d0d0d0 solid;
+  margin: 0px 5px;
+  padding: 5px 0px;
+}
+
+.bg-width {
+  height: 50px;
+  float: left;
+  margin: 0px;
+  padding: 0px;
+  padding-left: 10px;
+}
+
+.bg-wrapper {
+  margin-top: -10px;
+  width: calc(100% - 40px);
+  margin-bottom: 10px;
+  border: 1px #e1e2e1 solid;
+  border-radius: 5px;
+  min-height: 70px;
+}
+
+.right {
+  float: right;
+  width: 41px;
+  height: 50px;
+
+  padding: 4px 0 0 0;
+}
+
+mat-hint {
+  font-size: 75%;
+}
+
+button.form-button {
+  margin-right: 8px;
+  background-color: var(--primary-color);
+  color: var(--accent-color);
+}
+
+button.shortcut-button {
+  margin-bottom: 1.34375em;
+}
+
+.mat-form-field-wrapper {
+  /* IMPORTANT: for styles see "styles.css" in root folder */
+}
+
+#hint {
+  margin: 0 0;
+  background-color: white;
+  padding: 0 24px;
+}
+
+#auto {
+  margin-bottom: 20px;
+}
+
+.todoicon {
+  color: #cc001a !important;
+}
+
+.doingicon {
+  color: #d59f00 !important;
+}
+
+.doneicon {
+  color: #196400 !important;
+}
+
+.buttogroup-width {
+  width: calc(100% - 20px);
+  height: 50px;
+  float: left;
+  /*margin: 0px;
+    padding: 0px;*/
+}
+
+.togglebtn {
+  width: calc(100% / 3);
+}

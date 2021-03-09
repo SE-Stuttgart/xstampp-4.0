@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+  <p>Edit Value:</p>
+  <mat-form-field>
+    <input matInput [placeholder]="data.placeHolder" [(ngModel)]="data.name" (keydown.enter)="onOkClick()">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data.name" cdkFocusInitial>Ok</button>
+</div>

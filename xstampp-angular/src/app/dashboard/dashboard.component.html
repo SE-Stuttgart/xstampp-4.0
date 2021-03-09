@@ -1,0 +1,90 @@
+<div cdkDropListGroup class="background">
+  <div class="container">
+    <div cdkDropList class="droplist" (cdkDropListDropped)="drop($event)" [cdkDropListData]="panelOne">
+      <!--panel 1  -->
+      <div class="box" *ngFor="let item of panelOne" cdkDrag>
+        <h4>
+          Mark incomplete entities:
+        </h4>
+        <p>
+          2 of 16 Losses must be processed
+        </p>
+        <div class="cardPosition">
+          <button mat-icon-button (click)="react()">
+            <mat-icon title="Settings">build</mat-icon>
+          </button>
+          <div *ngIf="change">
+            <button mat-icon-button>
+              <mat-icon title="Delete">delete_forever</mat-icon>
+            </button>
+            <button mat-icon-button class="changePosition" cdkDragHandle>
+              <mat-icon title="Move">open_with</mat-icon>
+            </button>
+          </div>
+          <div *ngIf="!dragVisible">
+            <div cdkDragHandle>
+              <!--locks drag while the drag button isn't visible   -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div cdkDropList class="droplist" (cdkDropListDropped)="drop($event)" [cdkDropListData]="panelTwo">
+      <!--panel 2 -->
+      <div class="box" *ngFor="let item of panelTwo" cdkDrag>
+        <p>
+          Wolfgang is online
+        </p>
+        <div class="cardPosition">
+          <button mat-icon-button (click)="react2()">
+            <mat-icon>build</mat-icon>
+          </button>
+          <div *ngIf="change2">
+            <button mat-icon-button>
+              <mat-icon>delete_forever</mat-icon>
+            </button>
+            <button mat-icon-button class="changePosition" cdkDragHandle>
+              <mat-icon>open_with</mat-icon>
+            </button>
+          </div>
+          <div *ngIf="!dragVisible2">
+            <div cdkDragHandle>
+              <!--locks drag while the drag button isn't visible   -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div cdkDropList class="droplist" (cdkDropListDropped)="drop($event)" [cdkDropListData]="panelThree"
+      [cdkDropListConnectedTo]="panelOne" [cdkDropListConnectedTo]="panelTwo">
+      <!--panel 3-->
+      <div class="box" *ngFor="let item of panelThree" cdkDrag>
+        <img src="assets/pictureForCards.png" alt="" height="298px">
+        <div class="cardPosition">
+          <button mat-icon-button (click)="react3()">
+            <mat-icon>build</mat-icon>
+          </button>
+          <div *ngIf="change3">
+            <button mat-icon-button>
+              <mat-icon>delete_forever</mat-icon>
+            </button>
+            <button mat-icon-button class="changePosition" cdkDragHandle>
+              <mat-icon>open_with</mat-icon>
+            </button>
+          </div>
+          <div *ngIf="!dragVisible3">
+            <div cdkDragHandle>
+              <!--locks drag while the drag button isn't visible   -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="space"></div>
+</div>
